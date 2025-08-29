@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>PropertyFlow</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        fontFamily: {
+          sans: ['Inter', 'ui-sans-serif', 'system-ui'],
+        },
+      },
+    };
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    /* Hover expand only when collapsed */
+    .sidebar.collapsed:hover {
+      width: 230px !important;
+    }
+    .sidebar.collapsed:hover .logo {
+      display: block !important;
+    }
+    .sidebar.collapsed:hover .logo-icon {
+      display: none !important;
+    }
+    .sidebar.collapsed:hover .sidebar-header {
+      justify-content: space-between !important;
+    }
+    .sidebar.collapsed:hover .menu-item-text {
+      display: inline !important;
+    }
+  </style>
+</head>
+
+<body
+  x-data="{
+    page: 'dashboard',
+    loaded: true,
+    stickyMenu: false,
+    sidebarToggle: false,
+    scrollTop: false,
+    selected: 'Dashboard'
+  }"
+  class="bg-gray-50"
+>
+  <div class="flex h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <aside
+      :class="sidebarToggle ? 'translate-x-0 xl:w-[90px]' : '-translate-x-full'"
+      class="sidebar fixed top-0 left-0 z-[9999] flex h-screen w-[230px] flex-col overflow-y-auto border-r border-gray-200 bg-white px-2 transition-all duration-300 xl:static xl:translate-x-0"
+      @click.outside="sidebarToggle = false"
+    >
+      <div :class="sidebarToggle ? 'justify-center' : 'justify-between'" class="sidebar-header flex items-center gap-2 pt-8 pb-7">
+        <a href="index.html">
+          <span class="logo" :class="sidebarToggle ? 'hidden' : ''">
+            <img src="src/images/logo/logo.svg" alt="Logo" />
+          </span>
+          <img class="logo-icon" :class="sidebarToggle ? 'xl:block' : 'hidden'" src="src/images/logo/logo-icon.svg" alt="Logo" />
+        </a>
+      </div>
+      
+      <div class="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
+        <nav
+          x-init="$nextTick(() => lucide.createIcons())"
+          x-effect="$nextTick(() => lucide.createIcons())"
+        >
+          <ul class="flex flex-col gap-1">
+            <template
+              x-for="item in [
+                { name: 'Dashboard', icon: 'layout-dashboard', page: 'dashboard', href: 'index.html' },
+                { name: 'Properties', icon: 'home', page: 'properties', href: 'properties.html' },
+                { name: 'Tenants', icon: 'users', page: 'tenants', href: 'tenants.html' },
+                { name: 'Accounting', icon: 'file-text', page: 'accounting', href: 'accounting.html' },
+                { name: 'Maintenance', icon: 'wrench', page: 'maintenance', href: 'maintenance.html' },
+                { name: 'Analytics', icon: 'bar-chart-2', page: 'analytics', href: 'analytics.html' },
+                { name: 'Community', icon: 'message-square', page: 'community', href: 'community.html' },
+                { name: 'AI Assistant', icon: 'bot', page: 'ai', href: 'ai.html' },
+                { name: 'Calendar', icon: 'calendar', page: 'calendar', href: 'calendar.html' }
+              ]"
+              :key="item.page"
+            >
+              <li>
+                <a :href="item.href"
+                  @click.prevent="selected = (selected === item.name ? '' : item.name); page = item.page"
+                  class="flex items-center gap-3 p-2.5 rounded-lg text-sm font-medium transition group"
+                  :class="(selected === item.name && page === item.page)
+                            ? 'bg-[#2563eb]/10 text-[#2563eb] font-semibold'
+                            : 'text-gray-700 hover:bg-gray-100'">
+                  <i :data-lucide="item.icon"
+                    :class="(selected === item.name && page === item.page)
+                              ? 'w-5 h-5 text-[#2563eb]'
+                              : 'w-5 h-5 text-gray-500 group-hover:text-gray-700'"></i>
+                  <span class="menu-item-text" :class="sidebarToggle ? 'xl:hidden' : ''" x-text="item.name"></span>
+                </a>
+              </li>
+            </template>
+          </ul>
+        </nav>
+
+
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
+      <div :class="sidebarToggle ? 'block xl:hidden' : 'hidden'" class="fixed z-50 h-screen w-full bg-gray-900/50"></div>
+
+      <!-- Header -->
+      <header x-data="{menuToggle: false}" class="sticky top-0 z-50 flex w-full border-gray-200 bg-white xl:border-b  px-3 py-3">
+        <!-- Left: Burger -->
+        <button :class="sidebarToggle ? 'xl:bg-transparent bg-gray-100' : ''"
+                class="flex h-10 w-10 items-center justify-center rounded-lg border-gray-200 text-gray-500 xl:h-11 xl:w-11 xl:border"
+                @click.stop="sidebarToggle = !sidebarToggle">
+          <i data-lucide="menu" class="w-5 h-5"></i>
+        </button>
+
+        <!-- Center: Search -->
+        <div class="hidden xl:block flex-1 px-6">
+          <div class="relative w-[430px]">
+            <i data-lucide="search" class="absolute top-1/2 left-4 -translate-y-1/2 w-5 h-5 text-gray-500"></i>
+            <input type="text" placeholder="Search or type command..."
+                   class="h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pl-12 pr-14 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none" />
+          </div>
+        </div>
+
+        <!-- Right Actions -->
+        <div class="flex items-center gap-2 ml-auto">
+          
+          <!-- Notifications -->
+          <div class="relative">
+            <button class="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 hover:bg-gray-100">
+              <i data-lucide="bell" class="w-5 h-5"></i>
+            </button>
+            <span class="absolute top-2 right-2 inline-flex h-2.5 w-2.5 rounded-full bg-red-600 border-2 border-white"></span>
+          </div>
+
+          <!-- User Avatar -->
+          <div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#2563eb] text-white font-semibold">HS</div>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <div class="p-4">
+        
+        <!-- Dashboard Content -->
+        <div class="flex flex-wrap -mx-1.5">
+          <!-- Left Column (6/12 = 50%) -->
+          <div class="w-full lg:w-1/2 px-1.5 space-y-3">
+            <!-- Stats -->
+            <div class="grid grid-cols-2 gap-4">
+              <div class="p-4 bg-white rounded-lg shadow">
+                <p class="text-2xl font-bold">78</p>
+                <p class="text-gray-500 text-sm">Properties Managed</p>
+              </div>
+              <div class="p-4 bg-white rounded-lg shadow">
+                <p class="text-2xl font-bold">214</p>
+                <p class="text-gray-500 text-sm">Total Tenants</p>
+              </div>
+              <div class="p-4 bg-white rounded-lg shadow">
+                <p class="text-2xl font-bold">93</p>
+                <p class="text-gray-500 text-sm">Pending Requests</p>
+              </div>
+              <div class="p-4 bg-white rounded-lg shadow">
+                <p class="text-2xl font-bold">12</p>
+                <p class="text-gray-500 text-sm">Unread Messages</p>
+              </div>
+            </div>
+
+            <!-- Chart -->
+            <div class="bg-white rounded-lg shadow p-5">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold">Occupancy Stats</h3>
+                <div class="flex space-x-2 text-xs">
+                  <button class="px-3 py-1 rounded bg-blue-100 text-blue-700">Daily</button>
+                  <button class="px-3 py-1 rounded text-gray-500">Weekly</button>
+                  <button class="px-3 py-1 rounded text-gray-500">Monthly</button>
+                </div>
+              </div>
+              <div class="h-56 flex items-center justify-center text-gray-400">[Chart Here]</div>
+            </div>
+          </div>
+
+          <!-- Middle Column (3/12 = 25%) -->
+          <div class="w-full lg:w-1/4 px-1.5 space-y-3">
+            <!-- Quick To-Do List -->
+            <div class="bg-white rounded-lg shadow p-5 h-full">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold">Quick To-Do List</h3>
+                <button class="text-blue-500"><i data-lucide="plus"></i></button>
+              </div>
+
+              <div class="space-y-5">
+                <div>
+                  <span class="px-2 py-1 text-xs rounded bg-green-100 text-green-700">Maintenance</span>
+                  <p class="mt-1 text-sm font-medium">Fix Plumbing Issue in Tower A</p>
+                  <div class="w-full bg-gray-100 rounded-full h-2 mt-2">
+                    <div class="bg-green-500 h-2 rounded-full" style="width: 24%"></div>
+                  </div>
+                </div>
+                <div>
+                  <span class="px-2 py-1 text-xs rounded bg-blue-100 text-blue-700">Tenant</span>
+                  <p class="mt-1 text-sm font-medium">Onboard new tenant for Flat 302</p>
+                  <div class="w-full bg-gray-100 rounded-full h-2 mt-2">
+                    <div class="bg-blue-500 h-2 rounded-full" style="width: 79%"></div>
+                  </div>
+                </div>
+                <div>
+                  <span class="px-2 py-1 text-xs rounded bg-yellow-100 text-yellow-700">Property</span>
+                  <p class="mt-1 text-sm font-medium">Schedule Property Inspection</p>
+                  <div class="w-full bg-gray-100 rounded-full h-2 mt-2">
+                    <div class="bg-yellow-500 h-2 rounded-full" style="width: 36%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column (3/12 = 25%) -->
+          <div class="w-full lg:w-1/4 px-1.5 space-y-3">
+            <!-- Upcoming Projects -->
+            <div class="bg-white rounded-lg shadow p-5  h-full">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold">Upcoming Projects</h3>
+                <button class="text-blue-500"><i data-lucide="plus"></i></button>
+              </div>
+
+              <ul class="space-y-5 text-sm">
+                <li>
+                  <p class="font-medium">Renovation of Flat 504</p>
+                  <p class="text-gray-500 text-xs">Deadline: Sep 29, 2025</p>
+                </li>
+                <li>
+                  <p class="font-medium">Tenant Agreement Renewal</p>
+                  <p class="text-gray-500 text-xs">Deadline: Oct 2, 2025</p>
+                </li>
+                <li>
+                  <p class="font-medium">Community Hall Painting</p>
+                  <p class="text-gray-500 text-xs">Deadline: Oct 10, 2025</p>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+
+
+
+      </div>
+    </main>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>
