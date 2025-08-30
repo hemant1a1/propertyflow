@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>PropertyFlow</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <link href="./style.css" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["Inter", "ui-sans-serif", "system-ui"],
+          },
+          colors: {
+            primary: {
+              50: "var(--color-primary-50)",
+              100: "var(--color-primary-100)",
+              400: "var(--color-primary-400)",
+              500: "var(--color-primary-500)",
+              600: "var(--color-primary-600)",
+              800: "var(--color-primary-800)",
+            },
+          },
+        },
+      },
+    };
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.5/css/perfect-scrollbar.css"/>
+ 
+  
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.5/dist/perfect-scrollbar.min.js"></script>
+  
+</head>
+
+<body
+  x-data="{
+    page: 'dashboard',
+    loaded: true,
+    stickyMenu: false,
+    sidebarToggle: false,
+    scrollTop: false,
+    selected: 'Dashboard'
+  }"
+  class="bg-gray-50"
+>
+  <div class="flex h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <aside
+      :class="sidebarToggle ? 'translate-x-0 xl:w-[90px]' : '-translate-x-full'"
+      class="sidebar fixed top-0 left-0 z-[9999] flex h-screen w-[230px] flex-col overflow-y-auto border-r border-gray-200 bg-white px-2 transition-all duration-300 xl:static xl:translate-x-0"
+      @click.outside="sidebarToggle = false"
+    >
+      <div :class="sidebarToggle ? 'justify-center' : 'justify-between'" class="sidebar-header flex items-center gap-2 pt-6 pb-7">
+        <a href="dashboard.html" class="flex items-center gap-2">
+          <!-- Building Icon -->
+          <i data-lucide="building" class="w-6 h-6 text-primary-600"></i>
+
+          <!-- Full Logo Text -->
+          <span 
+            class="font-bold text-2xl text-primary-600 tracking-wide transition-all duration-300" 
+            :class="sidebarToggle ? 'hidden' : ''">
+            PropertyFlow
+          </span>
+
+          <!-- Compact Icon (Text Short Form) -->
+          <span 
+            class="font-extrabold text-2xl text-primary-600 tracking-widest transition-all duration-300" 
+            :class="sidebarToggle ? 'xl:block' : 'hidden'">
+            PF
+          </span>
+        </a>
+      </div>
+      
+      <div class="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
+        <nav
+          x-init="$nextTick(() => lucide.createIcons())"
+          x-effect="$nextTick(() => lucide.createIcons())"
+        >
+          <ul class="flex flex-col gap-1">
+            <template
+              x-for="item in [
+                { name: 'Dashboard', icon: 'layout-dashboard', page: 'dashboard', href: 'dashboard.html' },
+                { name: 'Properties', icon: 'home', page: 'properties', href: 'properties.html' },
+                { name: 'Tenants', icon: 'users', page: 'tenants', href: 'tenants.html' },
+                { name: 'Accounting', icon: 'file-text', page: 'accounting', href: 'accounting.html' },
+                { name: 'Maintenance', icon: 'wrench', page: 'maintenance', href: 'maintenance.html' },
+                { name: 'Analytics', icon: 'bar-chart-2', page: 'analytics', href: 'analytics.html' },
+                { name: 'Community', icon: 'message-square', page: 'community', href: 'community.html' },
+                { name: 'AI Assistant', icon: 'bot', page: 'ai', href: 'ai.html' },
+                { name: 'Calendar', icon: 'calendar', page: 'calendar', href: 'calendar.html' }
+              ]"
+              :key="item.page"
+            >
+              <li>
+                <a :href="item.href"
+   @click="selected = (selected === item.name ? '' : item.name); page = item.page"
+   class="flex items-center gap-3 p-2.5 rounded-lg text-sm font-medium transition group"
+   :class="(selected === item.name && page === item.page)
+             ? 'bg-primary-600/10 text-primary-600 font-semibold'
+             : 'text-gray-700 hover:bg-gray-100'">
+                  <i :data-lucide="item.icon"
+                    :class="(selected === item.name && page === item.page)
+                              ? 'w-5 h-5 text-primary-600'
+                              : 'w-5 h-5 text-gray-500 group-hover:text-gray-700'"></i>
+                  <span class="menu-item-text" :class="sidebarToggle ? 'xl:hidden' : ''" x-text="item.name"></span>
+                </a>
+              </li>
+            </template>
+          </ul>
+        </nav>
+
+
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
+      <div :class="sidebarToggle ? 'block xl:hidden' : 'hidden'" class="fixed z-50 h-screen w-full bg-gray-900/50"></div>
+
+      <!-- Header -->
+      <header x-data="{menuToggle: false}" class="sticky top-0 z-50 flex w-full border-gray-200 bg-white xl:border-b  px-3 py-3">
+        <!-- Left: Burger -->
+        <button :class="sidebarToggle ? 'xl:bg-transparent bg-gray-100' : ''"
+                class="flex h-10 w-10 items-center justify-center rounded-lg border-gray-200 text-gray-500 xl:h-11 xl:w-11 xl:border"
+                @click.stop="sidebarToggle = !sidebarToggle">
+          <i data-lucide="menu" class="w-5 h-5"></i>
+        </button>
+
+        <!-- Center: Search -->
+        <div class="hidden xl:block flex-1 px-6">
+          <div class="relative w-[430px]">
+            <!-- Left Icon -->
+            <i data-lucide="search" 
+              class="absolute top-1/2 left-4 -translate-y-1/2 w-5 h-5 text-gray-500"></i>
+
+            <!-- Input -->
+            <input 
+              type="text" 
+              placeholder="Search properties, tenants, maintenance..."
+              class="h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pl-12 pr-14 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none" 
+            />
+
+            <!-- Right Button -->
+            <button type="button" 
+              class="flex items-center space-x-1 px-2 py-1 absolute top-1/2 right-3 -translate-y-1/2 rounded-md bg-primary-100 hover:bg-primary-700 text-primary-600 transition">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sparkles h-3 w-3"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path><path d="M5 3v4"></path><path d="M19 17v4"></path><path d="M3 5h4"></path><path d="M17 19h4"></path></svg>
+              <span class="hidden sm:inline text-sm">AI</span>
+            </button>
+          </div>
+        </div>
+
+        <script>
+          lucide.createIcons();
+        </script>
+
+
+        <!-- Right Actions -->
+        <div class="flex items-center gap-2 ml-auto">
+          
+          <!-- Notifications -->
+          <div class="relative">
+            <button class="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 hover:bg-gray-100">
+              <i data-lucide="bell" class="w-5 h-5"></i>
+            </button>
+            <span class="absolute top-2 right-2 inline-flex h-2.5 w-2.5 rounded-full bg-red-600 border-2 border-white"></span>
+          </div>
+
+          <!-- User Avatar -->
+          <div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary-600 text-white font-semibold">HS</div>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <div class="p-4">
+        
+        <!-- Dashboard Content -->
+        <div class="flex flex-wrap -mx-1.5 space-y-3 lg:space-y-0">
+          <!-- Left Column (6/12 = 50%) -->
+          <div class="w-full lg:w-1/2 px-1.5 space-y-3">
+
+            <div class="relative w-full rounded-lg overflow-hidden text-white bg-gradient-to-tr from-primary-800 to-primary-600 shadow-lg">
+                <!-- Decorative SVG Waves -->
+                <svg class="absolute top-0 left-0 w-full h-full" viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="#1e3a8a" fill-opacity="0.50" d="M0,160L80,154.7C160,149,320,139,480,149.3C640,160,800,192,960,186.7C1120,181,1280,139,1360,117.3L1440,96L1440,320L0,320Z"></path>
+                    <path fill="#1e3a8a" fill-opacity="0.70" d="M0,224L80,213.3C160,203,320,181,480,186.7C640,192,800,224,960,229.3C1120,235,1280,213,1360,202.7L1440,192L1440,320L0,320Z"></path>
+                </svg>
+
+                <svg class="absolute top-0 right-0" width="131" height="144" viewBox="0 0 131 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M66.378 89.924L61.5 107L56.622 89.924C55.3612 85.5132 52.9974 81.4963 49.7536 78.2524C46.5097 75.0086 42.4928 72.6448 38.082 71.384L21 66.5L38.076 61.622C42.4868 60.3612 46.5037 57.9974 49.7476 54.7536C52.9914 51.5097 55.3552 47.4928 56.616 43.082L61.5 26L66.378 43.076C67.6388 47.4868 70.0026 51.5037 73.2464 54.7476C76.4903 57.9914 80.5072 60.3552 84.918 61.616L102 66.5L84.924 71.378C80.5132 72.6388 76.4963 75.0026 73.2524 78.2464C70.0086 81.4903 67.6448 85.5072 66.384 89.918L66.378 89.924ZM117.054 46.79L115.5 53L113.946 46.79C113.056 43.2295 111.216 39.9777 108.622 37.3822C106.027 34.7866 102.776 32.945 99.216 32.054L93 30.5L99.216 28.946C102.776 28.055 106.027 26.2134 108.622 23.6178C111.216 21.0223 113.056 17.7705 113.946 14.21L115.5 8L117.054 14.21C117.944 17.7712 119.785 21.0235 122.381 23.6191C124.976 26.2147 128.229 28.056 131.79 28.946L138 30.5L131.79 32.054C128.229 32.944 124.976 34.7853 122.381 37.3809C119.785 39.9765 117.944 43.2288 117.054 46.79ZM108.864 117.902L106.5 125L104.136 117.902C103.473 115.914 102.357 114.107 100.875 112.625C99.3928 111.143 97.5862 110.027 95.598 109.364L88.5 107L95.598 104.636C97.5862 103.973 99.3928 102.857 100.875 101.375C102.357 99.8928 103.473 98.0862 104.136 96.098L106.5 89L108.864 96.098C109.527 98.0862 110.643 99.8928 112.125 101.375C113.607 102.857 115.414 103.973 117.402 104.636L124.5 107L117.402 109.364C115.414 110.027 113.607 111.143 112.125 112.625C110.643 114.107 109.527 115.914 108.864 117.902Z" stroke="white" stroke-opacity="0.1" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+
+
+                <!-- Content -->
+                <div class="relative z-10 w-full p-6 flex flex-col justify-between">
+                    <!-- Left Text Section -->
+                    <div class="flex justify-between items-start">
+                    <h2 class="text-lg md:text-xl font-bold tracking-tight">Portfolio Overview</h2>
+                    </div>
+
+                    <p class="text-sm mt-2">
+                    Managing <span class="text-white/90 font-bold">12 properties</span> with <span class="text-white/90 font-bold">45 tenants</span>
+                    </p>
+
+                    <div class="flex flex-wrap gap-3 mt-4">
+                    <span class="bg-white/20 px-4 py-1 rounded-full text-xs font-medium">96% Occupancy</span>
+                    <span class="bg-white/20 px-4 py-1 rounded-full text-xs font-medium">$54.6K Revenue</span>
+                    </div>
+                </div>
+
+                <!-- Bottom Right Lottie Animation -->
+                <div class="absolute -bottom-3 right-4 w-[140px] h-[140px] hidden lg:block z-0 pointer-events-none opacity-90">
+                    <lottie-player src="/city-skyline.json" background="transparent" speed="1" style="width: 100%; height: 100%;" loop="" autoplay="">
+                    </lottie-player>
+                </div>
+              </div>
+            <!-- Stats -->
+            <div class="grid grid-cols-2 gap-4">
+              <!-- Total Properties -->
+              <div class="bg-white rounded-lg shadow p-4 flex justify-between items-center">
+                <div>
+                  <p class="text-sm text-gray-500">Total Properties</p>
+                  <p class="text-lg font-bold">12</p>
+                </div>
+                <div class="bg-primary-50 p-2 rounded-lg">
+                  <i data-lucide="building" class="w-6 h-6 text-primary-600"></i>
+                </div>
+              </div>
+
+              <!-- Rent Collected -->
+              <div class="bg-white rounded-lg shadow p-4 flex justify-between items-center">
+                <div>
+                  <p class="text-sm text-gray-500">Rent Collected</p>
+                  <p class="text-lg font-bold">$18,500</p>
+                </div>
+                <div class="bg-primary-50 p-2 rounded-lg">
+                  <i data-lucide="trending-up" class="w-6 h-6 text-primary-600"></i>
+                </div>
+              </div>
+
+              <!-- Total Tenants -->
+              <div class="bg-white rounded-lg shadow p-4 flex justify-between items-center">
+                <div>
+                  <p class="text-sm text-gray-500">Total Tenants</p>
+                  <p class="text-lg font-bold">45</p>
+                </div>
+                <div class="bg-primary-50 p-2 rounded-lg">
+                  <i data-lucide="users" class="w-6 h-6 text-primary-600"></i>
+                </div>
+              </div>
+
+              <!-- Maintenance Requests -->
+              <div class="bg-white rounded-lg shadow p-4 flex justify-between items-center">
+                <div>
+                  <p class="text-sm text-gray-500">Maintenance Requests</p>
+                  <p class="text-lg font-bold">5</p>
+                </div>
+                <div class="bg-primary-50 p-2 rounded-lg">
+                  <i data-lucide="wrench" class="w-6 h-6 text-primary-600"></i>
+                </div>
+              </div>
+            </div>
+
+            
+          </div>
+
+          <!-- Middle Column (3/12 = 25%) -->
+          <div class="w-full lg:w-1/4 px-1.5 space-y-3">
+            <!-- Recent Payments (Alpine x-for, Compact) -->
+            <div
+              class="bg-white rounded-lg shadow py-4"
+              x-data="{
+                payments: [
+                  { id: 1,  name: 'Sarah Johnson', unit: 'Unit 3A', date: 'Nov 1st',   amount: '$1,200', status: 'Paid' },
+                  { id: 2,  name: 'Mike Chen',     unit: 'Unit 2B', date: 'Nov 1st',   amount: '$1,400', status: 'Paid' },
+                  { id: 3,  name: 'Emily Davis',   unit: 'Unit 1C', date: 'Oct 30th',  amount: '$1,100', status: 'Paid' },
+                ],
+                icon(s){ return s==='Paid'?'check-circle':(s==='Pending'?'clock':'x-circle') },
+                dotClass(s){
+                  return s==='Paid'
+                    ? 'bg-primary-100 text-primary-600'
+                    : s==='Pending'
+                      ? 'bg-orange-100 text-orange-500'
+                      : 'bg-red-100 text-red-500';
+                },
+                badgeClass(s){
+                  return 'inline-block px-2 text-[10px] rounded ' + (
+                    s==='Paid'
+                      ? 'bg-green-100 text-green-700'
+                      : s==='Pending'
+                        ? 'bg-orange-100 text-orange-600'
+                        : 'bg-red-100 text-red-600'
+                  );
+                }
+              }"
+              x-init="$nextTick(()=>lucide.createIcons())"
+              x-effect="$nextTick(()=>lucide.createIcons())"
+            >
+              <!-- Header -->
+              <div class="flex items-center justify-between px-2 mb-3">
+                <h3 class="text-sm font-semibold text-gray-900">Recent Payments</h3>
+                <button class="text-primary-600 text-[11px] font-medium hover:opacity-70 transition">View All</button>
+              </div>
+
+              <!-- List -->
+              <ul class="divide-y divide-gray-100 px-2 md:h-[268px] dlab-scroll">
+                <template x-for="p in payments" :key="p.id">
+                  <li class="flex items-center justify-between py-2 hover:bg-gray-50 rounded-lg transition">
+                    <div class="flex items-center gap-2.5">
+                      <span class="flex items-center justify-center h-5 w-5 rounded-full" :class="dotClass(p.status)">
+                        <i :data-lucide="icon(p.status)" class="w-3.5 h-3.5"></i>
+                      </span>
+                      <div>
+                        <p class="font-medium text-gray-900 text-[13px]" x-text="p.name"></p>
+                        <p class="text-gray-500 text-[11px]">
+                          <span x-text="p.unit"></span> • <span x-text="p.date"></span>
+                        </p>
+                      </div>
+                    </div>
+                    <div class="text-right">
+                      <p class="font-semibold text-gray-900 text-[13px]" x-text="p.amount"></p>
+                      <span :class="badgeClass(p.status)" x-text="p.status"></span>
+                    </div>
+                  </li>
+                </template>
+              </ul>
+            </div>
+
+
+          </div>
+
+          <!-- Right Column (3/12 = 25%) -->
+          <div class="w-full lg:w-1/4 px-1.5 space-y-3">
+            <!-- Upcoming Projects (Dynamic with Alpine x-for) -->
+           <div class="bg-white rounded-lg shadow py-4 h-full"
+              x-data="{
+                projects: [
+                  { id: 1, title: 'Water Heater Issue', description: 'Maintenance - Maple Heights', date: '', priority: 'HIGH', icon: 'wrench', color: 'red' },
+                  { id: 2, title: 'Overdue Rent', description: 'Payment - Oak Plaza', date: '', priority: 'HIGH', icon: 'dollar-sign', color: 'orange' },
+                  { id: 3, title: 'Annual Safety Check', description: 'Inspection - Pine Court', date: '', priority: 'MEDIUM', icon: 'shield-check', color: 'primary' }
+                ],
+                priorityClass(p){
+                  return p==='HIGH'
+                    ? 'text-orange-600 bg-orange-100'
+                    : p==='MEDIUM'
+                      ? 'text-primary-600 bg-primary-100'
+                      : 'text-green-600 bg-green-100';
+                }
+              }"
+              x-init="$nextTick(()=>lucide.createIcons())"
+              x-effect="$nextTick(()=>lucide.createIcons())"
+            >
+              <!-- Header -->
+              <div class="flex items-center justify-between px-2 mb-3">
+                <h3 class="text-sm font-semibold text-gray-900">Urgent Items</h3>
+                <button class="text-primary-600 text-[11px] font-medium hover:opacity-70 transition">View All</button>
+              </div>
+
+              <!-- List -->
+              <ul class="divide-y divide-gray-100 px-2 md:h-[268px] dlab-scroll">
+                <template x-for="p in projects" :key="p.id">
+                  <li class="flex items-center justify-between py-2 hover:bg-gray-50 rounded-lg px-2 transition">
+                    <div class="flex items-center gap-2">
+                      <!-- Icon -->
+                      <span class="flex items-center justify-center h-6 w-6 rounded-full" 
+                            :class="'bg-' + p.color + '-50 text-' + p.color + '-600 shadow-sm'">
+                        <i :data-lucide="p.icon" class="w-3.5 h-3.5"></i>
+                      </span>
+                      <!-- Text -->
+                      <div class="leading-tight">
+                        <p class="font-medium text-gray-900 text-[13px]" x-text="p.title"></p>
+                        <p class="text-gray-500 text-[11px]" x-text="p.description"></p>
+                        <template x-if="p.date">
+                          <div class="flex items-center gap-1 text-gray-400 text-[11px] mt-0.5">
+                            <i data-lucide="calendar" class="w-3 h-3"></i>
+                            <span x-text="p.date"></span>
+                          </div>
+                        </template>
+                      </div>
+                    </div>
+                    <!-- Status -->
+                    <span class="inline-block px-2 text-[10px] rounded whitespace-nowrap"
+                          :class="priorityClass(p.priority)" 
+                          x-text="p.priority"></span>
+                  </li>
+                </template>
+              </ul>
+            </div>
+
+
+
+          </div>
+        </div>
+
+        <div class="mt-4 relative bg-white rounded-lg shadow p-6">
+          <!-- Header -->
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-8 h-8 flex items-center justify-center rounded-full bg-gradient-to-tr from-primary-500 to-indigo-500 text-white shadow-md">
+              <i data-lucide="sparkles" class="w-4 h-4"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 tracking-tight">Quick Actions</h3>
+          </div>
+
+          <!-- Actions Grid -->
+          <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
+            <!-- Action Item -->
+            <div class="flex flex-col items-center justify-center gap-3 p-4 rounded-lg bg-primary-50 hover:bg-primary-100 transition cursor-pointer">
+              <div class="w-12 h-12 flex items-center justify-center rounded-xl bg-white shadow-sm text-primary-600">
+                <i data-lucide="bar-chart" class="w-6 h-6"></i>
+              </div>
+              <span class="text-sm font-medium text-gray-800">View Analytics</span>
+            </div>
+
+            <!-- Action Item -->
+            <div class="flex flex-col items-center justify-center gap-3 p-4 rounded-lg bg-primary-50 hover:bg-primary-100 transition cursor-pointer">
+              <div class="w-12 h-12 flex items-center justify-center rounded-xl bg-white shadow-sm text-primary-600">
+                <i data-lucide="bot" class="w-6 h-6"></i>
+              </div>
+              <span class="text-sm font-medium text-gray-800">AI Assistant</span>
+            </div>
+
+            <!-- Action Item -->
+            <div class="flex flex-col items-center justify-center gap-3 p-4 rounded-lg bg-primary-50 hover:bg-primary-100 transition cursor-pointer">
+              <div class="w-12 h-12 flex items-center justify-center rounded-xl bg-white shadow-sm text-primary-600">
+                <i data-lucide="users" class="w-6 h-6"></i>
+              </div>
+              <span class="text-sm font-medium text-gray-800">Manage Tenants</span>
+            </div>
+
+            <!-- Action Item -->
+            <div class="flex flex-col items-center justify-center gap-3 p-4 rounded-lg bg-primary-50 hover:bg-primary-100 transition cursor-pointer">
+              <div class="w-12 h-12 flex items-center justify-center rounded-xl bg-white shadow-sm text-primary-600">
+                <i data-lucide="calendar" class="w-6 h-6"></i>
+              </div>
+              <span class="text-sm font-medium text-gray-800">Schedule Tour</span>
+            </div>
+
+          </div>
+        </div>
+
+
+      </div>
+    </main>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+
+      const containers = document.querySelectorAll('.dlab-scroll');
+      
+      containers.forEach(container => {
+        new PerfectScrollbar(container, {
+          wheelSpeed: 1,
+          wheelPropagation: true,
+          minScrollbarLength: 20
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>

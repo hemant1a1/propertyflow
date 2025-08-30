@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>PropertyFlow</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <link href="./style.css" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["Inter", "ui-sans-serif", "system-ui"],
+          },
+          colors: {
+            primary: {
+              50: "var(--color-primary-50)",
+              100: "var(--color-primary-100)",
+              400: "var(--color-primary-400)",
+              500: "var(--color-primary-500)",
+              600: "var(--color-primary-600)",
+              800: "var(--color-primary-800)",
+            },
+          },
+        },
+      },
+    };
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.5/css/perfect-scrollbar.css"/>
+ 
+  
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.5/dist/perfect-scrollbar.min.js"></script>
+  
+</head>
+
+<body
+  x-data="{
+    page: 'properties',
+    loaded: true,
+    stickyMenu: false,
+    sidebarToggle: false,
+    scrollTop: false,
+    selected: 'Properties'
+  }"
+  class="bg-gray-50"
+>
+  <div class="flex h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <aside
+      :class="sidebarToggle ? 'translate-x-0 xl:w-[90px]' : '-translate-x-full'"
+      class="sidebar fixed top-0 left-0 z-[9999] flex h-screen w-[230px] flex-col overflow-y-auto border-r border-gray-200 bg-white px-2 transition-all duration-300 xl:static xl:translate-x-0"
+      @click.outside="sidebarToggle = false"
+    >
+      <div :class="sidebarToggle ? 'justify-center' : 'justify-between'" class="sidebar-header flex items-center gap-2 pt-6 pb-7">
+        <a href="dashboard.html" class="flex items-center gap-2">
+          <!-- Building Icon -->
+          <i data-lucide="building" class="w-6 h-6 text-primary-600"></i>
+
+          <!-- Full Logo Text -->
+          <span 
+            class="font-bold text-2xl text-primary-600 tracking-wide transition-all duration-300" 
+            :class="sidebarToggle ? 'hidden' : ''">
+            PropertyFlow
+          </span>
+
+          <!-- Compact Icon (Text Short Form) -->
+          <span 
+            class="font-extrabold text-2xl text-primary-600 tracking-widest transition-all duration-300" 
+            :class="sidebarToggle ? 'xl:block' : 'hidden'">
+            PF
+          </span>
+        </a>
+      </div>
+      
+      <div class="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
+        <nav
+          x-init="$nextTick(() => lucide.createIcons())"
+          x-effect="$nextTick(() => lucide.createIcons())"
+        >
+          <ul class="flex flex-col gap-1">
+            <template
+              x-for="item in [
+                { name: 'Dashboard', icon: 'layout-dashboard', page: 'dashboard', href: 'dashboard.html' },
+                { name: 'Properties', icon: 'home', page: 'properties', href: 'properties.html' },
+                { name: 'Tenants', icon: 'users', page: 'tenants', href: 'tenants.html' },
+                { name: 'Accounting', icon: 'file-text', page: 'accounting', href: 'accounting.html' },
+                { name: 'Maintenance', icon: 'wrench', page: 'maintenance', href: 'maintenance.html' },
+                { name: 'Analytics', icon: 'bar-chart-2', page: 'analytics', href: 'analytics.html' },
+                { name: 'Community', icon: 'message-square', page: 'community', href: 'community.html' },
+                { name: 'AI Assistant', icon: 'bot', page: 'ai', href: 'ai.html' },
+                { name: 'Calendar', icon: 'calendar', page: 'calendar', href: 'calendar.html' }
+              ]"
+              :key="item.page"
+            >
+              <li>
+                <a :href="item.href"
+   @click="selected = (selected === item.name ? '' : item.name); page = item.page"
+   class="flex items-center gap-3 p-2.5 rounded-lg text-sm font-medium transition group"
+   :class="(selected === item.name && page === item.page)
+             ? 'bg-primary-600/10 text-primary-600 font-semibold'
+             : 'text-gray-700 hover:bg-gray-100'">
+                  <i :data-lucide="item.icon"
+                    :class="(selected === item.name && page === item.page)
+                              ? 'w-5 h-5 text-primary-600'
+                              : 'w-5 h-5 text-gray-500 group-hover:text-gray-700'"></i>
+                  <span class="menu-item-text" :class="sidebarToggle ? 'xl:hidden' : ''" x-text="item.name"></span>
+                </a>
+              </li>
+            </template>
+          </ul>
+        </nav>
+
+
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
+      <div :class="sidebarToggle ? 'block xl:hidden' : 'hidden'" class="fixed z-50 h-screen w-full bg-gray-900/50"></div>
+
+      <!-- Header -->
+      <header x-data="{menuToggle: false}" class="sticky top-0 z-50 flex w-full border-gray-200 bg-white xl:border-b  px-3 py-3">
+        <!-- Left: Burger -->
+        <button :class="sidebarToggle ? 'xl:bg-transparent bg-gray-100' : ''"
+                class="flex h-10 w-10 items-center justify-center rounded-lg border-gray-200 text-gray-500 xl:h-11 xl:w-11 xl:border"
+                @click.stop="sidebarToggle = !sidebarToggle">
+          <i data-lucide="menu" class="w-5 h-5"></i>
+        </button>
+
+        <!-- Center: Search -->
+        <div class="hidden xl:block flex-1 px-6">
+          <div class="relative w-[430px]">
+            <!-- Left Icon -->
+            <i data-lucide="search" 
+              class="absolute top-1/2 left-4 -translate-y-1/2 w-5 h-5 text-gray-500"></i>
+
+            <!-- Input -->
+            <input 
+              type="text" 
+              placeholder="Search properties, tenants, maintenance..."
+              class="h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pl-12 pr-14 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none" 
+            />
+
+            <!-- Right Button -->
+            <button type="button" 
+              class="flex items-center space-x-1 px-2 py-1 absolute top-1/2 right-3 -translate-y-1/2 rounded-md bg-primary-100 hover:bg-primary-700 text-primary-600 transition">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sparkles h-3 w-3"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path><path d="M5 3v4"></path><path d="M19 17v4"></path><path d="M3 5h4"></path><path d="M17 19h4"></path></svg>
+              <span class="hidden sm:inline text-sm">AI</span>
+            </button>
+          </div>
+        </div>
+
+        <script>
+          lucide.createIcons();
+        </script>
+
+
+        <!-- Right Actions -->
+        <div class="flex items-center gap-2 ml-auto">
+          
+          <!-- Notifications -->
+          <div class="relative">
+            <button class="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 hover:bg-gray-100">
+              <i data-lucide="bell" class="w-5 h-5"></i>
+            </button>
+            <span class="absolute top-2 right-2 inline-flex h-2.5 w-2.5 rounded-full bg-red-600 border-2 border-white"></span>
+          </div>
+
+          <!-- User Avatar -->
+          <div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary-600 text-white font-semibold">HS</div>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <div class="p-4">
+
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+            <h2 class="text-2xl font-semibold text-gray-800">Property Management</h1>
+            <div class="flex gap-3">
+                <select class="px-3 py-2 border rounded-md bg-white text-sm">
+                <option>All Status</option>
+                </select>
+                <select class="px-3 py-2 border rounded-md bg-white text-sm">
+                <option>Sort by Name</option>
+                </select>
+
+                <button class="bg-primary-600 hover:bg-primary-800 text-white px-4 py-2 rounded-md text-sm font-medium">
+                + Add Property
+                </button>
+            </div>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+
+            <!-- Total Properties -->
+            <div class="relative bg-white rounded-xl border border-gray-100 shadow-sm backdrop-blur-sm backdrop-saturate-150 backdrop-shadow px-4 py-3 overflow-hidden group hover:shadow-md transition">
+                <div class="absolute -bottom-6 -right-6 w-24 h-24 bg-primary-600/20 rounded-full blur-xl"></div>
+                <div class="flex justify-between items-center relative z-10">
+                <div>
+                    <p class="text-sm text-gray-500">Total Properties</p>
+                    <h3 class="text-xl font-bold text-gray-800">3</h3>
+                </div>
+                <div class="p-2 bg-primary-100 text-primary-600 rounded-full group-hover:scale-110 transition">
+                    <i data-lucide="building-2" class="w-5 h-5"></i>
+                </div>
+                </div>
+            </div>
+
+            <!-- Total Units -->
+            <div class="relative bg-white rounded-xl border border-gray-100 shadow-sm backdrop-blur-sm backdrop-saturate-150 backdrop-shadow px-4 py-3 overflow-hidden group hover:shadow-md transition">
+                <div class="absolute -bottom-6 -right-6 w-24 h-24 bg-primary-600/20 rounded-full blur-xl"></div>
+                <div class="flex justify-between items-center relative z-10">
+                <div>
+                    <p class="text-sm text-gray-500">Total Units</p>
+                    <h3 class="text-xl font-bold text-gray-800">26</h3>
+                </div>
+                <div class="p-2 bg-primary-100 text-primary-600 rounded-full group-hover:scale-110 transition">
+                    <i data-lucide="layout-grid" class="w-5 h-5"></i>
+                </div>
+                </div>
+            </div>
+
+            <!-- Occupancy Rate -->
+            <div class="relative bg-white rounded-xl border border-gray-100 shadow-sm backdrop-blur-sm backdrop-saturate-150 backdrop-shadow px-4 py-3 overflow-hidden group hover:shadow-md transition">
+                <div class="absolute -bottom-6 -right-6 w-24 h-24 bg-primary-600/20 rounded-full blur-xl"></div>
+                <div class="flex justify-between items-center relative z-10">
+                <div>
+                    <p class="text-sm text-gray-500">Occupancy Rate</p>
+                    <h3 class="text-xl font-bold text-gray-800">88%</h3>
+                </div>
+                <div class="p-2 bg-primary-100 text-primary-600 rounded-full group-hover:scale-110 transition">
+                    <i data-lucide="activity" class="w-5 h-5"></i>
+                </div>
+                </div>
+            </div>
+
+            <!-- Monthly Revenue -->
+            <div class="relative bg-white rounded-xl border border-gray-100 shadow-sm backdrop-blur-sm backdrop-saturate-150 backdrop-shadow px-4 py-3 overflow-hidden group hover:shadow-md transition">
+                <div class="absolute -bottom-6 -right-6 w-24 h-24 bg-primary-600/20 rounded-full blur-xl"></div>
+                <div class="flex justify-between items-center relative z-10">
+                <div>
+                    <p class="text-sm text-gray-500">Monthly Revenue</p>
+                    <h3 class="text-xl font-bold text-gray-800">$34,800</h3>
+                </div>
+                <div class="p-2 bg-primary-100 text-primary-600 rounded-full group-hover:scale-110 transition">
+                    <i data-lucide="dollar-sign" class="w-5 h-5"></i>
+                </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6"
+            x-data="{
+            properties: [
+                {
+                id: 1,
+                name: 'Maple Heights',
+                address: '123 Maple Street',
+                image: '/1.jpg',
+                status: 'Active',
+                rating: 4.5,
+                units: 8,
+                occupied: '7/8',
+                rent: '$9,600',
+                rate: '88%'
+                },
+                {
+                id: 2,
+                name: 'Oak Plaza Complex',
+                address: '456 Oak Avenue',
+                image: '/2.jpg',
+                status: 'Active',
+                rating: 4.8,
+                units: 12,
+                occupied: '11/12',
+                rent: '$16,800',
+                rate: '92%'
+                },
+                {
+                id: 3,
+                name: 'Pine Court Townhomes',
+                address: '789 Pine Road',
+                image: '/3.jpg',
+                status: 'Active',
+                rating: 4.2,
+                units: 6,
+                occupied: '5/6',
+                rent: '$8,400',
+                rate: '83%'
+                }
+            ]
+            }">
+
+        <!-- Card Loop -->
+        <template x-for="property in properties" :key="property.id">
+            <div class="relative overflow-hidden bg-white rounded-xl shadow-sm group hover:shadow-md transition">
+                <!-- Image & Status -->
+                <div class="relative rounded-xl overflow-hidden mx-3 my-3">
+                    <img :src="property.image" class="w-full h-44 object-cover rounded-xl transition group-hover:scale-105" />
+                    <div class="absolute top-2 left-2 bg-green-100/80 text-green-700 border border-green-700 text-[10px] font-bold px-2 py-0.5 rounded-lg" x-text="property.status"></div>
+                </div>
+                <!-- Menu -->
+                <div x-data="{ open: false }" class="absolute top-5 right-5 z-50">
+                    <button @click="open = !open" class="p-1.5 rounded-full bg-white/80 shadow hover:bg-gray-100">
+                        <i data-lucide="more-vertical" class="w-4 h-4 text-gray-600"></i>
+                    </button>
+                    <div x-show="open" @click.outside="open = false"
+                        class="absolute right-0 mt-2 w-36 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                        <ul class="text-sm text-gray-700">
+                        <li><a href="#" class="flex items-center gap-2 px-3 py-2 hover:bg-gray-50"><i data-lucide="eye" class="w-4 h-4 text-indigo-500"></i> View</a></li>
+                        <li><a href="#" class="flex items-center gap-2 px-3 py-2 hover:bg-gray-50"><i data-lucide="pencil" class="w-4 h-4 text-gray-600"></i> Edit</a></li>
+                        <li><a href="#" class="flex items-center gap-2 px-3 py-2 hover:bg-gray-50"><i data-lucide="trending-up" class="w-4 h-4 text-green-600"></i> Analytics</a></li>
+                        <li><a href="#" class="flex items-center gap-2 px-3 py-2 hover:bg-gray-50"><i data-lucide="trash-2" class="w-4 h-4 text-red-600"></i> Delete</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Content -->
+                <div class="px-3 pb-3">
+                    <div class="flex justify-between items-center">
+                    <h3 class="font-semibold text-lg text-gray-800" x-text="property.name"></h3>
+                    <div class="flex items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.63-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.45 4.73L5.82 21z"/></svg>
+                        <span class="text-sm font-medium text-gray-700" x-text="property.rating"></span>
+                    </div>
+                    </div>
+                    <p class="mt-1 text-xs text-gray-500 flex items-center gap-1">
+                    <i data-lucide="map-pin" class="w-3.5 h-3.5"></i> 
+                    <span x-text="property.address"></span>
+                    </p>
+                    
+                    <div class="mt-3 grid grid-cols-2 gap-2 text-xs text-gray-600">
+                    <div class="flex items-center gap-1.5">
+                        <div class="p-1 bg-gray-100 rounded-md">
+                        <i data-lucide="layout-grid" class="w-3.5 h-3.5 text-indigo-500"></i>
+                        </div>
+                        <span class="font-medium"><strong x-text="property.units"></strong> Units</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <div class="p-1 bg-gray-100 rounded-md">
+                        <i data-lucide="users" class="w-3.5 h-3.5 text-blue-500"></i>
+                        </div>
+                        <span class="font-medium" x-text="property.occupied"></span> Occupied
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <div class="p-1 bg-green-100 rounded-md">
+                        <i data-lucide="dollar-sign" class="w-3.5 h-3.5 text-green-600"></i>
+                        </div>
+                        <span class="font-medium text-green-700" x-text="property.rent"></span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <div class="p-1 bg-purple-100 rounded-md">
+                        <i data-lucide="activity" class="w-3.5 h-3.5 text-purple-600"></i>
+                        </div>
+                        <span class="font-medium" x-text="property.rate"></span> Rate
+                    </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="border-t px-2 py-2 flex justify-around items-center gap-x-2 bg-white/80 backdrop-blur-md">
+                <!-- Message -->
+                <button 
+                    class="flex-1 flex items-center justify-center py-2 bg-gray-100/60 hover:bg-gray-100/80 rounded-xl transition relative group"
+                    title="Message Tenants">
+                    <i data-lucide="message-circle" class="w-4 h-4 text-gray-700"></i>
+                </button>
+
+                <!-- Schedule -->
+                <button 
+                    class="flex-1 flex items-center justify-center py-2 bg-gray-100/60 hover:bg-gray-100/80 rounded-xl transition relative group"
+                    title="Schedule">
+                    <i data-lucide="calendar" class="w-4 h-4 text-gray-700"></i>
+                </button>
+
+                <!-- Call -->
+                <button 
+                    class="flex-1 flex items-center justify-center py-2 bg-gray-100/60 hover:bg-gray-100/80 rounded-xl transition relative group"
+                    title="Call Tenant">
+                    <i data-lucide="phone" class="w-4 h-4 text-gray-700"></i>
+                </button>
+                </div>
+
+            </div>
+        </template>
+
+        </div>
+
+
+
+      </div>
+    </main>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+
+      const containers = document.querySelectorAll('.dlab-scroll');
+      
+      containers.forEach(container => {
+        new PerfectScrollbar(container, {
+          wheelSpeed: 1,
+          wheelPropagation: true,
+          minScrollbarLength: 20
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>
