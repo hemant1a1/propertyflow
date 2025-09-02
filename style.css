@@ -18,14 +18,43 @@
 .sidebar.collapsed:hover .logo {
     display: block !important;
 }
-.sidebar.collapsed:hover .logo-icon {
-    display: none !important;
-}
 .sidebar.collapsed:hover .sidebar-header {
     justify-content: space-between !important;
 }
 .sidebar.collapsed:hover .menu-item-text {
     display: inline !important;
+}
+/* Default (expanded) */
+.sidebar:not(.collapsed) .logo-icon {
+  display: inline-block;
+}
+.sidebar:not(.collapsed) .logo-text {
+  display: inline-block;
+}
+.sidebar:not(.collapsed) .logo-short {
+  display: none;
+}
+
+/* Collapsed */
+.sidebar.collapsed .logo-icon {
+  display: none;
+}
+.sidebar.collapsed .logo-text {
+  display: none;
+}
+.sidebar.collapsed .logo-short {
+  display: inline-block;
+}
+
+/* Collapsed + Hover (expand preview) */
+.sidebar.collapsed:hover .logo-icon {
+  display: inline-block !important;
+}
+.sidebar.collapsed:hover .logo-text {
+  display: inline-block !important;
+}
+.sidebar.collapsed:hover .logo-short {
+  display: none !important;
 }
 
 

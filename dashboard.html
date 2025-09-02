@@ -51,29 +51,26 @@
   <div class="flex h-screen overflow-hidden">
     <!-- Sidebar -->
     <aside
-      :class="sidebarToggle ? 'translate-x-0 xl:w-[90px]' : '-translate-x-full'"
+      :class="sidebarToggle ? 'collapsed translate-x-0 xl:w-[70px]' : '-translate-x-full'"
       class="sidebar fixed top-0 left-0 z-[9999] flex h-screen w-[230px] flex-col overflow-y-auto border-r border-gray-200 bg-white px-2 transition-all duration-300 xl:static xl:translate-x-0"
       @click.outside="sidebarToggle = false"
     >
       <div :class="sidebarToggle ? 'justify-center' : 'justify-between'" class="sidebar-header flex items-center gap-2 pt-6 pb-7">
-        <a href="dashboard.html" class="flex items-center gap-2">
+        <a href="dashboard.html" class="flex items-center gap-2 sidebar-logo">
           <!-- Building Icon -->
-          <i data-lucide="building" class="w-6 h-6 text-primary-600"></i>
+          <i data-lucide="building" class="w-6 h-6 text-primary-600 logo-icon"></i>
 
           <!-- Full Logo Text -->
-          <span 
-            class="font-bold text-2xl text-primary-600 tracking-wide transition-all duration-300" 
-            :class="sidebarToggle ? 'hidden' : ''">
+          <span class="font-bold text-2xl text-primary-600 tracking-wide logo-text">
             PropertyPal
           </span>
 
-          <!-- Compact Icon (Text Short Form) -->
-          <span 
-            class="font-extrabold text-2xl text-primary-600 tracking-widest transition-all duration-300" 
-            :class="sidebarToggle ? 'xl:block' : 'hidden'">
+          <!-- Compact Short Form -->
+          <span class="font-extrabold text-2xl text-primary-600 tracking-widest logo-short">
             PF
           </span>
         </a>
+
       </div>
       
       <div class="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
