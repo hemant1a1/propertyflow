@@ -154,11 +154,6 @@
           </div>
         </div>
 
-        <script>
-          lucide.createIcons();
-        </script>
-
-
         <!-- Right Actions -->
         <div class="flex items-center gap-2 ml-auto">
           
@@ -179,7 +174,7 @@
       <div class="p-4">
 
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-            <h2 class="text-2xl font-semibold text-gray-800">Property Management</h1>
+            <h2 class="text-xl font-semibold text-gray-900">Property Management</h1>
             <div class="flex gap-3">
                 <select class="px-3 py-2 border rounded-md bg-white text-sm">
                 <option>All Status</option>
@@ -188,8 +183,9 @@
                 <option>Sort by Name</option>
                 </select>
 
-                <button class="bg-primary-600 hover:bg-primary-800 text-white px-4 py-2 rounded-md text-sm font-medium">
-                + Add Property
+                <button class="flex items-center gap-2 text-white px-4 py-2 text-sm rounded-lg bg-primary-600 hover:bg-primary-800 transition-colors">
+                  <i data-lucide="plus" class="w-5 h-5"></i>
+                  <span>Add Property</span>
                 </button>
             </div>
         </div>
@@ -401,6 +397,7 @@
   <script>
     lucide.createIcons();
   </script>
+  
 
   <script>
     document.addEventListener("DOMContentLoaded", function() {

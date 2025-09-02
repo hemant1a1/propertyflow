@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>PropertyPal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <link href="./style.css" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["Inter", "ui-sans-serif", "system-ui"],
+          },
+          colors: {
+            primary: {
+              50: "var(--color-primary-50)",
+              100: "var(--color-primary-100)",
+              400: "var(--color-primary-400)",
+              500: "var(--color-primary-500)",
+              600: "var(--color-primary-600)",
+              800: "var(--color-primary-800)",
+            },
+          },
+        },
+      },
+    };
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.5/css/perfect-scrollbar.css"/>
+ 
+  
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.5/dist/perfect-scrollbar.min.js"></script>
+  
+</head>
+
+<body
+  x-data="{
+    page: 'tenants',
+    loaded: true,
+    stickyMenu: false,
+    sidebarToggle: false,
+    scrollTop: false,
+    selected: 'Tenants'
+  }"
+  class="bg-gray-50"
+>
+  <div class="flex h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <aside
+      :class="sidebarToggle ? 'translate-x-0 xl:w-[90px]' : '-translate-x-full'"
+      class="sidebar fixed top-0 left-0 z-[9999] flex h-screen w-[230px] flex-col overflow-y-auto border-r border-gray-200 bg-white px-2 transition-all duration-300 xl:static xl:translate-x-0"
+      @click.outside="sidebarToggle = false"
+    >
+      <div :class="sidebarToggle ? 'justify-center' : 'justify-between'" class="sidebar-header flex items-center gap-2 pt-6 pb-7">
+        <a href="dashboard.html" class="flex items-center gap-2">
+          <!-- Building Icon -->
+          <i data-lucide="building" class="w-6 h-6 text-primary-600"></i>
+
+          <!-- Full Logo Text -->
+          <span 
+            class="font-bold text-2xl text-primary-600 tracking-wide transition-all duration-300" 
+            :class="sidebarToggle ? 'hidden' : ''">
+            PropertyPal
+          </span>
+
+          <!-- Compact Icon (Text Short Form) -->
+          <span 
+            class="font-extrabold text-2xl text-primary-600 tracking-widest transition-all duration-300" 
+            :class="sidebarToggle ? 'xl:block' : 'hidden'">
+            PF
+          </span>
+        </a>
+      </div>
+      
+      <div class="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
+        <nav
+          x-init="$nextTick(() => lucide.createIcons())"
+          x-effect="$nextTick(() => lucide.createIcons())"
+        >
+          <ul class="flex flex-col gap-1">
+            <template
+              x-for="item in [
+                { name: 'Dashboard', icon: 'layout-dashboard', page: 'dashboard', href: 'dashboard.html' },
+                { name: 'Properties', icon: 'home', page: 'properties', href: 'properties.html' },
+                { name: 'Tenants', icon: 'users', page: 'tenants', href: 'tenants.html' },
+                { name: 'Accounting', icon: 'file-text', page: 'accounting', href: 'accounting.html' },
+                { name: 'Maintenance', icon: 'wrench', page: 'maintenance', href: 'maintenance.html' },
+                { name: 'Analytics', icon: 'bar-chart-2', page: 'analytics', href: 'analytics.html' },
+                { name: 'Community', icon: 'message-square', page: 'community', href: 'community.html' },
+                { name: 'AI Assistant', icon: 'bot', page: 'ai', href: 'ai.html' },
+                { name: 'Calendar', icon: 'calendar', page: 'calendar', href: 'calendar.html' }
+              ]"
+              :key="item.page"
+            >
+              <li>
+                <a :href="item.href"
+   @click="selected = (selected === item.name ? '' : item.name); page = item.page"
+   class="flex items-center gap-3 p-2.5 rounded-lg text-sm font-medium transition group"
+   :class="(selected === item.name && page === item.page)
+             ? 'bg-primary-600/10 text-primary-600 font-semibold'
+             : 'text-gray-700 hover:bg-gray-100'">
+                  <i :data-lucide="item.icon"
+                    :class="(selected === item.name && page === item.page)
+                              ? 'w-5 h-5 text-primary-600'
+                              : 'w-5 h-5 text-gray-500 group-hover:text-gray-700'"></i>
+                  <span class="menu-item-text" :class="sidebarToggle ? 'xl:hidden' : ''" x-text="item.name"></span>
+                </a>
+              </li>
+            </template>
+          </ul>
+        </nav>
+
+
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
+      <div :class="sidebarToggle ? 'block xl:hidden' : 'hidden'" class="fixed z-50 h-screen w-full bg-gray-900/50"></div>
+
+      <!-- Header -->
+      <header x-data="{menuToggle: false}" class="sticky top-0 z-50 flex w-full border-gray-200 bg-white xl:border-b  px-3 py-3">
+        <!-- Left: Burger -->
+        <button :class="sidebarToggle ? 'xl:bg-transparent bg-gray-100' : ''"
+                class="flex h-10 w-10 items-center justify-center rounded-lg border-gray-200 text-gray-500 xl:h-11 xl:w-11 xl:border"
+                @click.stop="sidebarToggle = !sidebarToggle">
+          <i data-lucide="menu" class="w-5 h-5"></i>
+        </button>
+
+        <!-- Center: Search -->
+        <div class="hidden xl:block flex-1 px-6">
+          <div class="relative w-[430px]">
+            <!-- Left Icon -->
+            <i data-lucide="search" 
+              class="absolute top-1/2 left-4 -translate-y-1/2 w-5 h-5 text-gray-500"></i>
+
+            <!-- Input -->
+            <input 
+              type="text" 
+              placeholder="Search properties, tenants, maintenance..."
+              class="h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pl-12 pr-14 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none" 
+            />
+
+            <!-- Right Button -->
+            <button type="button" 
+              class="flex items-center space-x-1 px-2 py-1 absolute top-1/2 right-3 -translate-y-1/2 rounded-md bg-primary-100 hover:bg-primary-700 text-primary-600 transition">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sparkles h-3 w-3"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path><path d="M5 3v4"></path><path d="M19 17v4"></path><path d="M3 5h4"></path><path d="M17 19h4"></path></svg>
+              <span class="hidden sm:inline text-sm">AI</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right Actions -->
+        <div class="flex items-center gap-2 ml-auto">
+          
+          <!-- Notifications -->
+          <div class="relative">
+            <button class="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 hover:bg-gray-100">
+              <i data-lucide="bell" class="w-5 h-5"></i>
+            </button>
+            <span class="absolute top-2 right-2 inline-flex h-2.5 w-2.5 rounded-full bg-red-600 border-2 border-white"></span>
+          </div>
+
+          <!-- User Avatar -->
+          <div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary-600 text-white font-semibold">HS</div>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <div class="p-4 space-y-4">
+        <!-- Title -->
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+          <div>
+            <h2 class="text-xl font-semibold text-gray-900">Tenant Management</h2>
+            <p class="text-sm text-gray-500">Manage your tenants and their leases</p>
+          </div>
+          <div class="flex gap-3 mt-3 md:mt-0">
+            <button class="flex items-center gap-2 bg-gray-100 text-gray-700 px-4 py-2 text-sm rounded-lg hover:bg-gray-200">
+              <i data-lucide="download" class="w-5 h-5"></i>
+              <span>Export</span>
+            </button>
+            <button class="flex items-center gap-2 text-white px-4 py-2 text-sm rounded-lg bg-primary-600 hover:bg-primary-800 transition-colors">
+              <i data-lucide="plus" class="w-5 h-5"></i>
+              <span>Add Tenant</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+
+            <!-- Total Tenants -->
+            <div class="relative bg-white rounded-xl border border-gray-100 shadow-sm backdrop-blur-sm backdrop-saturate-150 px-4 py-3 overflow-hidden group hover:shadow-md transition">
+                <div class="absolute -bottom-6 -right-6 w-24 h-24 bg-primary-600/20 rounded-full blur-xl"></div>
+                <div class="flex justify-between items-center relative z-10">
+                    <div>
+                        <p class="text-sm text-gray-500">Total Tenants</p>
+                        <h3 class="text-xl font-bold text-gray-800">4</h3>
+                    </div>
+                    <div class="p-2 bg-primary-100 text-primary-600 rounded-full group-hover:scale-110 transition">
+                        <i data-lucide="users" class="w-5 h-5"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active -->
+            <div class="relative bg-white rounded-xl border border-gray-100 shadow-sm backdrop-blur-sm backdrop-saturate-150 px-4 py-3 overflow-hidden group hover:shadow-md transition">
+                <div class="absolute -bottom-6 -right-6 w-24 h-24 bg-primary-600/20 rounded-full blur-xl"></div>
+                <div class="flex justify-between items-center relative z-10">
+                    <div>
+                        <p class="text-sm text-gray-500">Active</p>
+                        <h3 class="text-xl font-bold text-gray-800">3</h3>
+                    </div>
+                    <div class="p-2 bg-primary-100 text-primary-600 rounded-full group-hover:scale-110 transition">
+                        <i data-lucide="check-circle" class="w-5 h-5"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pending -->
+            <div class="relative bg-white rounded-xl border border-gray-100 shadow-sm backdrop-blur-sm backdrop-saturate-150 px-4 py-3 overflow-hidden group hover:shadow-md transition">
+                <div class="absolute -bottom-6 -right-6 w-24 h-24 bg-primary-600/20 rounded-full blur-xl"></div>
+                <div class="flex justify-between items-center relative z-10">
+                    <div>
+                        <p class="text-sm text-gray-500">Pending</p>
+                        <h3 class="text-xl font-bold text-gray-800">1</h3>
+                    </div>
+                    <div class="p-2 bg-primary-100 text-primary-600 rounded-full group-hover:scale-110 transition">
+                        <i data-lucide="clock" class="w-5 h-5"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Overdue -->
+            <div class="relative bg-white rounded-xl border border-gray-100 shadow-sm backdrop-blur-sm backdrop-saturate-150 px-4 py-3 overflow-hidden group hover:shadow-md transition">
+                <div class="absolute -bottom-6 -right-6 w-24 h-24 bg-primary-600/20 rounded-full blur-xl"></div>
+                <div class="flex justify-between items-center relative z-10">
+                    <div>
+                        <p class="text-sm text-gray-500">Overdue</p>
+                        <h3 class="text-xl font-bold text-gray-800">1</h3>
+                    </div>
+                    <div class="p-2 bg-primary-100 text-primary-600 rounded-full group-hover:scale-110 transition">
+                        <i data-lucide="alert-circle" class="w-5 h-5"></i>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Table -->
+        <div class="bg-white shadow-sm rounded-lg overflow-hidden">
+
+            <!-- Table Header / Search & Filters -->
+            <div class="bg-white px-4 py-3 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0 rounded-t-lg shadow-sm">
+                <h3 class="text-lg font-semibold text-gray-900">Tenant (4)</h3>
+
+                <!-- Search + Filters -->
+                <div class="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-3 w-full sm:w-auto">
+                <!-- Search Input -->
+                <div class="relative w-full sm:w-auto">
+                    <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400"></i>
+                    <input type="text" placeholder="Search tenants..." 
+                    class="pl-10 pr-3 py-2 w-full sm:w-auto rounded-lg border border-gray-200 text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent transition" />
+                </div>
+
+                <!-- Status Filter -->
+                <select class="border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent transition w-full sm:w-auto">
+                    <option value="all">All Status</option>
+                    <option value="active">Active</option>
+                    <option value="pending">Pending</option>
+                    <option value="inactive">Inactive</option>
+                </select>
+
+                <!-- Property Filter -->
+                <select class="border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent transition w-full sm:w-auto">
+                    <option value="all">All Properties</option>
+                    <option value="Maple Heights Apartments">Maple Heights Apartments</option>
+                    <option value="Oak Plaza Complex">Oak Plaza Complex</option>
+                    <option value="Pine Court Townhomes">Pine Court Townhomes</option>
+                </select>
+                </div>
+            </div>
+
+            <!-- Table / Cards -->
+            <div class="p-4">
+                <table class="hidden sm:table w-full text-sm border-separate border-spacing-0">
+                <thead class="bg-gray-50 text-gray-500 uppercase text-xs tracking-wide">
+                    <tr>
+                    <th class="p-3 text-left">Tenant</th>
+                    <th class="p-3 text-left">Property</th>
+                    <th class="p-3 text-left">Rent</th>
+                    <th class="p-3 text-left">Status</th>
+                    <th class="p-3 text-left">Lease</th>
+                    <th class="p-3 text-left">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="tenant-table-body" class="divide-y divide-gray-100">
+                    <!-- Rows injected via JS -->
+                </tbody>
+                </table>
+
+                <!-- Mobile Card View -->
+                <div class="sm:hidden flex flex-col gap-4" id="tenant-cards-container">
+                <!-- Cards injected via JS -->
+                </div>
+            </div>
+        </div>
+
+
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const tenants = [
+        {
+            initials: 'SJ',
+            name: 'Sarah Johnson',
+            email: 'sarah.johnson@email.com',
+            property: 'Maple Heights Apartments',
+            unit: 'Unit 3A',
+            rent: 1200,
+            rentStatus: 'current',
+            status: 'active',
+            leaseStart: '01/01/2024',
+            leaseEnd: '31/12/2024'
+        },
+        {
+            initials: 'MC',
+            name: 'Mike Chen',
+            email: 'mike.chen@email.com',
+            property: 'Oak Plaza Complex',
+            unit: 'Unit 2B',
+            rent: 1400,
+            rentStatus: 'current',
+            status: 'active',
+            leaseStart: '01/03/2024',
+            leaseEnd: '28/02/2025'
+        },
+        {
+            initials: 'ED',
+            name: 'Emily Davis',
+            email: 'emily.davis@email.com',
+            property: 'Pine Court Townhomes',
+            unit: 'Unit 1C',
+            rent: 1100,
+            rentStatus: 'late',
+            status: 'active',
+            leaseStart: '01/06/2024',
+            leaseEnd: '31/05/2025'
+        },
+        {
+            initials: 'JS',
+            name: 'John Smith',
+            email: 'john.smith@email.com',
+            property: 'Maple Heights Apartments',
+            unit: 'Unit 4A',
+            rent: 1200,
+            rentStatus: 'overdue',
+            status: 'pending',
+            leaseStart: '01/09/2024',
+            leaseEnd: '31/08/2025'
+        }
+    ];
+
+    const rentColors = { current: 'text-green-600', late: 'text-orange-600', overdue: 'text-red-600' };
+    const statusColors = { active: 'bg-green-100 text-green-600', pending: 'bg-yellow-100 text-yellow-600', inactive: 'bg-gray-100 text-gray-600' };
+
+    const tbody = document.getElementById('tenant-table-body');
+    const cardContainer = document.getElementById('tenant-cards-container');
+
+    tenants.forEach(t => {
+        // Table row
+        const tr = document.createElement('tr');
+        tr.className = 'bg-white hover:bg-gray-50 transition-colors border-b border-gray-200'; // Added border-b
+        tr.innerHTML = `
+        <td class="p-3 flex items-center gap-3 border-b border-gray-200">
+            <div class="bg-primary-600 text-white w-10 h-10 flex items-center justify-center rounded-full shadow-inner">${t.initials}</div>
+            <div>
+                <p class="font-medium text-gray-800">${t.name}</p>
+                <p class="text-gray-400 text-xs">${t.email}</p>
+            </div>
+        </td>
+        <td class="p-3 text-gray-700 border-b border-gray-200">${t.property}<span class="block text-xs text-gray-400">${t.unit}</span></td>
+        <td class="p-3 font-medium text-gray-800 border-b border-gray-200">$${t.rent.toLocaleString()} <span class="text-xs ${rentColors[t.rentStatus]}">${t.rentStatus}</span></td>
+        <td class="p-3 border-b border-gray-200"><span class="px-2 py-1 text-xs ${statusColors[t.status]} rounded-full">${t.status.charAt(0).toUpperCase()+t.status.slice(1)}</span></td>
+        <td class="p-3 text-gray-700 border-b border-gray-200">${t.leaseStart} - ${t.leaseEnd}</td>
+        <td class="p-3 flex gap-2 border-b border-gray-200">
+            <button class="w-9 h-9 flex items-center justify-center bg-gray/80 hover:bg-primary-100 text-gray-600 hover:text-primary-600 rounded-full shadow-sm transition transform hover:scale-105"><i data-lucide="eye" class="w-4 h-4"></i></button>
+            <button class="w-9 h-9 flex items-center justify-center bg-gray/80 hover:bg-primary-100 text-gray-600 hover:text-primary-600 rounded-full shadow-sm transition transform hover:scale-105"><i data-lucide="edit" class="w-4 h-4"></i></button>
+            <button class="w-9 h-9 flex items-center justify-center bg-gray/80 hover:bg-primary-100 text-gray-600 hover:text-primary-600 rounded-full shadow-sm transition transform hover:scale-105"><i data-lucide="mail" class="w-4 h-4"></i></button>
+            <button class="w-9 h-9 flex items-center justify-center bg-primary/80 hover:bg-primary-100 text-gray-600 hover:text-primary-600 rounded-full shadow-sm transition transform hover:scale-105"><i data-lucide="phone" class="w-4 h-4"></i></button>
+            <button class="w-9 h-9 flex items-center justify-center bg-red-50 hover:bg-red-100 text-gray-600 hover:text-red-600 rounded-full shadow-sm transition transform hover:scale-105"><i data-lucide="trash" class="w-4 h-4"></i></button>
+        </td>`;
+        tbody.appendChild(tr);
+
+        // Mobile card
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded-xl shadow-sm p-4 flex flex-col gap-2';
+        card.innerHTML = `
+            <div class="flex items-center gap-3">
+                <div class="bg-primary-600 text-white w-10 h-10 flex items-center justify-center rounded-full">${t.initials}</div>
+                <div class="flex flex-col">
+                    <p class="font-semibold text-gray-900">${t.name}</p>
+                    <p class="text-gray-400 text-xs">${t.email}</p>
+                </div>
+            </div>
+            <p class="text-gray-700 text-sm"><span class="font-medium">Property:</span> ${t.property}, ${t.unit}</p>
+            <p class="text-gray-700 text-sm"><span class="font-medium">Rent:</span> $${t.rent.toLocaleString()} <span class="${rentColors[t.rentStatus]}">${t.rentStatus}</span></p>
+            <p class="text-gray-700 text-sm"><span class="font-medium">Lease:</span> ${t.leaseStart} - ${t.leaseEnd}</p>
+            <p><span class="px-2 py-1 text-xs ${statusColors[t.status]} rounded-full">${t.status.charAt(0).toUpperCase()+t.status.slice(1)}</span></p>
+            <div class="flex gap-2 mt-2">
+                <button class="flex-1 flex items-center justify-center bg-white/50 hover:bg-primary-100 text-gray-600 hover:text-primary-600 rounded-full shadow-sm py-2 transition"><i data-lucide="eye" class="w-4 h-4 mr-1"></i>View</button>
+                <button class="flex-1 flex items-center justify-center bg-white/50 hover:bg-primary-100 text-gray-600 hover:text-primary-600 rounded-full shadow-sm py-2 transition"><i data-lucide="edit" class="w-4 h-4 mr-1"></i>Edit</button>
+            </div>
+        `;
+        cardContainer.appendChild(card);
+    });
+
+    </script>
+
+  <script>
+    lucide.createIcons();
+  </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+
+      const containers = document.querySelectorAll('.dlab-scroll');
+      
+      containers.forEach(container => {
+        new PerfectScrollbar(container, {
+          wheelSpeed: 1,
+          wheelPropagation: true,
+          minScrollbarLength: 20
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>
