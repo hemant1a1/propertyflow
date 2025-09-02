@@ -284,7 +284,7 @@
 
             <!-- Table / Cards -->
             <div class="p-4">
-                <table class="hidden sm:table w-full text-sm border-separate border-spacing-0">
+                <table class="hidden sm:table w-full text-sm">
                 <thead class="bg-gray-50 text-gray-500 uppercase text-xs tracking-wide">
                     <tr>
                     <th class="p-3 text-left">Tenant</th>
@@ -295,7 +295,7 @@
                     <th class="p-3 text-left">Actions</th>
                     </tr>
                 </thead>
-                <tbody id="tenant-table-body" class="divide-y divide-gray-100">
+                <tbody id="tenant-table-body" class="bg-white divide-y divide-gray-200">
                     <!-- Rows injected via JS -->
                 </tbody>
                 </table>
@@ -373,20 +373,20 @@
     tenants.forEach(t => {
         // Table row
         const tr = document.createElement('tr');
-        tr.className = 'bg-white hover:bg-gray-50 transition-colors border-b border-gray-200'; // Added border-b
+        tr.className = 'bg-white hover:bg-gray-50 transition-colors border-b border-gray-200';
         tr.innerHTML = `
-        <td class="p-3 flex items-center gap-3 border-b border-gray-200">
+        <td class="p-3 flex items-center gap-3">
             <div class="bg-primary-600 text-white w-10 h-10 flex items-center justify-center rounded-full shadow-inner">${t.initials}</div>
             <div>
                 <p class="font-medium text-gray-800">${t.name}</p>
                 <p class="text-gray-400 text-xs">${t.email}</p>
             </div>
         </td>
-        <td class="p-3 text-gray-700 border-b border-gray-200">${t.property}<span class="block text-xs text-gray-400">${t.unit}</span></td>
-        <td class="p-3 font-medium text-gray-800 border-b border-gray-200">$${t.rent.toLocaleString()} <span class="text-xs ${rentColors[t.rentStatus]}">${t.rentStatus}</span></td>
-        <td class="p-3 border-b border-gray-200"><span class="px-2 py-1 text-xs ${statusColors[t.status]} rounded-full">${t.status.charAt(0).toUpperCase()+t.status.slice(1)}</span></td>
-        <td class="p-3 text-gray-700 border-b border-gray-200">${t.leaseStart} - ${t.leaseEnd}</td>
-        <td class="p-3 flex gap-2 border-b border-gray-200">
+        <td class="p-3 text-gray-700">${t.property}<span class="block text-xs text-gray-400">${t.unit}</span></td>
+        <td class="p-3 font-medium text-gray-800">$${t.rent.toLocaleString()} <span class="text-xs ${rentColors[t.rentStatus]}">${t.rentStatus}</span></td>
+        <td class="p-3"><span class="px-2 py-1 text-xs ${statusColors[t.status]} rounded-full">${t.status.charAt(0).toUpperCase()+t.status.slice(1)}</span></td>
+        <td class="p-3 text-gray-700">${t.leaseStart} - ${t.leaseEnd}</td>
+        <td class="p-3 flex gap-2">
             <button class="w-9 h-9 flex items-center justify-center bg-gray/80 hover:bg-primary-100 text-gray-600 hover:text-primary-600 rounded-full shadow-sm transition transform hover:scale-105"><i data-lucide="eye" class="w-4 h-4"></i></button>
             <button class="w-9 h-9 flex items-center justify-center bg-gray/80 hover:bg-primary-100 text-gray-600 hover:text-primary-600 rounded-full shadow-sm transition transform hover:scale-105"><i data-lucide="edit" class="w-4 h-4"></i></button>
             <button class="w-9 h-9 flex items-center justify-center bg-gray/80 hover:bg-primary-100 text-gray-600 hover:text-primary-600 rounded-full shadow-sm transition transform hover:scale-105"><i data-lucide="mail" class="w-4 h-4"></i></button>
