@@ -46,13 +46,13 @@
     scrollTop: false,
     selected: 'Tenants'
   }"
-  class="bg-gray-50"
+  class="bg-slate-50"
 >
   <div class="flex h-screen overflow-hidden">
     <!-- Sidebar -->
     <aside
       :class="sidebarToggle ? 'collapsed translate-x-0 xl:w-[70px]' : '-translate-x-full'"
-      class="sidebar fixed top-0 left-0 z-[9999] flex h-screen w-[230px] flex-col overflow-y-auto border-r border-gray-200 bg-white px-2 transition-all duration-300 xl:static xl:translate-x-0"
+      class="sidebar fixed top-0 left-0 z-[9999] flex h-screen w-[230px] flex-col overflow-y-auto border-r border-slate-200 bg-white px-2 transition-all duration-300 xl:static xl:translate-x-0"
       @click.outside="sidebarToggle = false"
     >
       <div :class="sidebarToggle ? 'justify-center' : 'justify-between'" class="sidebar-header flex items-center gap-2 pt-6 pb-7">
@@ -99,11 +99,11 @@
    class="flex items-center gap-3 p-2.5 rounded-lg text-sm font-medium transition group"
    :class="(selected === item.name && page === item.page)
              ? 'bg-primary-600/10 text-primary-600 font-semibold'
-             : 'text-gray-700 hover:bg-gray-100'">
+             : 'text-slate-700 hover:bg-slate-100'">
                   <i :data-lucide="item.icon"
                     :class="(selected === item.name && page === item.page)
                               ? 'w-5 h-5 text-primary-600'
-                              : 'w-5 h-5 text-gray-500 group-hover:text-gray-700'"></i>
+                              : 'w-5 h-5 text-slate-500 group-hover:text-slate-700'"></i>
                   <span class="menu-item-text" :class="sidebarToggle ? 'xl:hidden' : ''" x-text="item.name"></span>
                 </a>
               </li>
@@ -117,13 +117,13 @@
 
     <!-- Main -->
     <main class="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
-      <div :class="sidebarToggle ? 'block xl:hidden' : 'hidden'" class="fixed z-50 h-screen w-full bg-gray-900/50"></div>
+      <div :class="sidebarToggle ? 'block xl:hidden' : 'hidden'" class="fixed z-50 h-screen w-full bg-slate-900/50"></div>
 
       <!-- Header -->
-      <header x-data="{menuToggle: false}" class="sticky top-0 z-50 flex w-full border-gray-200 bg-white xl:border-b  px-3 py-3">
+      <header x-data="{menuToggle: false}" class="sticky top-0 z-50 flex w-full border-slate-200 bg-white xl:border-b  px-3 py-3">
         <!-- Left: Burger -->
-        <button :class="sidebarToggle ? 'xl:bg-transparent bg-gray-100' : ''"
-                class="flex h-10 w-10 items-center justify-center rounded-lg border-gray-200 text-gray-500 xl:h-11 xl:w-11 xl:border"
+        <button :class="sidebarToggle ? 'xl:bg-transparent bg-slate-100' : ''"
+                class="flex h-10 w-10 items-center justify-center rounded-lg border-slate-200 text-slate-500 xl:h-11 xl:w-11 xl:border"
                 @click.stop="sidebarToggle = !sidebarToggle">
           <i data-lucide="menu" class="w-5 h-5"></i>
         </button>
@@ -133,13 +133,13 @@
           <div class="relative w-[430px]">
             <!-- Left Icon -->
             <i data-lucide="search" 
-              class="absolute top-1/2 left-4 -translate-y-1/2 w-5 h-5 text-gray-500"></i>
+              class="absolute top-1/2 left-4 -translate-y-1/2 w-5 h-5 text-slate-500"></i>
 
             <!-- Input -->
             <input 
               type="text" 
               placeholder="Search properties, tenants, maintenance..."
-              class="h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pl-12 pr-14 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none" 
+              class="h-11 w-full rounded-lg border border-slate-200 bg-transparent py-2.5 pl-12 pr-14 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none" 
             />
 
             <!-- Right Button -->
@@ -156,7 +156,7 @@
           
           <!-- Notifications -->
           <div class="relative">
-            <button class="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 hover:bg-gray-100">
+            <button class="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 hover:bg-slate-100">
               <i data-lucide="bell" class="w-5 h-5"></i>
             </button>
             <span class="absolute top-2 right-2 inline-flex h-2.5 w-2.5 rounded-full bg-red-600 border-2 border-white"></span>
@@ -172,11 +172,11 @@
         <!-- Title -->
         <div class="flex flex-col md:flex-row md:items-center md:justify-between">
           <div>
-            <h2 class="text-xl font-semibold text-gray-900">Tenant Management</h2>
-            <p class="text-sm text-gray-500">Manage your tenants and their leases</p>
+            <h2 class="text-xl font-semibold text-slate-900">Tenant Management</h2>
+            <p class="text-sm text-slate-500">Manage your tenants and their leases</p>
           </div>
           <div class="flex gap-3 mt-3 md:mt-0">
-            <button class="flex items-center gap-2 bg-gray-100 text-gray-700 px-4 py-2 text-sm rounded-lg hover:bg-gray-200">
+            <button class="flex items-center gap-2 bg-slate-100 text-slate-700 px-4 py-2 text-sm rounded-lg hover:bg-slate-200">
               <i data-lucide="download" class="w-5 h-5"></i>
               <span>Export</span>
             </button>
@@ -191,12 +191,12 @@
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
 
             <!-- Total Tenants -->
-            <div class="relative bg-white rounded-xl border border-gray-100 shadow-sm backdrop-blur-sm backdrop-saturate-150 px-4 py-3 overflow-hidden group hover:shadow-md transition">
+            <div class="relative bg-white rounded-xl border border-slate-100 shadow-sm backdrop-blur-sm backdrop-saturate-150 px-4 py-3 overflow-hidden group hover:shadow-md transition">
                 <div class="absolute -bottom-6 -right-6 w-24 h-24 bg-primary-600/20 rounded-full blur-xl"></div>
                 <div class="flex justify-between items-center relative z-10">
                     <div>
-                        <p class="text-sm text-gray-500">Total Tenants</p>
-                        <h3 class="text-xl font-bold text-gray-800">4</h3>
+                        <p class="text-sm text-slate-500">Total Tenants</p>
+                        <h3 class="text-xl font-bold text-slate-800">4</h3>
                     </div>
                     <div class="p-2 bg-primary-100 text-primary-600 rounded-full group-hover:scale-110 transition">
                         <i data-lucide="users" class="w-5 h-5"></i>
@@ -205,12 +205,12 @@
             </div>
 
             <!-- Active -->
-            <div class="relative bg-white rounded-xl border border-gray-100 shadow-sm backdrop-blur-sm backdrop-saturate-150 px-4 py-3 overflow-hidden group hover:shadow-md transition">
+            <div class="relative bg-white rounded-xl border border-slate-100 shadow-sm backdrop-blur-sm backdrop-saturate-150 px-4 py-3 overflow-hidden group hover:shadow-md transition">
                 <div class="absolute -bottom-6 -right-6 w-24 h-24 bg-primary-600/20 rounded-full blur-xl"></div>
                 <div class="flex justify-between items-center relative z-10">
                     <div>
-                        <p class="text-sm text-gray-500">Active</p>
-                        <h3 class="text-xl font-bold text-gray-800">3</h3>
+                        <p class="text-sm text-slate-500">Active</p>
+                        <h3 class="text-xl font-bold text-slate-800">3</h3>
                     </div>
                     <div class="p-2 bg-primary-100 text-primary-600 rounded-full group-hover:scale-110 transition">
                         <i data-lucide="check-circle" class="w-5 h-5"></i>
@@ -219,12 +219,12 @@
             </div>
 
             <!-- Pending -->
-            <div class="relative bg-white rounded-xl border border-gray-100 shadow-sm backdrop-blur-sm backdrop-saturate-150 px-4 py-3 overflow-hidden group hover:shadow-md transition">
+            <div class="relative bg-white rounded-xl border border-slate-100 shadow-sm backdrop-blur-sm backdrop-saturate-150 px-4 py-3 overflow-hidden group hover:shadow-md transition">
                 <div class="absolute -bottom-6 -right-6 w-24 h-24 bg-primary-600/20 rounded-full blur-xl"></div>
                 <div class="flex justify-between items-center relative z-10">
                     <div>
-                        <p class="text-sm text-gray-500">Pending</p>
-                        <h3 class="text-xl font-bold text-gray-800">1</h3>
+                        <p class="text-sm text-slate-500">Pending</p>
+                        <h3 class="text-xl font-bold text-slate-800">1</h3>
                     </div>
                     <div class="p-2 bg-primary-100 text-primary-600 rounded-full group-hover:scale-110 transition">
                         <i data-lucide="clock" class="w-5 h-5"></i>
@@ -233,12 +233,12 @@
             </div>
 
             <!-- Overdue -->
-            <div class="relative bg-white rounded-xl border border-gray-100 shadow-sm backdrop-blur-sm backdrop-saturate-150 px-4 py-3 overflow-hidden group hover:shadow-md transition">
+            <div class="relative bg-white rounded-xl border border-slate-100 shadow-sm backdrop-blur-sm backdrop-saturate-150 px-4 py-3 overflow-hidden group hover:shadow-md transition">
                 <div class="absolute -bottom-6 -right-6 w-24 h-24 bg-primary-600/20 rounded-full blur-xl"></div>
                 <div class="flex justify-between items-center relative z-10">
                     <div>
-                        <p class="text-sm text-gray-500">Overdue</p>
-                        <h3 class="text-xl font-bold text-gray-800">1</h3>
+                        <p class="text-sm text-slate-500">Overdue</p>
+                        <h3 class="text-xl font-bold text-slate-800">1</h3>
                     </div>
                     <div class="p-2 bg-primary-100 text-primary-600 rounded-full group-hover:scale-110 transition">
                         <i data-lucide="alert-circle" class="w-5 h-5"></i>
@@ -253,19 +253,19 @@
 
             <!-- Table Header / Search & Filters -->
             <div class="bg-white px-4 py-3 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0 rounded-t-lg shadow-sm">
-                <h3 class="text-lg font-semibold text-gray-900">Tenant (4)</h3>
+                <h3 class="text-lg font-semibold text-slate-900">Tenant (4)</h3>
 
                 <!-- Search + Filters -->
                 <div class="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-3 w-full sm:w-auto">
                 <!-- Search Input -->
                 <div class="relative w-full sm:w-auto">
-                    <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400"></i>
+                    <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400"></i>
                     <input type="text" placeholder="Search tenants..." 
-                    class="pl-10 pr-3 py-2 w-full sm:w-auto rounded-lg border border-gray-200 text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent transition" />
+                    class="pl-10 pr-3 py-2 w-full sm:w-auto rounded-lg border border-slate-200 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent transition" />
                 </div>
 
                 <!-- Status Filter -->
-                <select class="border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent transition w-full sm:w-auto">
+                <select class="border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent transition w-full sm:w-auto">
                     <option value="all">All Status</option>
                     <option value="active">Active</option>
                     <option value="pending">Pending</option>
@@ -273,7 +273,7 @@
                 </select>
 
                 <!-- Property Filter -->
-                <select class="border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent transition w-full sm:w-auto">
+                <select class="border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent transition w-full sm:w-auto">
                     <option value="all">All Properties</option>
                     <option value="Maple Heights Apartments">Maple Heights Apartments</option>
                     <option value="Oak Plaza Complex">Oak Plaza Complex</option>
@@ -283,9 +283,9 @@
             </div>
 
             <!-- Table / Cards -->
-            <div class="p-4">
+            <div class="">
                 <table class="hidden sm:table w-full text-sm">
-                <thead class="bg-gray-50 text-gray-500 uppercase text-xs tracking-wide">
+                <thead class="bg-slate-100 text-slate-500 uppercase text-xs tracking-wide">
                     <tr>
                     <th class="p-3 text-left">Tenant</th>
                     <th class="p-3 text-left">Property</th>
@@ -295,7 +295,7 @@
                     <th class="p-3 text-left">Actions</th>
                     </tr>
                 </thead>
-                <tbody id="tenant-table-body" class="bg-white divide-y divide-gray-200">
+                <tbody id="tenant-table-body" class="bg-white divide-y divide-slate-200">
                     <!-- Rows injected via JS -->
                 </tbody>
                 </table>
@@ -365,7 +365,7 @@
     ];
 
     const rentColors = { current: 'text-green-600', late: 'text-orange-600', overdue: 'text-red-600' };
-    const statusColors = { active: 'bg-green-100 text-green-600', pending: 'bg-yellow-100 text-yellow-600', inactive: 'bg-gray-100 text-gray-600' };
+    const statusColors = { active: 'bg-green-100 text-green-600', pending: 'bg-yellow-100 text-yellow-600', inactive: 'bg-slate-100 text-slate-600' };
 
     const tbody = document.getElementById('tenant-table-body');
     const cardContainer = document.getElementById('tenant-cards-container');
@@ -373,25 +373,25 @@
     tenants.forEach(t => {
         // Table row
         const tr = document.createElement('tr');
-        tr.className = 'bg-white hover:bg-gray-50 transition-colors border-b border-gray-200';
+        tr.className = 'bg-white hover:bg-slate-50 transition-colors border-b border-slate-200';
         tr.innerHTML = `
         <td class="p-3 flex items-center gap-3">
             <div class="bg-primary-600 text-white w-10 h-10 flex items-center justify-center rounded-full shadow-inner">${t.initials}</div>
             <div>
-                <p class="font-medium text-gray-800">${t.name}</p>
-                <p class="text-gray-400 text-xs">${t.email}</p>
+                <p class="font-medium text-slate-800">${t.name}</p>
+                <p class="text-slate-400 text-xs">${t.email}</p>
             </div>
         </td>
-        <td class="p-3 text-gray-700">${t.property}<span class="block text-xs text-gray-400">${t.unit}</span></td>
-        <td class="p-3 font-medium text-gray-800">$${t.rent.toLocaleString()} <span class="text-xs ${rentColors[t.rentStatus]}">${t.rentStatus}</span></td>
+        <td class="p-3 text-slate-700">${t.property}<span class="block text-xs text-slate-400">${t.unit}</span></td>
+        <td class="p-3 font-medium text-slate-800">$${t.rent.toLocaleString()} <span class="text-xs ${rentColors[t.rentStatus]}">${t.rentStatus}</span></td>
         <td class="p-3"><span class="px-2 py-1 text-xs ${statusColors[t.status]} rounded-full">${t.status.charAt(0).toUpperCase()+t.status.slice(1)}</span></td>
-        <td class="p-3 text-gray-700">${t.leaseStart} - ${t.leaseEnd}</td>
+        <td class="p-3 text-slate-700">${t.leaseStart} - ${t.leaseEnd}</td>
         <td class="p-3 flex gap-2">
-            <button class="w-9 h-9 flex items-center justify-center bg-gray/80 hover:bg-primary-100 text-gray-600 hover:text-primary-600 rounded-full shadow-sm transition transform hover:scale-105"><i data-lucide="eye" class="w-4 h-4"></i></button>
-            <button class="w-9 h-9 flex items-center justify-center bg-gray/80 hover:bg-primary-100 text-gray-600 hover:text-primary-600 rounded-full shadow-sm transition transform hover:scale-105"><i data-lucide="edit" class="w-4 h-4"></i></button>
-            <button class="w-9 h-9 flex items-center justify-center bg-gray/80 hover:bg-primary-100 text-gray-600 hover:text-primary-600 rounded-full shadow-sm transition transform hover:scale-105"><i data-lucide="mail" class="w-4 h-4"></i></button>
-            <button class="w-9 h-9 flex items-center justify-center bg-primary/80 hover:bg-primary-100 text-gray-600 hover:text-primary-600 rounded-full shadow-sm transition transform hover:scale-105"><i data-lucide="phone" class="w-4 h-4"></i></button>
-            <button class="w-9 h-9 flex items-center justify-center bg-red-50 hover:bg-red-100 text-gray-600 hover:text-red-600 rounded-full shadow-sm transition transform hover:scale-105"><i data-lucide="trash" class="w-4 h-4"></i></button>
+            <button class="w-9 h-9 flex items-center justify-center bg-slate/80 hover:bg-primary-100 text-slate-600 hover:text-primary-600 rounded-full shadow-sm transition transform hover:scale-105"><i data-lucide="eye" class="w-4 h-4"></i></button>
+            <button class="w-9 h-9 flex items-center justify-center bg-slate/80 hover:bg-primary-100 text-slate-600 hover:text-primary-600 rounded-full shadow-sm transition transform hover:scale-105"><i data-lucide="edit" class="w-4 h-4"></i></button>
+            <button class="w-9 h-9 flex items-center justify-center bg-slate/80 hover:bg-primary-100 text-slate-600 hover:text-primary-600 rounded-full shadow-sm transition transform hover:scale-105"><i data-lucide="mail" class="w-4 h-4"></i></button>
+            <button class="w-9 h-9 flex items-center justify-center bg-primary/80 hover:bg-primary-100 text-slate-600 hover:text-primary-600 rounded-full shadow-sm transition transform hover:scale-105"><i data-lucide="phone" class="w-4 h-4"></i></button>
+            <button class="w-9 h-9 flex items-center justify-center bg-red-50 hover:bg-red-100 text-slate-600 hover:text-red-600 rounded-full shadow-sm transition transform hover:scale-105"><i data-lucide="trash" class="w-4 h-4"></i></button>
         </td>`;
         tbody.appendChild(tr);
 
@@ -402,17 +402,17 @@
             <div class="flex items-center gap-3">
                 <div class="bg-primary-600 text-white w-10 h-10 flex items-center justify-center rounded-full">${t.initials}</div>
                 <div class="flex flex-col">
-                    <p class="font-semibold text-gray-900">${t.name}</p>
-                    <p class="text-gray-400 text-xs">${t.email}</p>
+                    <p class="font-semibold text-slate-900">${t.name}</p>
+                    <p class="text-slate-400 text-xs">${t.email}</p>
                 </div>
             </div>
-            <p class="text-gray-700 text-sm"><span class="font-medium">Property:</span> ${t.property}, ${t.unit}</p>
-            <p class="text-gray-700 text-sm"><span class="font-medium">Rent:</span> $${t.rent.toLocaleString()} <span class="${rentColors[t.rentStatus]}">${t.rentStatus}</span></p>
-            <p class="text-gray-700 text-sm"><span class="font-medium">Lease:</span> ${t.leaseStart} - ${t.leaseEnd}</p>
+            <p class="text-slate-700 text-sm"><span class="font-medium">Property:</span> ${t.property}, ${t.unit}</p>
+            <p class="text-slate-700 text-sm"><span class="font-medium">Rent:</span> $${t.rent.toLocaleString()} <span class="${rentColors[t.rentStatus]}">${t.rentStatus}</span></p>
+            <p class="text-slate-700 text-sm"><span class="font-medium">Lease:</span> ${t.leaseStart} - ${t.leaseEnd}</p>
             <p><span class="px-2 py-1 text-xs ${statusColors[t.status]} rounded-full">${t.status.charAt(0).toUpperCase()+t.status.slice(1)}</span></p>
             <div class="flex gap-2 mt-2">
-                <button class="flex-1 flex items-center justify-center bg-white/50 hover:bg-primary-100 text-gray-600 hover:text-primary-600 rounded-full shadow-sm py-2 transition"><i data-lucide="eye" class="w-4 h-4 mr-1"></i>View</button>
-                <button class="flex-1 flex items-center justify-center bg-white/50 hover:bg-primary-100 text-gray-600 hover:text-primary-600 rounded-full shadow-sm py-2 transition"><i data-lucide="edit" class="w-4 h-4 mr-1"></i>Edit</button>
+                <button class="flex-1 flex items-center justify-center bg-white/50 hover:bg-primary-100 text-slate-600 hover:text-primary-600 rounded-full shadow-sm py-2 transition"><i data-lucide="eye" class="w-4 h-4 mr-1"></i>View</button>
+                <button class="flex-1 flex items-center justify-center bg-white/50 hover:bg-primary-100 text-slate-600 hover:text-primary-600 rounded-full shadow-sm py-2 transition"><i data-lucide="edit" class="w-4 h-4 mr-1"></i>Edit</button>
             </div>
         `;
         cardContainer.appendChild(card);

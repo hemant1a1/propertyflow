@@ -10,6 +10,19 @@
   --font-sans: "Inter", ui-sans-serif, system-ui;
 }
 
+body {
+    background-color: var(--color-slate-50);
+    height: 100%;
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    line-height: var(--tw-leading, var(--text-sm--line-height));
+    --tw-leading: calc(var(--spacing) * 5);
+    line-height: calc(var(--spacing) * 5);
+    color: var(--color-slate-700);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: slatescale;
+    text-rendering: optimizeLegibility;
+}
 
  /* Hover expand only when collapsed */
 .sidebar.collapsed:hover {

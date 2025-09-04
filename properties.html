@@ -46,13 +46,13 @@
     scrollTop: false,
     selected: 'Properties'
   }"
-  class="bg-gray-50"
+  class="bg-slate-50"
 >
   <div class="flex h-screen overflow-hidden">
     <!-- Sidebar -->
     <aside
       :class="sidebarToggle ? 'collapsed translate-x-0 xl:w-[70px]' : '-translate-x-full'"
-      class="sidebar fixed top-0 left-0 z-[9999] flex h-screen w-[230px] flex-col overflow-y-auto border-r border-gray-200 bg-white px-2 transition-all duration-300 xl:static xl:translate-x-0"
+      class="sidebar fixed top-0 left-0 z-[9999] flex h-screen w-[230px] flex-col overflow-y-auto border-r border-slate-200 bg-white px-2 transition-all duration-300 xl:static xl:translate-x-0"
       @click.outside="sidebarToggle = false"
     >
       <div :class="sidebarToggle ? 'justify-center' : 'justify-between'" class="sidebar-header flex items-center gap-2 pt-6 pb-7">
@@ -99,11 +99,11 @@
    class="flex items-center gap-3 p-2.5 rounded-lg text-sm font-medium transition group"
    :class="(selected === item.name && page === item.page)
              ? 'bg-primary-600/10 text-primary-600 font-semibold'
-             : 'text-gray-700 hover:bg-gray-100'">
+             : 'text-slate-700 hover:bg-slate-100'">
                   <i :data-lucide="item.icon"
                     :class="(selected === item.name && page === item.page)
                               ? 'w-5 h-5 text-primary-600'
-                              : 'w-5 h-5 text-gray-500 group-hover:text-gray-700'"></i>
+                              : 'w-5 h-5 text-slate-500 group-hover:text-slate-700'"></i>
                   <span class="menu-item-text" :class="sidebarToggle ? 'xl:hidden' : ''" x-text="item.name"></span>
                 </a>
               </li>
@@ -117,13 +117,13 @@
 
     <!-- Main -->
     <main class="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
-      <div :class="sidebarToggle ? 'block xl:hidden' : 'hidden'" class="fixed z-50 h-screen w-full bg-gray-900/50"></div>
+      <div :class="sidebarToggle ? 'block xl:hidden' : 'hidden'" class="fixed z-50 h-screen w-full bg-slate-900/50"></div>
 
       <!-- Header -->
-      <header x-data="{menuToggle: false}" class="sticky top-0 z-50 flex w-full border-gray-200 bg-white xl:border-b  px-3 py-3">
+      <header x-data="{menuToggle: false}" class="sticky top-0 z-50 flex w-full border-slate-200 bg-white xl:border-b  px-3 py-3">
         <!-- Left: Burger -->
-        <button :class="sidebarToggle ? 'xl:bg-transparent bg-gray-100' : ''"
-                class="flex h-10 w-10 items-center justify-center rounded-lg border-gray-200 text-gray-500 xl:h-11 xl:w-11 xl:border"
+        <button :class="sidebarToggle ? 'xl:bg-transparent bg-slate-100' : ''"
+                class="flex h-10 w-10 items-center justify-center rounded-lg border-slate-200 text-slate-500 xl:h-11 xl:w-11 xl:border"
                 @click.stop="sidebarToggle = !sidebarToggle">
           <i data-lucide="menu" class="w-5 h-5"></i>
         </button>
@@ -133,13 +133,13 @@
           <div class="relative w-[430px]">
             <!-- Left Icon -->
             <i data-lucide="search" 
-              class="absolute top-1/2 left-4 -translate-y-1/2 w-5 h-5 text-gray-500"></i>
+              class="absolute top-1/2 left-4 -translate-y-1/2 w-5 h-5 text-slate-500"></i>
 
             <!-- Input -->
             <input 
               type="text" 
               placeholder="Search properties, tenants, maintenance..."
-              class="h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pl-12 pr-14 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none" 
+              class="h-11 w-full rounded-lg border border-slate-200 bg-transparent py-2.5 pl-12 pr-14 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none" 
             />
 
             <!-- Right Button -->
@@ -156,7 +156,7 @@
           
           <!-- Notifications -->
           <div class="relative">
-            <button class="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 hover:bg-gray-100">
+            <button class="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 hover:bg-slate-100">
               <i data-lucide="bell" class="w-5 h-5"></i>
             </button>
             <span class="absolute top-2 right-2 inline-flex h-2.5 w-2.5 rounded-full bg-red-600 border-2 border-white"></span>
@@ -171,7 +171,7 @@
       <div class="p-4">
 
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-            <h2 class="text-xl font-semibold text-gray-900">Property Management</h1>
+            <h2 class="text-xl font-semibold text-slate-900">Property Management</h1>
             <div class="flex gap-3">
                 <select class="px-3 py-2 border rounded-md bg-white text-sm">
                 <option>All Status</option>
@@ -191,12 +191,12 @@
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
 
             <!-- Total Properties -->
-            <div class="relative bg-white rounded-xl border border-gray-100 shadow-sm backdrop-blur-sm backdrop-saturate-150 backdrop-shadow px-4 py-3 overflow-hidden group hover:shadow-md transition">
+            <div class="relative bg-white rounded-xl border border-slate-100 shadow-sm backdrop-blur-sm backdrop-saturate-150 backdrop-shadow px-4 py-3 overflow-hidden group hover:shadow-md transition">
                 <div class="absolute -bottom-6 -right-6 w-24 h-24 bg-primary-600/20 rounded-full blur-xl"></div>
                 <div class="flex justify-between items-center relative z-10">
                 <div>
-                    <p class="text-sm text-gray-500">Total Properties</p>
-                    <h3 class="text-xl font-bold text-gray-800">3</h3>
+                    <p class="text-sm text-slate-500">Total Properties</p>
+                    <h3 class="text-xl font-bold text-slate-800">3</h3>
                 </div>
                 <div class="p-2 bg-primary-100 text-primary-600 rounded-full group-hover:scale-110 transition">
                     <i data-lucide="building-2" class="w-5 h-5"></i>
@@ -205,12 +205,12 @@
             </div>
 
             <!-- Total Units -->
-            <div class="relative bg-white rounded-xl border border-gray-100 shadow-sm backdrop-blur-sm backdrop-saturate-150 backdrop-shadow px-4 py-3 overflow-hidden group hover:shadow-md transition">
+            <div class="relative bg-white rounded-xl border border-slate-100 shadow-sm backdrop-blur-sm backdrop-saturate-150 backdrop-shadow px-4 py-3 overflow-hidden group hover:shadow-md transition">
                 <div class="absolute -bottom-6 -right-6 w-24 h-24 bg-primary-600/20 rounded-full blur-xl"></div>
                 <div class="flex justify-between items-center relative z-10">
                 <div>
-                    <p class="text-sm text-gray-500">Total Units</p>
-                    <h3 class="text-xl font-bold text-gray-800">26</h3>
+                    <p class="text-sm text-slate-500">Total Units</p>
+                    <h3 class="text-xl font-bold text-slate-800">26</h3>
                 </div>
                 <div class="p-2 bg-primary-100 text-primary-600 rounded-full group-hover:scale-110 transition">
                     <i data-lucide="layout-grid" class="w-5 h-5"></i>
@@ -219,12 +219,12 @@
             </div>
 
             <!-- Occupancy Rate -->
-            <div class="relative bg-white rounded-xl border border-gray-100 shadow-sm backdrop-blur-sm backdrop-saturate-150 backdrop-shadow px-4 py-3 overflow-hidden group hover:shadow-md transition">
+            <div class="relative bg-white rounded-xl border border-slate-100 shadow-sm backdrop-blur-sm backdrop-saturate-150 backdrop-shadow px-4 py-3 overflow-hidden group hover:shadow-md transition">
                 <div class="absolute -bottom-6 -right-6 w-24 h-24 bg-primary-600/20 rounded-full blur-xl"></div>
                 <div class="flex justify-between items-center relative z-10">
                 <div>
-                    <p class="text-sm text-gray-500">Occupancy Rate</p>
-                    <h3 class="text-xl font-bold text-gray-800">88%</h3>
+                    <p class="text-sm text-slate-500">Occupancy Rate</p>
+                    <h3 class="text-xl font-bold text-slate-800">88%</h3>
                 </div>
                 <div class="p-2 bg-primary-100 text-primary-600 rounded-full group-hover:scale-110 transition">
                     <i data-lucide="activity" class="w-5 h-5"></i>
@@ -233,12 +233,12 @@
             </div>
 
             <!-- Monthly Revenue -->
-            <div class="relative bg-white rounded-xl border border-gray-100 shadow-sm backdrop-blur-sm backdrop-saturate-150 backdrop-shadow px-4 py-3 overflow-hidden group hover:shadow-md transition">
+            <div class="relative bg-white rounded-xl border border-slate-100 shadow-sm backdrop-blur-sm backdrop-saturate-150 backdrop-shadow px-4 py-3 overflow-hidden group hover:shadow-md transition">
                 <div class="absolute -bottom-6 -right-6 w-24 h-24 bg-primary-600/20 rounded-full blur-xl"></div>
                 <div class="flex justify-between items-center relative z-10">
                 <div>
-                    <p class="text-sm text-gray-500">Monthly Revenue</p>
-                    <h3 class="text-xl font-bold text-gray-800">$34,800</h3>
+                    <p class="text-sm text-slate-500">Monthly Revenue</p>
+                    <h3 class="text-xl font-bold text-slate-800">$34,800</h3>
                 </div>
                 <div class="p-2 bg-primary-100 text-primary-600 rounded-full group-hover:scale-110 transition">
                     <i data-lucide="dollar-sign" class="w-5 h-5"></i>
@@ -300,16 +300,16 @@
                 </div>
                 <!-- Menu -->
                 <div x-data="{ open: false }" class="absolute top-5 right-5 z-50">
-                    <button @click="open = !open" class="p-1.5 rounded-full bg-white/80 shadow hover:bg-gray-100">
-                        <i data-lucide="more-vertical" class="w-4 h-4 text-gray-600"></i>
+                    <button @click="open = !open" class="p-1.5 rounded-full bg-white/80 shadow hover:bg-slate-100">
+                        <i data-lucide="more-vertical" class="w-4 h-4 text-slate-600"></i>
                     </button>
                     <div x-show="open" @click.outside="open = false"
-                        class="absolute right-0 mt-2 w-36 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
-                        <ul class="text-sm text-gray-700">
-                        <li><a href="#" class="flex items-center gap-2 px-3 py-2 hover:bg-gray-50"><i data-lucide="eye" class="w-4 h-4 text-indigo-500"></i> View</a></li>
-                        <li><a href="#" class="flex items-center gap-2 px-3 py-2 hover:bg-gray-50"><i data-lucide="pencil" class="w-4 h-4 text-gray-600"></i> Edit</a></li>
-                        <li><a href="#" class="flex items-center gap-2 px-3 py-2 hover:bg-gray-50"><i data-lucide="trending-up" class="w-4 h-4 text-green-600"></i> Analytics</a></li>
-                        <li><a href="#" class="flex items-center gap-2 px-3 py-2 hover:bg-gray-50"><i data-lucide="trash-2" class="w-4 h-4 text-red-600"></i> Delete</a></li>
+                        class="absolute right-0 mt-2 w-36 bg-white border border-slate-200 rounded-lg shadow-lg z-50">
+                        <ul class="text-sm text-slate-700">
+                        <li><a href="#" class="flex items-center gap-2 px-3 py-2 hover:bg-slate-50"><i data-lucide="eye" class="w-4 h-4 text-indigo-500"></i> View</a></li>
+                        <li><a href="#" class="flex items-center gap-2 px-3 py-2 hover:bg-slate-50"><i data-lucide="pencil" class="w-4 h-4 text-slate-600"></i> Edit</a></li>
+                        <li><a href="#" class="flex items-center gap-2 px-3 py-2 hover:bg-slate-50"><i data-lucide="trending-up" class="w-4 h-4 text-green-600"></i> Analytics</a></li>
+                        <li><a href="#" class="flex items-center gap-2 px-3 py-2 hover:bg-slate-50"><i data-lucide="trash-2" class="w-4 h-4 text-red-600"></i> Delete</a></li>
                         </ul>
                     </div>
                 </div>
@@ -317,26 +317,26 @@
                 <!-- Content -->
                 <div class="px-3 pb-3">
                     <div class="flex justify-between items-center">
-                    <h3 class="font-semibold text-lg text-gray-800" x-text="property.name"></h3>
+                    <h3 class="font-semibold text-lg text-slate-800" x-text="property.name"></h3>
                     <div class="flex items-center gap-1">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.63-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.45 4.73L5.82 21z"/></svg>
-                        <span class="text-sm font-medium text-gray-700" x-text="property.rating"></span>
+                        <span class="text-sm font-medium text-slate-700" x-text="property.rating"></span>
                     </div>
                     </div>
-                    <p class="mt-1 text-xs text-gray-500 flex items-center gap-1">
+                    <p class="mt-1 text-xs text-slate-500 flex items-center gap-1">
                     <i data-lucide="map-pin" class="w-3.5 h-3.5"></i> 
                     <span x-text="property.address"></span>
                     </p>
                     
-                    <div class="mt-3 grid grid-cols-2 gap-2 text-xs text-gray-600">
+                    <div class="mt-3 grid grid-cols-2 gap-2 text-xs text-slate-600">
                     <div class="flex items-center gap-1.5">
-                        <div class="p-1 bg-gray-100 rounded-md">
+                        <div class="p-1 bg-slate-100 rounded-md">
                         <i data-lucide="layout-grid" class="w-3.5 h-3.5 text-indigo-500"></i>
                         </div>
                         <span class="font-medium"><strong x-text="property.units"></strong> Units</span>
                     </div>
                     <div class="flex items-center gap-1.5">
-                        <div class="p-1 bg-gray-100 rounded-md">
+                        <div class="p-1 bg-slate-100 rounded-md">
                         <i data-lucide="users" class="w-3.5 h-3.5 text-blue-500"></i>
                         </div>
                         <span class="font-medium" x-text="property.occupied"></span> Occupied
@@ -360,23 +360,23 @@
                 <div class="border-t px-2 py-2 flex justify-around items-center gap-x-2 bg-white/80 backdrop-blur-md">
                 <!-- Message -->
                 <button 
-                    class="flex-1 flex items-center justify-center py-2 bg-gray-100/60 hover:bg-gray-100/80 rounded-xl transition relative group"
+                    class="flex-1 flex items-center justify-center py-2 bg-slate-100/60 hover:bg-slate-100/80 rounded-xl transition relative group"
                     title="Message Tenants">
-                    <i data-lucide="message-circle" class="w-4 h-4 text-gray-700"></i>
+                    <i data-lucide="message-circle" class="w-4 h-4 text-slate-700"></i>
                 </button>
 
                 <!-- Schedule -->
                 <button 
-                    class="flex-1 flex items-center justify-center py-2 bg-gray-100/60 hover:bg-gray-100/80 rounded-xl transition relative group"
+                    class="flex-1 flex items-center justify-center py-2 bg-slate-100/60 hover:bg-slate-100/80 rounded-xl transition relative group"
                     title="Schedule">
-                    <i data-lucide="calendar" class="w-4 h-4 text-gray-700"></i>
+                    <i data-lucide="calendar" class="w-4 h-4 text-slate-700"></i>
                 </button>
 
                 <!-- Call -->
                 <button 
-                    class="flex-1 flex items-center justify-center py-2 bg-gray-100/60 hover:bg-gray-100/80 rounded-xl transition relative group"
+                    class="flex-1 flex items-center justify-center py-2 bg-slate-100/60 hover:bg-slate-100/80 rounded-xl transition relative group"
                     title="Call Tenant">
-                    <i data-lucide="phone" class="w-4 h-4 text-gray-700"></i>
+                    <i data-lucide="phone" class="w-4 h-4 text-slate-700"></i>
                 </button>
                 </div>
 

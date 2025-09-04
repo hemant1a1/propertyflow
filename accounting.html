@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>PropertyPal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <link href="./style.css" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["Inter", "ui-sans-serif", "system-ui"],
+          },
+          colors: {
+            primary: {
+              50: "var(--color-primary-50)",
+              100: "var(--color-primary-100)",
+              400: "var(--color-primary-400)",
+              500: "var(--color-primary-500)",
+              600: "var(--color-primary-600)",
+              800: "var(--color-primary-800)",
+            },
+          },
+        },
+      },
+    };
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.5/css/perfect-scrollbar.css"/>
+ 
+  
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.5.5/dist/perfect-scrollbar.min.js"></script>
+  
+</head>
+
+<body
+  x-data="{
+    page: 'accounting',
+    loaded: true,
+    stickyMenu: false,
+    sidebarToggle: false,
+    scrollTop: false,
+    selected: 'Accounting'
+  }"
+  class="bg-slate-50"
+>
+  <div class="flex h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <aside
+      :class="sidebarToggle ? 'collapsed translate-x-0 xl:w-[70px]' : '-translate-x-full'"
+      class="sidebar fixed top-0 left-0 z-[9999] flex h-screen w-[230px] flex-col overflow-y-auto border-r border-slate-200 bg-white px-2 transition-all duration-300 xl:static xl:translate-x-0"
+      @click.outside="sidebarToggle = false"
+    >
+      <div :class="sidebarToggle ? 'justify-center' : 'justify-between'" class="sidebar-header flex items-center gap-2 pt-6 pb-7">
+        <a href="dashboard.html" class="flex items-center gap-2 sidebar-logo">
+          <!-- Building Icon -->
+          <i data-lucide="building" class="w-6 h-6 text-primary-600 logo-icon"></i>
+
+          <!-- Full Logo Text -->
+          <span class="font-bold text-2xl text-primary-600 tracking-wide logo-text">
+            PropertyPal
+          </span>
+
+          <!-- Compact Short Form -->
+          <span class="font-extrabold text-2xl text-primary-600 tracking-widest logo-short">
+            PF
+          </span>
+        </a>
+
+      </div>
+      
+      <div class="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
+        <nav
+          x-init="$nextTick(() => lucide.createIcons())"
+          x-effect="$nextTick(() => lucide.createIcons())"
+        >
+          <ul class="flex flex-col gap-1">
+            <template
+              x-for="item in [
+                { name: 'Dashboard', icon: 'layout-dashboard', page: 'dashboard', href: 'dashboard.html' },
+                { name: 'Properties', icon: 'home', page: 'properties', href: 'properties.html' },
+                { name: 'Tenants', icon: 'users', page: 'tenants', href: 'tenants.html' },
+                { name: 'Accounting', icon: 'file-text', page: 'accounting', href: 'accounting.html' },
+                { name: 'Maintenance', icon: 'wrench', page: 'maintenance', href: 'maintenance.html' },
+                { name: 'Analytics', icon: 'bar-chart-2', page: 'analytics', href: 'analytics.html' },
+                { name: 'Community', icon: 'message-square', page: 'community', href: 'community.html' },
+                { name: 'AI Assistant', icon: 'bot', page: 'ai', href: 'ai.html' },
+                { name: 'Calendar', icon: 'calendar', page: 'calendar', href: 'calendar.html' }
+              ]"
+              :key="item.page"
+            >
+              <li>
+                <a :href="item.href"
+   @click="selected = (selected === item.name ? '' : item.name); page = item.page"
+   class="flex items-center gap-3 p-2.5 rounded-lg text-sm font-medium transition group"
+   :class="(selected === item.name && page === item.page)
+             ? 'bg-primary-600/10 text-primary-600 font-semibold'
+             : 'text-slate-700 hover:bg-slate-100'">
+                  <i :data-lucide="item.icon"
+                    :class="(selected === item.name && page === item.page)
+                              ? 'w-5 h-5 text-primary-600'
+                              : 'w-5 h-5 text-slate-500 group-hover:text-slate-700'"></i>
+                  <span class="menu-item-text" :class="sidebarToggle ? 'xl:hidden' : ''" x-text="item.name"></span>
+                </a>
+              </li>
+            </template>
+          </ul>
+        </nav>
+
+
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
+      <div :class="sidebarToggle ? 'block xl:hidden' : 'hidden'" class="fixed z-50 h-screen w-full bg-slate-900/50"></div>
+
+      <!-- Header -->
+      <header x-data="{menuToggle: false}" class="sticky top-0 z-50 flex w-full border-slate-200 bg-white xl:border-b  px-3 py-3">
+        <!-- Left: Burger -->
+        <button :class="sidebarToggle ? 'xl:bg-transparent bg-slate-100' : ''"
+                class="flex h-10 w-10 items-center justify-center rounded-lg border-slate-200 text-slate-500 xl:h-11 xl:w-11 xl:border"
+                @click.stop="sidebarToggle = !sidebarToggle">
+          <i data-lucide="menu" class="w-5 h-5"></i>
+        </button>
+
+        <!-- Center: Search -->
+        <div class="hidden xl:block flex-1 px-6">
+          <div class="relative w-[430px]">
+            <!-- Left Icon -->
+            <i data-lucide="search" 
+              class="absolute top-1/2 left-4 -translate-y-1/2 w-5 h-5 text-slate-500"></i>
+
+            <!-- Input -->
+            <input 
+              type="text" 
+              placeholder="Search properties, tenants, maintenance..."
+              class="h-11 w-full rounded-lg border border-slate-200 bg-transparent py-2.5 pl-12 pr-14 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none" 
+            />
+
+            <!-- Right Button -->
+            <button type="button" 
+              class="flex items-center space-x-1 px-2 py-1 absolute top-1/2 right-3 -translate-y-1/2 rounded-md bg-primary-100 hover:bg-primary-700 text-primary-600 transition">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sparkles h-3 w-3"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path><path d="M5 3v4"></path><path d="M19 17v4"></path><path d="M3 5h4"></path><path d="M17 19h4"></path></svg>
+              <span class="hidden sm:inline text-sm">AI</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right Actions -->
+        <div class="flex items-center gap-2 ml-auto">
+          
+          <!-- Notifications -->
+          <div class="relative">
+            <button class="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 hover:bg-slate-100">
+              <i data-lucide="bell" class="w-5 h-5"></i>
+            </button>
+            <span class="absolute top-2 right-2 inline-flex h-2.5 w-2.5 rounded-full bg-red-600 border-2 border-white"></span>
+          </div>
+
+          <!-- User Avatar -->
+          <div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary-600 text-white font-semibold">HS</div>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <div class="p-4 space-y-4">
+        <!-- Title -->
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+          <div>
+            <h2 class="text-xl font-semibold text-slate-900">Accounting & Finance</h2>
+            <p class="text-sm text-slate-500">Manage your property finances and rent collection</p>
+          </div>
+          <div class="flex gap-3 mt-3 md:mt-0">
+            <button class="flex items-center gap-2 bg-slate-100 text-slate-700 px-4 py-2 text-sm rounded-lg hover:bg-slate-200">
+              <i data-lucide="refresh-ccw" class="w-5 h-5"></i>
+              <span>Refresh</span>
+            </button>
+            <button class="flex items-center gap-2 text-white px-4 py-2 text-sm rounded-lg bg-primary-600 hover:bg-primary-800 transition-colors">
+              <i data-lucide="download" class="w-5 h-5"></i>
+              <span>Export</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="border-b">
+            <nav class="flex gap-6" id="tabs">
+                <button data-tab="overview" class="tab-link py-2 border-b-2 border-primary-600 text-primary-600 font-medium flex items-center gap-2">
+                <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Overview
+                </button>
+                <button data-tab="rent" class="tab-link py-2 text-gray-600 hover:text-primary-600 flex items-center gap-2">
+                <i data-lucide="home" class="w-4 h-4"></i> Rent Collection
+                </button>
+                <button data-tab="transactions" class="tab-link py-2 text-gray-600 hover:text-primary-600 flex items-center gap-2">
+                <i data-lucide="file-text" class="w-4 h-4"></i> Transactions
+                </button>
+                <button data-tab="banking" class="tab-link py-2 text-gray-600 hover:text-primary-600 flex items-center gap-2">
+                <i data-lucide="banknote" class="w-4 h-4"></i> Banking
+                </button>
+                <button data-tab="reports" class="tab-link py-2 text-gray-600 hover:text-primary-600 flex items-center gap-2">
+                <i data-lucide="bar-chart-3" class="w-4 h-4"></i> Reports
+                </button>
+            </nav>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="bg-green-50 p-4 rounded-xl shadow-sm">
+            <p class="text-sm text-green-700 font-medium">Total Revenue</p>
+            <p class="text-2xl font-bold text-green-700 flex items-center gap-2">
+              $32,000 <i data-lucide="trending-up" class="w-5 h-5 text-green-600"></i>
+            </p>
+            <p class="text-sm text-green-600">This month</p>
+          </div>
+          <div class="bg-red-50 p-4 rounded-xl shadow-sm">
+            <p class="text-sm text-red-700 font-medium">Total Expenses</p>
+            <p class="text-2xl font-bold text-red-700 flex items-center gap-2">
+              $2,930 <i data-lucide="trending-down" class="w-5 h-5 text-red-600"></i>
+            </p>
+            <p class="text-sm text-red-600">This month</p>
+          </div>
+          <div class="bg-blue-50 p-4 rounded-xl shadow-sm">
+            <p class="text-sm text-blue-700 font-medium">Net Income</p>
+            <p class="text-2xl font-bold text-blue-700 flex items-center gap-2">
+              $29,070 <i data-lucide="dollar-sign" class="w-5 h-5 text-blue-600"></i>
+            </p>
+            <p class="text-sm text-blue-600">This month</p>
+          </div>
+          <div class="bg-yellow-50 p-4 rounded-xl shadow-sm">
+            <p class="text-sm text-yellow-700 font-medium">Pending Rent</p>
+            <p class="text-2xl font-bold text-yellow-700 flex items-center gap-2">
+              $2,800 <i data-lucide="clock" class="w-5 h-5 text-yellow-600"></i>
+            </p>
+            <p class="text-sm text-yellow-600">Outstanding</p>
+          </div>
+        </div>
+
+
+      </div>
+    </main>
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+
+      const containers = document.querySelectorAll('.dlab-scroll');
+      
+      containers.forEach(container => {
+        new PerfectScrollbar(container, {
+          wheelSpeed: 1,
+          wheelPropagation: true,
+          minScrollbarLength: 20
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>
