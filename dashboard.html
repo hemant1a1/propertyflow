@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title></title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="/css/style.css" />
+
+    <style type="text/tailwindcss">
+      @theme {
+        --font-*: initial;
+        --font-sans: Inter, ui-sans-serif, system-ui, sans-serif;
+
+        --color-primary-25:  #EDF5FF;
+        --color-primary-50:  #d0d6f7;
+        --color-primary-100: #b3bff0;
+        --color-primary-200: #8fa3e6;
+        --color-primary-300: #6b85d9;
+        --color-primary-400: #4969d0;
+        --color-primary-500: #1E40AF; /* main color */
+        --color-primary-600: #193592;
+        --color-primary-700: #152a77;
+        --color-primary-800: #111f5c;
+        --color-primary-900: #0c1440;
+        --color-primary-950: #080a24;
+      }
+    </style>
+
+    <!-- Your main JS -->
+    <script defer type="module" src="/js/main.js"></script>
+
+  </head>
+
+  <body
+    x-data="{
+      page: 'dashboard',
+      loaded: true,
+      stickyMenu: false,
+      sidebarToggle: false,
+      scrollTop: false,
+      selected: 'Dashboard'
+    }"
+  >
+    <!-- ✅ Preloader (inline for instant load) -->
+    <div
+      id="preloader"
+      class="fixed inset-0 z-[999999] flex items-center justify-center bg-white transition-opacity duration-500"
+    >
+      <div class="h-16 w-16 animate-spin rounded-full border-4 border-solid border-brand-500 border-t-transparent"></div>
+    </div>
+
+    <!-- ===== Page Wrapper ===== -->
+    <div class="flex h-screen overflow-hidden">
+      <!-- ===== Sidebar ===== -->
+      <div data-include="/partials/sidebar.html"></div>
+
+      <!-- ===== Content Area ===== -->
+      <div class="relative flex flex-col flex-1 overflow-x-hidden overflow-y-auto">
+        <!-- ===== Header ===== -->
+        <div data-include="/partials/header.html"></div>
+
+        <!-- ===== Main Content ===== -->
+        <main>
+          <div class="p-4 mx-auto max-w-screen-2xl md:p-6">
+            
+            <div class="flex flex-wrap -mx-1.5 space-y-3 lg:space-y-0">
+              <!-- Left Column (6/12 = 50%) -->
+              <div class="w-full lg:w-1/2 px-1.5 space-y-3">
+
+                <div class="relative w-full rounded-lg overflow-hidden text-white bg-gradient-to-tr from-primary-800 to-primary-600 shadow-lg">
+                    <!-- Decorative SVG Waves -->
+                    <svg class="absolute top-0 left-0 w-full h-full" viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill="#1e3a8a" fill-opacity="0.50" d="M0,160L80,154.7C160,149,320,139,480,149.3C640,160,800,192,960,186.7C1120,181,1280,139,1360,117.3L1440,96L1440,320L0,320Z"></path>
+                        <path fill="#1e3a8a" fill-opacity="0.70" d="M0,224L80,213.3C160,203,320,181,480,186.7C640,192,800,224,960,229.3C1120,235,1280,213,1360,202.7L1440,192L1440,320L0,320Z"></path>
+                    </svg>
+
+
+                    <!-- Content -->
+                    <div class="relative z-10 w-full p-6 flex flex-col justify-between">
+                        <!-- Left Text Section -->
+                        <div class="flex justify-between items-start">
+                        <h2 class="text-lg md:text-xl font-bold tracking-tight">Property Portfolio Overview</h2>
+                        </div>
+
+                        <p class="text-sm mt-2">
+                        Managing <span class="text-white/90 font-bold">12 properties</span> with <span class="text-white/90 font-bold">45 tenants</span>
+                        </p>
+
+                        <div class="flex flex-wrap gap-3 mt-4">
+                        <span class="bg-white/20 px-4 py-1 rounded-full text-xs font-medium">96% Occupancy</span>
+                        <span class="bg-white/20 px-4 py-1 rounded-full text-xs font-medium">$54.6K Revenue</span>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Right Lottie Animation -->
+                    <div class="absolute -bottom-3 right-4 w-[140px] h-[140px] hidden lg:block z-0 pointer-events-none opacity-90">
+                        <lottie-player src="/city-skyline.json" background="transparent" speed="1" style="width: 100%; height: 100%;" loop="" autoplay="">
+                        </lottie-player>
+                    </div>
+                  </div>
+                <!-- Stats -->
+                <div class="grid grid-cols-2 gap-4">
+                  <!-- Total Properties -->
+                  <div class="bg-white rounded-lg shadow p-4 flex justify-between items-center">
+                    <div>
+                      <p class="text-sm text-slate-500">Total Properties</p>
+                      <p class="text-lg font-bold">12</p>
+                    </div>
+                    <div class="bg-primary-25 p-2 rounded-lg">
+                      <i data-lucide="building" class="w-6 h-6 text-primary-600"></i>
+                    </div>
+                  </div>
+
+                  <!-- Rent Collected -->
+                  <div class="bg-white rounded-lg shadow p-4 flex justify-between items-center">
+                    <div>
+                      <p class="text-sm text-slate-500">Rent Collected</p>
+                      <p class="text-lg font-bold">$18,500</p>
+                    </div>
+                    <div class="bg-primary-25 p-2 rounded-lg">
+                      <i data-lucide="trending-up" class="w-6 h-6 text-primary-600"></i>
+                    </div>
+                  </div>
+
+                  <!-- Total Tenants -->
+                  <div class="bg-white rounded-lg shadow p-4 flex justify-between items-center">
+                    <div>
+                      <p class="text-sm text-slate-500">Total Tenants</p>
+                      <p class="text-lg font-bold">45</p>
+                    </div>
+                    <div class="bg-primary-25 p-2 rounded-lg">
+                      <i data-lucide="users" class="w-6 h-6 text-primary-600"></i>
+                    </div>
+                  </div>
+
+                  <!-- Maintenance Requests -->
+                  <div class="bg-white rounded-lg shadow p-4 flex justify-between items-center">
+                    <div>
+                      <p class="text-sm text-slate-500">Maintenance Requests</p>
+                      <p class="text-lg font-bold">5</p>
+                    </div>
+                    <div class="bg-primary-25 p-2 rounded-lg">
+                      <i data-lucide="wrench" class="w-6 h-6 text-primary-600"></i>
+                    </div>
+                  </div>
+                </div>
+
+                
+              </div>
+
+              <!-- Middle Column (3/12 = 25%) -->
+              <div class="w-full lg:w-1/4 px-1.5 space-y-3">
+                <!-- Recent Payments (Alpine x-for, Compact) -->
+                <div
+                  class="bg-white rounded-lg shadow py-4"
+                  x-data="{
+                    payments: [
+                      { id: 1,  name: 'Sarah Johnson', unit: 'Unit 3A', date: 'Nov 1st',   amount: '$1,200', status: 'Paid' },
+                      { id: 2,  name: 'Mike Chen',     unit: 'Unit 2B', date: 'Nov 1st',   amount: '$1,400', status: 'Paid' },
+                      { id: 3,  name: 'Emily Davis',   unit: 'Unit 1C', date: 'Oct 30th',  amount: '$1,100', status: 'Paid' },
+                    ],
+                    icon(s){ return s==='Paid'?'check-circle':(s==='Pending'?'clock':'x-circle') },
+                    dotClass(s){
+                      return s==='Paid'
+                        ? 'bg-primary-100 text-primary-600'
+                        : s==='Pending'
+                          ? 'bg-orange-100 text-orange-500'
+                          : 'bg-red-100 text-red-500';
+                    },
+                    badgeClass(s){
+                      return 'inline-block px-2 text-[10px] rounded ' + (
+                        s==='Paid'
+                          ? 'bg-green-100 text-green-700'
+                          : s==='Pending'
+                            ? 'bg-orange-100 text-orange-600'
+                            : 'bg-red-100 text-red-600'
+                      );
+                    }
+                  }"
+                  x-init="$nextTick(()=>lucide.createIcons())"
+                  x-effect="$nextTick(()=>lucide.createIcons())"
+                >
+                  <!-- Header -->
+                  <div class="flex items-center justify-between px-2 mb-3">
+                    <h3 class="text-sm font-semibold text-slate-900">Recent Payments</h3>
+                    <button class="text-primary-600 text-[11px] font-medium hover:opacity-70 transition">View All</button>
+                  </div>
+
+                  <!-- List -->
+                  <ul class="divide-y divide-slate-100 px-2 md:h-[268px] dlab-scroll">
+                    <template x-for="p in payments" :key="p.id">
+                      <li class="flex items-center justify-between py-2 hover:bg-slate-50 rounded-lg transition">
+                        <div class="flex items-center gap-2.5">
+                          <div>
+                            <p class="font-medium text-slate-900 text-[13px]" x-text="p.name"></p>
+                            <p class="text-slate-500 text-[11px]">
+                              <span x-text="p.unit"></span> • <span x-text="p.date"></span>
+                            </p>
+                          </div>
+                        </div>
+                        <div class="text-right">
+                          <p class="font-semibold text-slate-900 text-[13px]" x-text="p.amount"></p>
+                          <span :class="badgeClass(p.status)" x-text="p.status"></span>
+                        </div>
+                      </li>
+                    </template>
+                  </ul>
+                </div>
+
+
+              </div>
+
+              <!-- Right Column (3/12 = 25%) -->
+              <div class="w-full lg:w-1/4 px-1.5 space-y-3">
+                <!-- Upcoming Projects (Dynamic with Alpine x-for) -->
+                <div class="bg-white rounded-lg shadow py-4 h-full"
+                  x-data="{
+                    projects: [
+                      { id: 1, title: 'Water Heater Issue', description: 'Maintenance - Maple Heights', date: '', priority: 'HIGH', icon: 'wrench', color: 'red' },
+                      { id: 2, title: 'Overdue Rent', description: 'Payment - Oak Plaza', date: '', priority: 'HIGH', icon: 'dollar-sign', color: 'orange' },
+                      { id: 3, title: 'Annual Safety Check', description: 'Inspection - Pine Court', date: '', priority: 'MEDIUM', icon: 'shield-check', color: 'primary' }
+                    ],
+                    priorityClass(p){
+                      return p==='HIGH'
+                        ? 'text-orange-600 bg-orange-100'
+                        : p==='MEDIUM'
+                          ? 'text-primary-600 bg-primary-100'
+                          : 'text-green-600 bg-green-100';
+                    }
+                  }"
+                  x-init="$nextTick(()=>lucide.createIcons())"
+                  x-effect="$nextTick(()=>lucide.createIcons())"
+                >
+                  <!-- Header -->
+                  <div class="flex items-center justify-between px-2 mb-3">
+                    <h3 class="text-sm font-semibold text-slate-900">Urgent Items</h3>
+                    <button class="text-primary-600 text-[11px] font-medium hover:opacity-70 transition">View All</button>
+                  </div>
+
+                  <!-- List -->
+                  <ul class="divide-y divide-slate-100 px-2 md:h-[268px] dlab-scroll">
+                    <template x-for="p in projects" :key="p.id">
+                      <li class="flex items-center justify-between py-2 hover:bg-slate-50 rounded-lg px-2 transition">
+                        <div class="flex items-center gap-2">
+                          <!-- Icon -->
+                          <span class="flex items-center justify-center h-6 w-6 rounded-full" 
+                                :class="'bg-' + p.color + '-50 text-' + p.color + '-600 shadow-sm'">
+                            <i :data-lucide="p.icon" class="w-3.5 h-3.5"></i>
+                          </span>
+                          <!-- Text -->
+                          <div class="leading-tight">
+                            <p class="font-medium text-slate-900 text-[13px]" x-text="p.title"></p>
+                            <p class="text-slate-500 text-[11px]" x-text="p.description"></p>
+                            <template x-if="p.date">
+                              <div class="flex items-center gap-1 text-slate-400 text-[11px] mt-0.5">
+                                <i data-lucide="calendar" class="w-3 h-3"></i>
+                                <span x-text="p.date"></span>
+                              </div>
+                            </template>
+                          </div>
+                        </div>
+                        <!-- Status -->
+                        <span class="inline-block px-2 text-[10px] rounded whitespace-nowrap"
+                              :class="priorityClass(p.priority)" 
+                              x-text="p.priority"></span>
+                      </li>
+                    </template>
+                  </ul>
+                </div>
+
+
+
+              </div>
+
+            </div>
+
+            <div class="flex flex-wrap -mx-1.5 space-y-3 lg:space-y-0 mt-4">
+              <div class="w-full lg:w-1/2 px-1.5 space-y-3">
+                <div class="relative bg-white rounded-lg shadow p-4 h-full">
+                  <!-- Header -->
+                  <div class="flex items-center gap-3 mb-4">
+                    <div class="w-8 h-8 flex items-center justify-center rounded-lg bg-primary-25 text-primary-600">
+                      <i data-lucide="sparkles" class="w-4 h-4"></i>
+                    </div>
+                    <h3 class="text-base font-semibold text-slate-900 tracking-tight">Quick Actions</h3>
+                  </div>
+
+                  <!-- Actions Grid -->
+                  <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
+                    <!-- Action Item -->
+                    <div class="flex flex-col items-center justify-center gap-3 p-4 rounded-lg transition cursor-pointer">
+                      <div class="w-12 h-12 flex items-center justify-center rounded-xl bg-primary-25 hover:bg-primary-25 transition text-primary-600">
+                        <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M3.75 13.125C3.75 12.504 4.254 12 4.875 12H7.125C7.746 12 8.25 12.504 8.25 13.125V19.875C8.25 20.496 7.746 21 7.125 21H4.875C4.57663 21 4.29048 20.8815 4.0795 20.6705C3.86853 20.4595 3.75 20.1734 3.75 19.875V13.125ZM10.5 8.625C10.5 8.004 11.004 7.5 11.625 7.5H13.875C14.496 7.5 15 8.004 15 8.625V19.875C15 20.496 14.496 21 13.875 21H11.625C11.3266 21 11.0405 20.8815 10.8295 20.6705C10.6185 20.4595 10.5 20.1734 10.5 19.875V8.625ZM17.25 4.125C17.25 3.504 17.754 3 18.375 3H20.625C21.246 3 21.75 3.504 21.75 4.125V19.875C21.75 20.496 21.246 21 20.625 21H18.375C18.0766 21 17.7905 20.8815 17.5795 20.6705C17.3685 20.4595 17.25 20.1734 17.25 19.875V4.125Z" stroke="#1E40AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                      </div>
+                      <span class="text-sm text-slate-800">Analytics</span>
+                    </div>
+
+                    <!-- Action Item -->
+                    <div class="flex flex-col items-center justify-center gap-3 p-4 rounded-lg transition cursor-pointer">
+                      <div class="w-12 h-12 flex items-center justify-center rounded-xl bg-primary-25 hover:bg-primary-25 transition text-primary-600">
+                        <svg width="25" height="23" viewBox="0 0 25 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M1.5498 12.4612C1.5498 14.2746 2.82254 15.8544 4.61774 16.1185C5.82814 16.2964 7.05214 16.4347 8.28747 16.531C8.8156 16.573 9.29954 16.8495 9.5942 17.2915L12.5998 21.7999L15.6054 17.2915C15.9001 16.8495 16.384 16.573 16.9121 16.5322C18.1475 16.4347 19.3715 16.2964 20.5819 16.1185C22.3771 15.8544 23.6498 14.2757 23.6498 12.4601V5.63971C23.6498 3.82411 22.3771 2.24537 20.5819 1.98131C17.9389 1.59338 15.2711 1.39906 12.5998 1.39991C9.88887 1.39991 7.22327 1.59824 4.61774 1.98131C2.82254 2.24537 1.5498 3.82524 1.5498 5.63971V12.4601V12.4612Z" stroke="#1E40AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                      </div>
+                      <span class="text-sm text-slate-800">Chat</span>
+                    </div>
+
+                    <!-- Action Item -->
+                    <div class="flex flex-col items-center justify-center gap-3 p-4 rounded-lg transition cursor-pointer">
+                      <div class="w-12 h-12 flex items-center justify-center rounded-xl bg-primary-25 hover:bg-primary-25 transition text-primary-600">
+                        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M3.3999 18.6999V21.2499C3.3999 21.9262 3.66856 22.5748 4.14678 23.053C4.625 23.5312 5.2736 23.7999 5.9499 23.7999H21.2499C21.9262 23.7999 22.5748 23.5312 23.053 23.053C23.5312 22.5748 23.7999 21.9262 23.7999 21.2499V18.6999M8.4999 8.4999L13.5999 3.3999M13.5999 3.3999L18.6999 8.4999M13.5999 3.3999V18.6999" stroke="#1E40AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                      </div>
+                      <span class="text-sm text-slate-800">Upload Doc</span>
+                    </div>
+
+                    <!-- Action Item -->
+                    <div class="flex flex-col items-center justify-center gap-3 p-4 rounded-lg transition cursor-pointer">
+                      <div class="w-12 h-12 flex items-center justify-center rounded-xl bg-primary-25 hover:bg-primary-25 transition text-primary-600">
+                        <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <rect width="26" height="26" fill="#EDF5FF"/>
+                          <path d="M9.74984 16.25C9.15152 16.25 8.6665 16.735 8.6665 17.3333C8.6665 17.9317 9.15152 18.4167 9.74984 18.4167C10.3482 18.4167 10.8332 17.9317 10.8332 17.3333C10.8332 16.735 10.3482 16.25 9.74984 16.25Z" fill="#1E40AF"/>
+                          <path d="M15.1665 17.3333C15.1665 16.735 15.6515 16.25 16.2498 16.25C16.8482 16.25 17.3332 16.735 17.3332 17.3333C17.3332 17.9317 16.8482 18.4167 16.2498 18.4167C15.6515 18.4167 15.1665 17.9317 15.1665 17.3333Z" fill="#1E40AF"/>
+                          <path fill-rule="evenodd" clip-rule="evenodd" d="M13 1.08325C11.8034 1.08325 10.8333 2.0533 10.8333 3.24992C10.8333 4.05189 11.2691 4.7521 11.9167 5.12673V7.58325H6.5C4.70508 7.58325 3.25 9.03833 3.25 10.8333V21.6666C3.25 23.4616 4.70508 24.9166 6.5 24.9166H19.5C21.295 24.9166 22.75 23.4616 22.75 21.6666V10.8333C22.75 9.03833 21.295 7.58325 19.5 7.58325H14.0833V5.12673C14.731 4.7521 15.1667 4.05189 15.1667 3.24992C15.1667 2.0533 14.1967 1.08325 13 1.08325ZM5.41667 10.8333C5.41667 10.2349 5.9017 9.74992 6.5 9.74992H7.99713L9.56494 12.8855C9.93196 13.6196 10.6822 14.0833 11.5028 14.0833H14.4972C15.3178 14.0833 16.068 13.6196 16.435 12.8855L18.0028 9.74992H19.5C20.0983 9.74992 20.5833 10.2349 20.5833 10.8333V21.6666C20.5833 22.2649 20.0983 22.7499 19.5 22.7499H6.5C5.9017 22.7499 5.41667 22.2649 5.41667 21.6666V10.8333ZM14.4972 11.9166L15.5805 9.74992H10.4195L11.5028 11.9166H14.4972Z" fill="#1E40AF"/>
+                          <path d="M1.08333 15.1665C0.485025 15.1665 0 15.6515 0 16.2498V18.4165C0 19.0148 0.485025 19.4998 1.08333 19.4998C1.68164 19.4998 2.16667 19.0148 2.16667 18.4165V16.2498C2.16667 15.6515 1.68164 15.1665 1.08333 15.1665Z" fill="#1E40AF"/>
+                          <path d="M23.8335 16.2498C23.8335 15.6515 24.3185 15.1665 24.9168 15.1665C25.5152 15.1665 26.0002 15.6515 26.0002 16.2498V18.4165C26.0002 19.0148 25.5152 19.4998 24.9168 19.4998C24.3185 19.4998 23.8335 19.0148 23.8335 18.4165V16.2498Z" fill="#1E40AF"/>
+                        </svg>
+                      </div>
+                      <span class="text-sm text-slate-800">AI Assistant</span>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="w-full lg:w-1/2 px-1.5 space-y-3">
+                <!-- Upcoming Projects (Dynamic with Alpine x-for) -->
+                <div class="bg-white rounded-lg shadow py-4 h-full">
+                  <!-- Header -->
+                  <div class="flex items-center justify-between px-2 mb-3">
+                    <h3 class="text-sm font-semibold text-slate-900">Properties</h3>
+                    <button class="text-primary-600 text-[11px] font-medium hover:opacity-70 transition">View All</button>
+                  </div>
+
+                   <div class="space-y-3 px-2">
+                    <!-- property card -->
+                    <div class="flex gap-3 items-center">
+                      <img class="w-20 h-16 rounded-md object-cover" src="./images/1.jpg" alt="pine" />
+                      <div class="flex-1">
+                        <p class="font-medium text-sm">Pine Court Townhomes</p>
+                        <p class="text-xs text-slate-500">789 Pine Road, Uptown • Townhouse • Unit: 6</p>
+                        <div class="mt-2">
+                          <div class="text-xs text-slate-500">Occupied 5/6</div>
+                          <div class="w-full bg-slate-100 rounded-full h-2 mt-1 overflow-hidden">
+                            <div class="h-2 rounded-full" style="width:83%; background: linear-gradient(90deg,var(--color-primary-500), #6b85d9)"></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="text-right">
+                        <div class="text-sm font-semibold">$8,400</div>
+                        <div class="text-xs text-slate-500">$9,600</div>
+                      </div>
+                    </div>
+
+                    <div class="flex gap-3 items-center">
+                      <img class="w-20 h-16 rounded-md object-cover" src="./images/2.jpg" alt="maple" />
+                      <div class="flex-1">
+                        <p class="font-medium text-sm">MapleHeights</p>
+                        <p class="text-xs text-slate-500">789 Pine Road, Uptown • Multifamily • Unit: 8</p>
+                        <div class="mt-2">
+                          <div class="text-xs text-slate-500">Occupied 11/12</div>
+                          <div class="w-full bg-slate-100 rounded-full h-2 mt-1 overflow-hidden">
+                            <div class="h-2 rounded-full" style="width:92%; background: linear-gradient(90deg,var(--color-primary-500), #6b85d9)"></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="text-right">
+                        <div class="text-sm font-semibold">$7,800</div>
+                        <div class="text-xs text-slate-500">$9,600</div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+
+
+              </div>
+
+            </div>
+
+
+
+          </div>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>

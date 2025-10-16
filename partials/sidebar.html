@@ -1,0 +1,72 @@
+<aside
+  :class="sidebarToggle ? 'translate-x-0 lg:w-[70px]' : '-translate-x-full'"
+  class="sidebar fixed left-0 top-0 z-50 flex h-screen w-[230px] flex-col overflow-y-hidden border-r border-gray-200 bg-white px-2 transition-all duration-300 lg:static lg:translate-x-0"
+>
+  <!-- SIDEBAR HEADER -->
+  <div
+    :class="sidebarToggle ? 'justify-center' : 'justify-between px-2'"
+    class="flex items-center gap-2 pt-8 pb-7 sidebar-header"
+  >
+    <a href="index.html" class="flex items-center">
+      <span class="logo" :class="sidebarToggle ? 'hidden' : ''">
+        <img src="./images/logo/logo.svg" alt="Logo" class="h-8" />
+      </span>
+
+      <img
+        class="logo-icon h-8"
+        :class="sidebarToggle ? 'lg:block' : 'hidden'"
+        src="./images/logo/logo-icon.svg"
+        alt="Logo"
+      />
+    </a>
+  </div>
+  <!-- SIDEBAR HEADER -->
+
+  <div class="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">
+    <!-- Sidebar Menu -->
+    <nav>
+      
+      <!-- Main Menu Group -->
+      <ul class="flex flex-col gap-1">
+        <template
+          x-for="item in [
+            { name: 'Dashboard', icon: 'layout-dashboard', page: 'dashboard', href: 'dashboard.html' },
+            { name: 'Properties', icon: 'home', page: 'properties', href: 'properties.html' },
+            { name: 'Tenants', icon: 'users', page: 'tenants', href: 'tenants.html' },
+            { name: 'Accounting', icon: 'file-text', page: 'accounting', href: 'accounting.html' },
+            { name: 'Maintenance', icon: 'wrench', page: 'maintenance', href: 'maintenance.html' },
+            { name: 'Analytics', icon: 'bar-chart-2', page: 'analytics', href: 'analytics.html' },
+            { name: 'Community', icon: 'message-square', page: 'community', href: 'community.html' },
+            { name: 'AI Assistant', icon: 'bot', page: 'ai', href: 'ai.html' },
+            { name: 'Calendar', icon: 'calendar', page: 'calendar', href: 'calendar.html' }
+          ]"
+          :key="item.page"
+        >
+          <li>
+            <a
+              :href="item.href"
+              @click="selected = (selected === item.name ? '' : item.name); page = item.page"
+              class="relative flex items-center gap-3 py-2 rounded-lg text-sm font-medium transition group"
+              :class="[
+                selected === item.name && page === item.page 
+                  ? 'bg-primary-50 text-primary-500 font-semibold' 
+                  : 'text-slate-700 hover:bg-slate-100',
+                sidebarToggle ? 'px-4' : 'px-2'
+              ]"
+            >
+              <i
+                :data-lucide="item.icon"
+                :class="(selected === item.name && page === item.page)
+                  ? 'w-5 h-5 text-primary-600'
+                  : 'w-5 h-5 text-slate-500 group-hover:text-slate-700'"
+              ></i>
+              <span class="menu-item-text" :class="sidebarToggle ? 'xl:hidden' : ''" x-text="item.name"></span>
+            </a>
+          </li>
+        </template>
+      </ul>
+
+    </nav>
+
+  </div>
+</aside>

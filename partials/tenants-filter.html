@@ -1,0 +1,110 @@
+<div x-data="{ showFilter: false, selectedSort: 'Sort by: A-Z', selectedStatus: '', selectedType: '' }" class="relative">
+
+    <!-- Filter Button (mobile + desktop) -->
+    <button 
+        @click="showFilter = !showFilter" 
+        class="flex items-center gap-2 bg-slate-100 text-slate-700 px-4 py-2 text-sm rounded-lg hover:bg-slate-200"
+        type="button"
+    >
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <path d="M14.6537 5.90414C14.6537 4.48433 13.5027 3.33331 12.0829 3.33331C10.6631 3.33331 9.51206 4.48433 9.51204 5.90415M14.6537 5.90414C14.6537 7.32398 13.5027 8.47498 12.0829 8.47498C10.663 8.47498 9.51204 7.32398 9.51204 5.90415M14.6537 5.90414L17.7087 5.90411M9.51204 5.90415L2.29199 5.90411M5.34694 14.0958C5.34694 12.676 6.49794 11.525 7.91777 11.525C9.33761 11.525 10.4886 12.676 10.4886 14.0958M5.34694 14.0958C5.34694 15.5156 6.49794 16.6666 7.91778 16.6666C9.33761 16.6666 10.4886 15.5156 10.4886 14.0958M5.34694 14.0958L2.29199 14.0958M10.4886 14.0958L17.7087 14.0958" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+        Filter
+    </button>
+
+    <!-- Desktop Filter Dropdown -->
+    <div x-show="showFilter" @click.away="showFilter = false"
+        class="absolute right-0 z-10 mt-2 w-64 rounded-lg border border-gray-200 bg-white p-4 shadow-lg hidden sm:block"
+    >
+        <!-- Property Sort -->
+        <div class="mb-4">
+        <label class="block text-xs font-medium text-gray-700 mb-1">Sort</label>
+        <select x-model="selectedSort" class="w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm focus:ring focus:ring-primary-200 focus:border-primary-500">
+            <option>Sort by: A-Z</option>
+            <option>Sort by: Z-A</option>
+        </select>
+        </div>
+
+        <!-- Status -->
+        <div class="mb-4">
+        <label class="block text-xs font-medium text-gray-700 mb-1">Status</label>
+        <select x-model="selectedStatus" class="w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm focus:ring focus:ring-primary-200 focus:border-primary-500">
+            <option value="">Choose status</option>
+            <option>Active</option>
+            <option>Inactive</option>
+        </select>
+        </div>
+
+        <!-- Type -->
+        <div class="mb-4">
+        <label class="block text-xs font-medium text-gray-700 mb-1">Type</label>
+        <select x-model="selectedType" class="w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm focus:ring focus:ring-primary-200 focus:border-primary-500">
+            <option value="">Choose type</option>
+            <option>Rent</option>
+            <option>Units</option>
+        </select>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex gap-2">
+        <button @click="showFilter = false; selectedSort='Sort by: A-Z'; selectedStatus=''; selectedType='';" 
+                class="lex-1 px-4 py-2 border border-primary-500 text-primary-600 text-sm rounded-lg transition-colors">Cancel</button>
+        <button @click="showFilter = false" 
+                class="flex-1 text-white px-4 py-2 text-sm rounded-lg bg-primary-600 hover:bg-primary-800 transition-colors">Filter</button>
+        </div>
+    </div>
+
+    <!-- Mobile Bottomsheet Filter -->
+    <div x-show="showFilter" x-cloak
+        class="fixed inset-0 z-50 flex items-end sm:hidden bg-black/50"
+        x-transition.opacity
+    >
+        <div @click.away="showFilter = false"
+            class="bg-white w-full rounded-t-xl p-4 max-h-[80vh] overflow-y-auto shadow-lg transform transition-all duration-300 ease-in-out"
+            x-transition:enter="transform transition ease-in-out duration-300"
+            x-transition:enter-start="translate-y-full"
+            x-transition:enter-end="translate-y-0"
+            x-transition:leave="transform transition ease-in-out duration-300"
+            x-transition:leave-start="translate-y-0"
+            x-transition:leave-end="translate-y-full"
+        >
+        <!-- Property Sort -->
+        <div class="mb-4">
+            <label class="block text-xs font-medium text-gray-700 mb-1">Sort</label>
+            <select x-model="selectedSort" class="w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm focus:ring focus:ring-primary-200 focus:border-primary-500">
+            <option>Sort by: A-Z</option>
+            <option>Sort by: Z-A</option>
+            </select>
+        </div>
+
+        <!-- Status -->
+        <div class="mb-4">
+            <label class="block text-xs font-medium text-gray-700 mb-1">Status</label>
+            <select x-model="selectedStatus" class="w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm focus:ring focus:ring-primary-200 focus:border-primary-500">
+            <option value="">Choose status</option>
+            <option>Active</option>
+            <option>Inactive</option>
+            </select>
+        </div>
+
+        <!-- Type -->
+        <div class="mb-4">
+            <label class="block text-xs font-medium text-gray-700 mb-1">Property Type</label>
+            <select x-model="selectedType" class="w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm focus:ring focus:ring-primary-200 focus:border-primary-500">
+            <option value="">Choose type</option>
+            <option>Maple Heights Apartments</option>
+            <option>Oak Plaza Complex</option>
+            </select>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex gap-2">
+            <button @click="showFilter = false; selectedSort='Sort by: A-Z'; selectedStatus=''; selectedType='';" 
+                    class="flex-1 px-4 py-2 border border-primary-500 text-primary-600 text-sm rounded-lg transition-colors">Cancel</button>
+            <button @click="showFilter = false" 
+                    class="flex-1 text-white px-4 py-2 text-sm rounded-lg bg-primary-600 hover:bg-primary-800 transition-colors">Filter</button>
+        </div>
+        </div>
+    </div>
+
+</div>

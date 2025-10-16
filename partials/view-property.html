@@ -1,0 +1,682 @@
+<div x-data="{ showUnitDetails: false, showDocuments: false }" class="relative">
+    <div
+    class="fixed inset-0 bg-black/60 z-[999] flex justify-end"
+    :class="selectedProperty ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'"
+    @click.self="selectedProperty = null"
+    >
+    <div
+        x-show="selectedProperty"
+        x-transition:enter="transform transition ease-in-out duration-300"
+        x-transition:enter-start="translate-x-full opacity-0"
+        x-transition:enter-end="translate-x-0 opacity-100"
+        x-transition:leave="transform transition ease-in-out duration-200"
+        x-transition:leave-start="translate-x-0 opacity-100"
+        x-transition:leave-end="translate-x-full opacity-0"
+        class="bg-white w-full max-w-2xl h-full overflow-y-auto"
+    >
+            
+            <!-- Header -->
+            <div class="flex justify-between items-center border-b px-6 py-3 sticky top-0 bg-white z-10">
+                <div class="flex items-center gap-3">
+                    <button @click="selectedProperty = null" class="text-slate-600 hover:text-primary-600">
+                    <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                    </button>
+                    <div>
+                    <h2 class="text-lg font-bold">Property</h2>
+                    <p class="text-sm text-slate-500">Manage your properties</p>
+                    </div>
+                </div>
+                <button @click="selectedAddUnit = {}" class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-1">
+                    <i data-lucide="plus" class="w-4 h-4"></i> Add Unit 
+                </button>
+            </div>
+            <!-- Image -->
+        <div class="w-full h-60 sm:h-60">
+            <img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=800&q=80"
+                class="w-full h-full object-cover" />
+        </div>
+
+        <!-- Content -->
+        <div class="p-4 space-y-4">
+            <!-- Title -->
+            <div>
+            <h2 class="text-xl font-semibold tracking-tight text-slate-700">Pine Court Townhomes</h2>
+            <p class="text-sm text-slate-500 mt-1">Last updated 4 days ago</p>
+            </div>
+
+            <!-- Address -->
+            <div class="space-y-1">
+                <div class="text-base font-medium tracking-tight text-slate-700">Property Address</div>
+                <p class="text-slate-500 flex items-center gap-2 text-sm sm:text-base">
+                456 Ocean Ave, Miami, FL
+                </p>
+            </div>
+
+            <!-- Info Grid -->
+            <div class="grid grid-cols-2 gap-6 text-sm">
+                <!-- Property Type -->
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full bg-primary-50">
+                        <img src="/images/svg/property-type.svg" />
+                    </div>
+                    <div class="ml-3">
+                        <p class="font-semibold text-slate-700">Property Type</p>
+                        <p class="text-sm text-slate-500">Multifamily</p>
+                    </div>
+                </div>
+
+                <!-- Status -->
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full bg-primary-50">
+                        <img src="/images/svg/status.svg" />
+                    </div>
+                    <div class="ml-3">
+                        <p class="font-semibold text-slate-700">Status</p>
+                        <p class="text-sm text-slate-500">Active</p>
+                    </div>
+                </div>
+
+                <!-- Units -->
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full bg-primary-50">
+                        <img src="/images/svg/units.svg" />
+                    </div>
+                    <div class="ml-3">
+                        <p class="font-semibold text-slate-700">Units</p>
+                        <p class="text-sm text-slate-500">2</p>
+                    </div>
+                </div>
+
+                <!-- Monthly Revenue -->
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full bg-primary-50">
+                        <img src="/images/svg/monthly-revenue.svg" />
+                    </div>
+                    <div class="ml-3">
+                        <p class="font-semibold text-slate-700">Monthly Revenue</p>
+                        <p class="text-sm text-slate-500">$9,600</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex space-x-3">
+                <!-- Tile 1 -->
+                <div class="flex-1 p-3 bg-white rounded-md shadow-md flex items-center justify-between">
+                    <div class="flex flex-col">
+                    <span class="font-semibold text-sm">Occupied</span>
+                    <span class="text-primary font-semibold text-xs">10 / 12</span>
+                    </div>
+                    <div class="p-2.5 bg-blue-50 rounded-full flex items-center justify-center">
+                        <img src="/images/svg/users.svg" />
+                    </div>
+                </div>
+
+                <!-- Tile 2 -->
+                <div class="flex-1 p-3 bg-white rounded-md shadow-md flex items-center justify-between">
+                    <div class="flex flex-col">
+                    <span class="font-semibold text-sm">Property Doc.</span>
+                    <span class="text-primary font-semibold text-xs">View</span>
+                    </div>
+                    <div class="p-2.5 bg-blue-50 rounded-full flex items-center justify-center">
+                        <img src="/images/svg/doc-check.svg" />
+                    </div>
+                </div>
+                </div>
+
+
+
+            <!-- Note -->
+            <div>
+            <h3 class="text-lg font-semibold tracking-tight text-slate-800">Note</h3>
+            <p class="text-sm text-slate-600 mt-2 leading-relaxed">
+                Experience contemporary living in a modern house, apartment complex designed with comfort and elegance.
+            </p>
+            </div>
+
+            <!-- Units -->
+            <div>
+            <h3 class="text-lg font-semibold mb-3 tracking-tight text-slate-800">Units</h3>
+
+            <!-- Unit 1 -->
+            <div class="border rounded-xl p-4 shadow-sm hover:shadow-md transition space-y-3">
+                <div class="flex justify-between items-start">
+                <p class="font-medium text-base text-slate-800">Ocean Unit: 1</p>
+                <div class="flex items-center gap-2">
+                    <button class="text-primary-600 text-sm font-medium flex items-center gap-1">
+                    <i data-lucide="plus" class="w-4 h-4"></i> Add Appliance
+                    </button>
+                    <div x-data="{ showUnitMenu: false }" class="relative">
+
+                        <!-- More Button -->
+                        <button @click="showUnitMenu = !showUnitMenu" class="p-1 rounded-full bg-slate-100 hover:bg-slate-200">
+                            <i data-lucide="more-horizontal" class="w-5 h-5 text-slate-600"></i>
+                        </button>
+
+                        <!-- Desktop Dropdown -->
+                        <div 
+                            x-show="showUnitMenu" 
+                            @click.away="showUnitMenu = false" 
+                            class="hidden sm:block absolute right-0 mt-2 w-72 bg-white border border-gray-200 rounded-lg shadow-lg z-20"
+                        >
+                            <ul class="divide-y divide-gray-100">
+                            <li>
+                                <a href="#" @click.prevent="showUnitDetails = true" class="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-200 rounded">
+                                    <i data-lucide="home" class="w-4 h-4"></i> Unit Details
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" @click="showUnitMenu = false" class="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-100">
+                                <i data-lucide="bars3-bottom-left" class="w-4 h-4"></i> Unit Appliance List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" @click="showUnitMenu = false" class="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-100">
+                                <i data-lucide="pencil-square" class="w-4 h-4"></i> Update Property Unit
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" @click="showUnitMenu = false" class="flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+                                <i data-lucide="trash" class="w-4 h-4 text-red-600"></i> Delete Property Unit Record
+                                </a>
+                            </li>
+                            </ul>
+                        </div>
+
+                        <!-- Mobile Bottom Sheet -->
+                        <div 
+                            x-show="showUnitMenu" 
+                            class="fixed inset-0 z-50 flex items-end sm:hidden bg-black/50"
+                            x-transition.opacity
+                        >
+                            <div 
+                            @click.away="showUnitMenu = false" 
+                            class="bg-white w-full rounded-t-xl p-4 max-h-[70vh] overflow-y-auto shadow-lg transform transition-all duration-300 ease-in-out"
+                            x-transition:enter="transform transition ease-in-out duration-300"
+                            x-transition:enter-start="translate-y-full opacity-0"
+                            x-transition:enter-end="translate-y-0 opacity-100"
+                            x-transition:leave="transform transition ease-in-out duration-200"
+                            x-transition:leave-start="translate-y-0 opacity-100"
+                            x-transition:leave-end="translate-y-full opacity-0"
+                            >
+                            <div class="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-4"></div>
+                            <ul class="space-y-2">
+                                <li>
+                                <a href="#" @click.prevent="showUnitDetails = true" class="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-200 rounded">
+                                    <i data-lucide="home" class="w-4 h-4"></i> Unit Details
+                                </a>
+                                </li>
+                                <li>
+                                <a href="#" @click="showUnitMenu = false" class="flex items-center gap-2 px-4 py-3 rounded-lg hover:bg-gray-100">
+                                    <i data-lucide="bars3-bottom-left" class="w-5 h-5"></i> Unit Appliance List
+                                </a>
+                                </li>
+                                <li>
+                                <a href="#" @click="showUnitMenu = false" class="flex items-center gap-2 px-4 py-3 rounded-lg hover:bg-gray-100">
+                                    <i data-lucide="pencil-square" class="w-5 h-5"></i> Update Property Unit
+                                </a>
+                                </li>
+                                <li>
+                                <a href="#" @click="showUnitMenu = false" class="flex items-center gap-2 px-4 py-3 rounded-lg text-red-600 hover:bg-red-50">
+                                    <i data-lucide="trash" class="w-5 h-5 text-red-600"></i> Delete Property Unit Record
+                                </a>
+                                </li>
+                            </ul>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                </div>
+
+                <div class="flex justify-between items-center">
+                <div class="flex -space-x-2">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" class="w-8 h-8 rounded-full border-2 border-white object-cover" />
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" class="w-8 h-8 rounded-full border-2 border-white object-cover" />
+                    <img src="https://randomuser.me/api/portraits/men/65.jpg" class="w-8 h-8 rounded-full border-2 border-white object-cover" />
+                    <div class="w-8 h-8 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center text-xs font-semibold">+4</div>
+                </div>
+                <div class="text-right">
+                    <p class="text-xs text-slate-500">Total Rent</p>
+                    <p class="text-sm text-green-600 font-semibold">$9,600</p>
+                </div>
+                </div>
+
+                <div>
+                <div class="flex items-center justify-between mb-1">
+                    <p class="text-xs text-slate-500">Unit Rent</p>
+                    <p class="text-xs text-slate-600">$5,600 / $9,600</p>
+                </div>
+                <div class="w-full bg-slate-200 h-2 rounded-full">
+                    <div class="bg-primary-600 h-2 rounded-full" style="width: 60%;"></div>
+                </div>
+                </div>
+            </div>
+
+            <!-- Unit 2 -->
+            <div class="border rounded-xl p-4 shadow-sm hover:shadow-md transition space-y-3 mt-4">
+                <div class="flex justify-between items-start">
+                <p class="font-medium text-base text-slate-800">Ocean Unit: 2</p>
+                <div class="flex items-center gap-2">
+                    <button class="text-primary-600 text-sm font-medium flex items-center gap-1">
+                    <i data-lucide="plus" class="w-4 h-4"></i> Add Appliance
+                    </button>
+                    <div x-data="{ showUnitMenu: false }" class="relative">
+
+                        <!-- More Button -->
+                        <button @click="showUnitMenu = !showUnitMenu" class="p-1 rounded-full bg-slate-100 hover:bg-slate-200">
+                            <i data-lucide="more-horizontal" class="w-5 h-5 text-slate-600"></i>
+                        </button>
+
+                        <!-- Desktop Dropdown -->
+                        <div 
+                            x-show="showUnitMenu" 
+                            @click.away="showUnitMenu = false" 
+                            class="hidden sm:block absolute right-0 mt-2 w-72 bg-white border border-gray-200 rounded-lg shadow-lg z-20"
+                        >
+                            <ul class="divide-y divide-gray-100">
+                            <li>
+                                <a href="#" @click.prevent="showUnitDetails = true" class="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-200 rounded">
+                                    <i data-lucide="home" class="w-4 h-4"></i> Unit Details
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" @click="showUnitMenu = false" class="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-100">
+                                <i data-lucide="bars3-bottom-left" class="w-4 h-4"></i> Unit Appliance List
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" @click="showUnitMenu = false" class="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-100">
+                                <i data-lucide="pencil-square" class="w-4 h-4"></i> Update Property Unit
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" @click="showUnitMenu = false" class="flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+                                <i data-lucide="trash" class="w-4 h-4 text-red-600"></i> Delete Property Unit Record
+                                </a>
+                            </li>
+                            </ul>
+                        </div>
+
+                        <!-- Mobile Bottom Sheet -->
+                        <div 
+                            x-show="showUnitMenu" 
+                            class="fixed inset-0 z-50 flex items-end sm:hidden bg-black/50"
+                            x-transition.opacity
+                        >
+                            <div 
+                            @click.away="showUnitMenu = false" 
+                            class="bg-white w-full rounded-t-xl p-4 max-h-[70vh] overflow-y-auto shadow-lg transform transition-all duration-300 ease-in-out"
+                            x-transition:enter="transform transition ease-in-out duration-300"
+                            x-transition:enter-start="translate-y-full opacity-0"
+                            x-transition:enter-end="translate-y-0 opacity-100"
+                            x-transition:leave="transform transition ease-in-out duration-200"
+                            x-transition:leave-start="translate-y-0 opacity-100"
+                            x-transition:leave-end="translate-y-full opacity-0"
+                            >
+                            <div class="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-4"></div>
+                            <ul class="space-y-2">
+                                <li>
+                                <a href="#" @click.prevent="showUnitDetails = true" class="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-200 rounded">
+                                    <i data-lucide="home" class="w-4 h-4"></i> Unit Details
+                                </a>
+                                </li>
+                                <li>
+                                <a href="#" @click="showUnitMenu = false" class="flex items-center gap-2 px-4 py-3 rounded-lg hover:bg-gray-100">
+                                    <i data-lucide="bars3-bottom-left" class="w-5 h-5"></i> Unit Appliance List
+                                </a>
+                                </li>
+                                <li>
+                                <a href="#" @click="showUnitMenu = false" class="flex items-center gap-2 px-4 py-3 rounded-lg hover:bg-gray-100">
+                                    <i data-lucide="pencil-square" class="w-5 h-5"></i> Update Property Unit
+                                </a>
+                                </li>
+                                <li>
+                                <a href="#" @click="showUnitMenu = false" class="flex items-center gap-2 px-4 py-3 rounded-lg text-red-600 hover:bg-red-50">
+                                    <i data-lucide="trash" class="w-5 h-5 text-red-600"></i> Delete Property Unit Record
+                                </a>
+                                </li>
+                            </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                </div>
+
+                <div class="flex justify-between items-center">
+                <div class="flex -space-x-2">
+                    <img src="https://randomuser.me/api/portraits/men/12.jpg" class="w-8 h-8 rounded-full border-2 border-white object-cover" />
+                    <img src="https://randomuser.me/api/portraits/women/52.jpg" class="w-8 h-8 rounded-full border-2 border-white object-cover" />
+                    <div class="w-8 h-8 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center text-xs font-semibold">+4</div>
+                </div>
+                <div class="text-right">
+                    <p class="text-xs text-slate-500">Total Rent</p>
+                    <p class="text-sm text-green-600 font-semibold">$9,600</p>
+                </div>
+                </div>
+
+                <div>
+                <div class="flex items-center justify-between mb-1">
+                    <p class="text-xs text-slate-500">Unit Rent</p>
+                    <p class="text-xs text-slate-600">$3,600 / $9,600</p>
+                </div>
+                <div class="w-full bg-slate-200 h-2 rounded-full">
+                    <div class="bg-primary-600 h-2 rounded-full" style="width: 40%;"></div>
+                </div>
+                </div>
+            </div>
+            </div>
+
+            <!-- Bottom Buttons -->
+            <div class="flex justify-between items-center pt-6 border-t">
+            <button class="flex items-center gap-2 text-primary-600 font-medium">
+                <i data-lucide="plus" class="w-5 h-5"></i> Add Unit
+            </button>
+            <div class="flex gap-2">
+                <button class="bg-primary-600 hover:bg-primary-700 text-white px-6 py-2 rounded-lg text-sm font-medium">Chat</button>
+                <div x-data="{ showPropertyMenu: false }" class="relative">
+                    <!-- More Button -->
+                    <button 
+                        @click="showPropertyMenu = !showPropertyMenu" 
+                        class="p-1 rounded-full bg-slate-100 hover:bg-slate-200"
+                    >
+                        <i data-lucide="more-horizontal" class="w-5 h-5 text-slate-600"></i>
+                    </button>
+
+                    <!-- Desktop Dropdown -->
+                    <div 
+                        x-show="showPropertyMenu" 
+                        @click.away="showPropertyMenu = false"
+                        x-cloak
+                        class="hidden sm:block absolute right-0 bottom-full mb-2 w-72 bg-white border border-gray-200 rounded-lg shadow-lg z-20"
+                        x-transition:enter="transform transition ease-out duration-200"
+                        x-transition:enter-start="translate-y-4 opacity-0"
+                        x-transition:enter-end="translate-y-0 opacity-100"
+                        x-transition:leave="transform transition ease-in duration-150"
+                        x-transition:leave-start="translate-y-0 opacity-100"
+                        x-transition:leave-end="translate-y-4 opacity-0"
+                        >
+                        <ul class="divide-y divide-gray-100">
+                        <li>
+                            <a href="#" @click="showPropertyMenu = false" class="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-100">
+                            <i data-lucide="bars3-bottom-left" class="w-4 h-4"></i>
+                            Property Appliance List
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" @click="showPropertyMenu = false" class="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-100">
+                            <i data-lucide="pencil-square" class="w-4 h-4"></i>
+                            Update Property
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" @click="showPropertyMenu = false" class="flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+                            <i data-lucide="trash" class="w-4 h-4 text-red-600"></i>
+                            Delete Property Record
+                            </a>
+                        </li>
+                        </ul>
+                    </div>
+
+                    <!-- Mobile Bottom Sheet -->
+                    <div 
+                        x-show="showPropertyMenu" 
+                        x-cloak
+                        class="fixed inset-0 z-50 flex items-end sm:hidden bg-black/50"
+                        x-transition.opacity
+                    >
+                        <div 
+                        @click.away="showPropertyMenu = false"
+                        class="bg-white w-full rounded-t-xl p-4 max-h-[70vh] overflow-y-auto shadow-lg transform transition-all duration-300 ease-in-out"
+                        x-transition:enter="transform transition ease-in-out duration-300"
+                        x-transition:enter-start="translate-y-full opacity-0"
+                        x-transition:enter-end="translate-y-0 opacity-100"
+                        x-transition:leave="transform transition ease-in-out duration-200"
+                        x-transition:leave-start="translate-y-0 opacity-100"
+                        x-transition:leave-end="translate-y-full opacity-0"
+                        >
+                        <!-- Handle Bar -->
+                        <div class="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-4"></div>
+
+                        <!-- Sheet Menu Items -->
+                        <ul class="space-y-2">
+                            <li>
+                            <a href="#" @click="showPropertyMenu = false" class="flex items-center gap-2 px-4 py-3 rounded-lg hover:bg-gray-100">
+                                <i data-lucide="bars3-bottom-left" class="w-5 h-5"></i>
+                                Property Appliance List
+                            </a>
+                            </li>
+                            <li>
+                            <a href="#" @click="showPropertyMenu = false" class="flex items-center gap-2 px-4 py-3 rounded-lg hover:bg-gray-100">
+                                <i data-lucide="pencil-square" class="w-5 h-5"></i>
+                                Update Property
+                            </a>
+                            </li>
+                            <li>
+                            <a href="#" @click="showPropertyMenu = false" class="flex items-center gap-2 px-4 py-3 rounded-lg text-red-600 hover:bg-red-50">
+                                <i data-lucide="trash" class="w-5 h-5 text-red-600"></i>
+                                Delete Property Record
+                            </a>
+                            </li>
+                        </ul>
+                        </div>
+                    </div>
+                    </div>
+
+            </div>
+            </div>
+        </div>
+    </div>
+
+
+    </div>
+
+
+    <div 
+        x-show="showUnitDetails" 
+        x-transition.opacity
+        class="fixed inset-0 z-[9999] flex"
+    >
+
+        <!-- Panel -->
+        <div 
+            x-show="showUnitDetails"
+            x-transition.origin.right.duration.300ms
+            class="ml-auto w-full max-w-2xl h-full bg-white shadow-xl overflow-y-auto"
+        >
+            <!-- Header -->
+            <div class="flex justify-between items-center p-4 border-b sticky top-0 bg-white z-10">
+                <h2 class="text-lg font-bold">Unit Details</h2>
+                <button @click="showUnitDetails = false" class="text-gray-500 hover:text-gray-700">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Content -->
+            <div class="p-4 space-y-4">
+
+                <!-- UNIT CARD -->
+                <div class="bg-gray-50 p-4 rounded shadow">
+                    <h3 class="font-bold text-gray-800 text-lg">Unit 1</h3>
+                    <p class="text-gray-600 text-sm">789 Pine Road, Uptown</p>
+                    <div class="flex justify-between mt-2 text-sm">
+                        <span><strong>Unit Size:</strong> 200 sq.ft.</span>
+                        <span><strong>Occupied:</strong> 5/6</span>
+                    </div>
+                    <div class="mt-2 text-sm">
+                        <strong>Rent:</strong> $8,400 / $9,600
+                    </div>
+                    <!-- Rent Progress Bar -->
+                    <div class="w-full h-2 bg-gray-200 rounded mt-1">
+                        <div class="h-2 bg-blue-700 rounded" style="width:85%"></div>
+                    </div>
+                    <p class="text-gray-600 text-sm mt-2">
+                        Experience contemporary living in a modern house, apartment complex designed with comfort and elegance.
+                    </p>
+                </div>
+
+                <!-- DOCUMENT CARD -->
+                <div class="bg-gray-50 p-4 rounded shadow">
+                    <div class="flex justify-between items-center mb-2">
+                        <h4 class="font-bold">Unit Documents</h4>
+                        <button 
+                            class="text-blue-600 hover:underline text-sm"
+                            @click="showDocuments = true"
+                        >
+                            View All
+                        </button>
+                    </div>
+                    <div class="h-32 overflow-y-auto space-y-2 scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-gray-200">
+                        <template x-for="doc in ['Lease Agreement.pdf','Unit.pdf','Occupancy Certificate.pdf','Property Tax Receipt.pdf','Building Approval Certificate.pdf','Background Check.pdf']" :key="doc">
+                            <div class="flex justify-between items-center p-2 bg-white rounded shadow-sm">
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="file-text" class="w-4 h-4 text-blue-600"></i>
+                                    <span x-text="doc"></span>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button class="text-gray-500 hover:text-gray-700">
+                                        <i data-lucide="eye" class="w-4 h-4"></i>
+                                    </button>
+                                    <button class="text-gray-500 hover:text-gray-700">
+                                        <i data-lucide="download" class="w-4 h-4"></i>
+                                    </button>
+                                    <button class="text-gray-500 hover:text-gray-700">
+                                        <i data-lucide="more-vertical" class="w-4 h-4"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+
+                <!-- SEARCH + FILTER -->
+                <div class="flex gap-2">
+                    <input type="text" placeholder="Search properties, tenants..." class="flex-1 p-2 border rounded" />
+                    <button class="bg-blue-800 text-white p-2 rounded">
+                        <i data-lucide="funnel" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <!-- TENANTS CARD -->
+                <div class="bg-gray-50 p-4 rounded shadow">
+                    <div class="flex justify-between items-center mb-2">
+                        <h4 class="font-bold">All Tenants</h4>
+                        <span class="text-gray-500 text-sm">3 Tenants</span>
+                    </div>
+                    <!-- TENANT CARD -->
+                    <template x-for="tenant in [
+                        {name:'Sarah Johnson', status:'Active', address:'Maple Heights Apartments – Unit 3A', rent:'$1,500', image:'https://via.placeholder.com/40'},
+                        {name:'Mike Chen', status:'Active', address:'Oak Plaza Complex – Unit 2B', rent:'$1,400', image:'https://via.placeholder.com/40'},
+                        {name:'Emily Davis', status:'Pending', address:'Pine Court Townhomes – Unit 1C', rent:'$1,150', image:'https://via.placeholder.com/40'}
+                    ]" :key="tenant.name">
+                        <div class="flex justify-between items-center p-3 mb-2 bg-white rounded-lg shadow-md">
+                            <!-- Left: Avatar -->
+                            <img :src="tenant.image" class="w-11 h-11 rounded-full" alt="tenant"/>
+
+                            <!-- Middle: Name + Status + Address -->
+                            <div class="flex-1 ml-3">
+                                <div class="flex items-center gap-2">
+                                    <span class="font-semibold text-sm" x-text="tenant.name"></span>
+                                    <span class="text-xs font-semibold" :class="tenant.status=='Active' ? 'text-green-600' : 'text-orange-600'" x-text="tenant.status"></span>
+                                </div>
+                                <p class="text-gray-500 text-xs" x-text="tenant.address"></p>
+                            </div>
+
+                            <!-- Right: Rent + Actions -->
+                            <div class="flex flex-col items-end gap-1">
+                                <span class="font-semibold text-sm" x-text="tenant.rent"></span>
+                                <div class="flex items-center gap-2">
+                                    <button class="text-blue-600 hover:text-blue-800">
+                                        <i data-lucide="phone" class="w-4 h-4"></i>
+                                    </button>
+                                    <button class="text-blue-600 hover:text-blue-800">
+                                        <i data-lucide="message-circle" class="w-4 h-4"></i>
+                                    </button>
+                                    <button class="text-blue-600 hover:text-blue-800">
+                                        <i data-lucide="eye" class="w-4 h-4"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Documents Offcanvas -->
+  <div 
+      x-show="showDocuments" 
+      class="fixed inset-0 z-[9999] flex"
+  >
+
+      <!-- Panel -->
+      <div 
+          x-show="showDocuments"
+          x-transition.origin.right.duration.300ms
+          class="ml-auto bg-white w-full max-w-2xl h-full shadow-xl overflow-y-auto"
+      >
+          <!-- Header -->
+          <div class="flex justify-between items-center border-b px-6 py-3 sticky top-0 bg-white z-10">
+              <h2 class="text-lg font-bold">All Unit Documents</h2>
+              <button @click="showDocuments = false" class="text-gray-500 hover:text-gray-700">
+                  <i data-lucide="x" class="w-5 h-5"></i>
+              </button>
+          </div>
+
+          <!-- Document List -->
+          <div class="p-4 space-y-2">
+              <template x-for="doc in [
+                  'Lease Agreement.pdf',
+                  'Unit.pdf',
+                  'Occupancy Certificate.pdf',
+                  'Property Tax Receipt.pdf',
+                  'Building Approval Certificate.pdf',
+                  'Background Check.pdf'
+              ]" :key="doc">
+                  <div class="flex justify-between items-center p-3 bg-gray-50 rounded shadow-sm">
+                      <div class="flex items-center gap-2">
+                          <i data-lucide="file-text" class="w-4 h-4 text-blue-600"></i>
+                          <span x-text="doc"></span>
+                      </div>
+                      <div class="flex gap-2">
+                          <button class="text-gray-500 hover:text-gray-700">
+                              <i data-lucide="eye" class="w-4 h-4"></i>
+                          </button>
+                          <button class="text-gray-500 hover:text-gray-700">
+                              <i data-lucide="download" class="w-4 h-4"></i>
+                          </button>
+                          <button class="text-gray-500 hover:text-gray-700">
+                              <i data-lucide="more-vertical" class="w-4 h-4"></i>
+                          </button>
+                      </div>
+                  </div>
+              </template>
+          </div>
+
+          <!-- Footer Buttons -->
+          <div class="p-4 flex gap-2">
+              <button 
+                  @click="showDocuments = false" 
+                  class="flex-1 bg-blue-800 text-white py-2 rounded font-semibold"
+              >
+                  Close
+              </button>
+              <button 
+                  class="flex-1 border border-blue-600 py-2 rounded font-semibold text-blue-600"
+                  @click="alert('More options clicked')" 
+              >
+                  More
+              </button>
+          </div>
+      </div>
+  </div>
+
+</div>
+
+
+

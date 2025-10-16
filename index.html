@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PropertyPal - Login</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="/css/style.css" />
+
+    <style type="text/tailwindcss">
+      @theme {
+        --font-*: initial;
+        --font-sans: Inter, ui-sans-serif, system-ui, sans-serif;
+
+        --color-primary-25:  #EDF5FF;
+        --color-primary-50:  #d0d6f7;
+        --color-primary-100: #b3bff0;
+        --color-primary-200: #8fa3e6;
+        --color-primary-300: #6b85d9;
+        --color-primary-400: #4969d0;
+        --color-primary-500: #1E40AF; /* main color */
+        --color-primary-600: #193592;
+        --color-primary-700: #152a77;
+        --color-primary-800: #111f5c;
+        --color-primary-900: #0c1440;
+        --color-primary-950: #080a24;
+      }
+    </style>
+
+    <!-- Your main JS -->
+    <script defer type="module" src="/js/main.js"></script>
+</head>
+<body class="bg-slate-50 h-screen flex">
+  
+  <!-- Left Section -->
+  <div class="bg-gradient-to-br from-slate-50 to-slate-100 relative hidden h-full w-full items-center lg:grid lg:w-1/2 overflow-hidden">
+  <div class="flex flex-col items-center justify-center h-full w-full relative">
+    
+    <!-- Background SVGs (Subtle) -->
+    <div class="absolute left-0 top-0 w-full max-w-[250px] xl:max-w-[450px]">
+      <img src="./images/grid-01.svg" alt="grid">
+    </div>
+    <div class="absolute bottom-0 right-0 w-full max-w-[250px] xl:max-w-[450px] rotate-180">
+      <img src="./images/grid-01.svg" alt="grid">
+    </div>
+
+    <!-- Content -->
+    <div class="flex flex-col items-center text-center px-6 relative z-10 animate-fade-in">
+      
+      <!-- Logo  -->
+      <div class="flex justify-center mb-6">
+        <img src="./images/residential.png" alt="PropertyPal Logo" class="w-24 h-24">
+      </div>
+
+      <!-- Heading -->
+      <a href="#" class="text-5xl font-bold tracking-tight text-primary-600 mb-3 transition-transform duration-500 hover:scale-105">
+        PropertyPal
+      </a>
+
+      <!-- Subheading -->
+      <p class="text-lg md:text-xl text-slate-700 font-medium leading-relaxed">
+        Modern Property Management <br class="hidden md:block">
+        <span class="text-base md:text-lg font-normal text-slate-600">Made Simple & Elegant</span>
+      </p>
+    </div>
+  </div>
+</div>
+
+
+  <!-- Right Section -->
+  <div class="flex w-full lg:w-1/2 justify-center items-center bg-white shadow-lg">
+    <div class="w-full max-w-md px-6" x-data="{ activeTab: 'landlord' }">
+      
+      <!-- Tabs -->
+      <div class="flex justify-center mb-6 bg-slate-100 rounded-full p-1">
+        <button 
+          @click="activeTab = 'tenant'" 
+          :class="activeTab === 'tenant' ? 'bg-slate-900 text-white shadow' : 'text-slate-600 hover:text-black'" 
+          class="px-5 py-2 text-sm font-medium rounded-full transition">
+          I’m a Tenant
+        </button>
+        <button 
+          @click="activeTab = 'landlord'" 
+          :class="activeTab === 'landlord' ? 'bg-slate-900 text-white shadow' : 'text-slate-600 hover:text-black'" 
+          class="px-5 py-2 text-sm font-medium rounded-full transition">
+          I’m a Landlord
+        </button>
+      </div>
+
+      <!-- Card -->
+      <div class="transition">
+        <!-- Common Form -->
+        <h2 class="text-2xl font-semibold text-slate-900 mb-1">Welcome Back!</h2>
+        <p class="text-sm text-slate-500 mb-6" 
+           x-text="activeTab === 'tenant' ? 'Sign in to your Tenant account' : 'Sign in to your Landlord account'">
+        </p>
+
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm text-slate-600 mb-1">Email Address</label>
+            <div class="relative">
+              <!-- Icon -->
+              <i data-lucide="mail" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400"></i>
+
+              <!-- Input -->
+              <input 
+                type="email" 
+                placeholder="Enter your email" 
+                class="w-full h-10 rounded-lg border border-slate-300 pl-10 pr-3 focus:ring-2 focus:ring-primary-500 outline-none">
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm text-slate-600 mb-1">Password</label>
+            <div class="relative">
+              <!-- Icon -->
+              <i data-lucide="lock" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400"></i>
+
+              <!-- Input -->
+              <input 
+                id="password" 
+                type="password" 
+                placeholder="Enter your password" 
+                class="w-full h-10 rounded-lg border border-slate-300 pl-10 pr-10 focus:ring-2 focus:ring-primary-500 outline-none">
+
+              <!-- Eye Toggle -->
+              <button type="button" onclick="togglePassword()" 
+                class="absolute inset-y-0 right-3 flex items-center text-slate-500 hover:text-primary-600">
+                <i id="eyeOpen" data-lucide="eye" class="w-5 h-5"></i>
+                <i id="eyeClosed" data-lucide="eye-off" class="w-5 h-5 hidden"></i>
+              </button>
+            </div>
+            <div class="flex justify-between items-center mt-4">
+              <label class="flex items-center text-sm text-slate-600">
+                <input type="checkbox" class="mr-2 rounded border-slate-300"> Remember me
+              </label>
+              <a href="forgot-password.html" class="text-sm text-primary-600 hover:underline">Forgot Password?</a>
+            </div>
+          </div>
+          <button onclick="window.location.href='dashboard.html'"  class="w-full h-10 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition">Sign In</button>
+        </div>
+
+        <!-- Continue with google -->
+        <div class="mt-6">
+          <button 
+            class="w-full h-10 flex items-center justify-center gap-3 border border-slate-300 rounded-lg font-medium text-slate-700 bg-white hover:bg-slate-50 transition">
+            <!-- Google Icon -->
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5">
+            <path d="M16.8759 9.17493C16.8759 8.52743 16.8223 8.05493 16.7063 7.56494H9.16162V10.4874H13.5902C13.5009 11.2137 13.0188 12.3074 11.9473 13.0424L11.9323 13.1402L14.3178 14.9513L14.483 14.9674C16.0009 13.5937 16.8759 11.5724 16.8759 9.17493Z" fill="#4285F4"/>
+            <path d="M9.16098 16.8751C11.3306 16.8751 13.152 16.175 14.4824 14.9675L11.9467 13.0425C11.2681 13.5062 10.3574 13.83 9.16098 13.83C7.03601 13.83 5.23246 12.4563 4.58954 10.5575L4.4953 10.5653L2.01486 12.4466L1.98242 12.535C3.30383 15.1075 6.01811 16.8751 9.16098 16.8751Z" fill="#34A853"/>
+            <path d="M4.59022 10.5575C4.42059 10.0675 4.32241 9.54245 4.32241 8.99997C4.32241 8.45744 4.42059 7.93246 4.5813 7.44247L4.57681 7.33811L2.06527 5.42664L1.9831 5.46494C1.43848 6.53245 1.12598 7.73123 1.12598 8.99997C1.12598 10.2687 1.43848 11.4674 1.9831 12.5349L4.59022 10.5575Z" fill="#FBBC05"/>
+            <path d="M9.16103 4.16998C10.6699 4.16998 11.6878 4.80873 12.2682 5.34251L14.536 3.1725C13.1432 1.90375 11.3306 1.125 9.16103 1.125C6.01814 1.125 3.30384 2.89249 1.98242 5.46497L4.58063 7.44249C5.23248 5.54375 7.03604 4.16998 9.16103 4.16998Z" fill="#EB4335"/>
+            </svg>
+
+            Continue with Google
+          </button>
+        </div>
+
+        <!-- Sign Up -->
+        <p class="mt-6 text-center text-sm text-slate-600">
+          Don’t Have An Account? <a href="sign-up.html" class="text-primary-600 hover:underline">Sign Up Here</a>
+        </p>
+        <p class="mt-2 text-center text-xs text-slate-400">
+          By continuing, you agree to our <a href="#" class="underline">Terms of Service</a> and <a href="#" class="underline">Privacy Policy</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+
+    function togglePassword() {
+      const input = document.getElementById("password");
+      const eyeOpen = document.getElementById("eyeOpen");
+      const eyeClosed = document.getElementById("eyeClosed");
+
+      if (input.type === "password") {
+        input.type = "text";
+        eyeOpen.classList.add("hidden");
+        eyeClosed.classList.remove("hidden");
+      } else {
+        input.type = "password";
+        eyeClosed.classList.add("hidden");
+        eyeOpen.classList.remove("hidden");
+      }
+    }
+  </script>
+
+</body>
+</html>

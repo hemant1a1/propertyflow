@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PropertyPal - OTP Verification</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <link href="./style.css" rel="stylesheet" />
+   <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["Inter", "ui-sans-serif", "system-ui"],
+          },
+          colors: {
+            primary: {
+              50: "var(--color-primary-50)",
+              100: "var(--color-primary-100)",
+              400: "var(--color-primary-400)",
+              500: "var(--color-primary-500)",
+              600: "var(--color-primary-600)",
+              800: "var(--color-primary-800)",
+            },
+          },
+        },
+      },
+    };
+  </script>
+</head>
+<body class="bg-slate-50 h-screen flex">
+
+  <!-- Left Section -->
+  <div class="bg-gradient-to-br from-slate-50 to-slate-100 relative hidden h-full w-full items-center lg:grid lg:w-1/2 overflow-hidden">
+    <div class="flex flex-col items-center justify-center h-full w-full relative">
+      <div class="absolute left-0 top-0 w-full max-w-[250px] xl:max-w-[450px]">
+        <img src="./images/grid-01.svg" alt="grid">
+      </div>
+      <div class="absolute bottom-0 right-0 w-full max-w-[250px] xl:max-w-[450px] rotate-180">
+        <img src="./images/grid-01.svg" alt="grid">
+      </div>
+      <div class="flex flex-col items-center text-center px-6 relative z-10 animate-fade-in">
+        <div class="flex justify-center mb-6">
+          <img src="./images/residential.png" alt="PropertyPal Logo" class="w-24 h-24">
+        </div>
+        <a href="#" class="text-5xl font-bold tracking-tight text-primary-600 mb-3 transition-transform duration-500 hover:scale-105">
+          PropertyPal
+        </a>
+        <p class="text-lg md:text-xl text-slate-700 font-medium leading-relaxed">
+          Modern Property Management <br class="hidden md:block">
+          <span class="text-base md:text-lg font-normal text-slate-600">Made Simple & Elegant</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Section -->
+  <div class="flex w-full lg:w-1/2 justify-center items-center bg-white shadow-lg">
+    <div class="w-full max-w-md px-6" x-data="{ activeTab: 'landlord' }">
+
+      <!-- Tabs (same as forgot password) -->
+      <div class="flex justify-center mb-6 bg-slate-100 rounded-full p-1">
+        <button 
+          @click="activeTab = 'tenant'" 
+          :class="activeTab === 'tenant' ? 'bg-slate-900 text-white shadow' : 'text-slate-600 hover:text-black'" 
+          class="px-5 py-2 text-sm font-medium rounded-full transition">
+          I’m a Tenant
+        </button>
+        <button 
+          @click="activeTab = 'landlord'" 
+          :class="activeTab === 'landlord' ? 'bg-slate-900 text-white shadow' : 'text-slate-600 hover:text-black'" 
+          class="px-5 py-2 text-sm font-medium rounded-full transition">
+          I’m a Landlord
+        </button>
+      </div>
+
+      <!-- Card -->
+      <div class="transition text-center">
+        <h2 class="text-2xl font-semibold text-slate-900 mb-2">Verification</h2>
+        <p class="text-sm text-slate-500 mb-6"
+           x-text="activeTab === 'tenant' ? 'Enter OTP sent to your Tenant account' : 'Enter OTP sent to your Landlord account'">
+        </p>
+        <p class="text-sm text-slate-600 mb-6 font-medium">+1 ******3210</p>
+
+        <!-- OTP Input -->
+        <div class="flex justify-center gap-4 mb-6" x-data="otpInput()">
+          <template x-for="(digit, index) in digits" :key="index">
+            <input 
+              type="text" 
+              maxlength="1"
+              x-model="digits[index]"
+              @input="focusNext(index, $event)"
+              class="w-12 h-12 text-xl text-center border rounded-lg focus:ring-2 focus:ring-primary-500 outline-none"
+              :class="digits[index] ? 'bg-blue-100 border-blue-300' : 'bg-white border-slate-300'">
+          </template>
+        </div>
+
+        <!-- Continue Button -->
+        <button 
+          onclick="window.location.href='reset-password.html'" 
+          class="w-full h-10 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition">
+          Verify OTP
+        </button>
+
+        <p class="mt-4 text-sm text-slate-500">
+          Didn't receive OTP? 
+          <a href="#" class="text-primary-600 hover:underline">Resend</a>
+        </p>
+
+        <!-- Back to Login -->
+        <p class="mt-6 text-center text-sm text-slate-600">
+          Remember your password? 
+          <a href="/" class="text-primary-600 hover:underline">Login Here</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function otpInput() {
+      return {
+        digits: ['', '', '', ''],
+        focusNext(index, event) {
+          const nextInput = event.target.nextElementSibling;
+          if(event.target.value && nextInput) nextInput.focus();
+        }
+      }
+    }
+  </script>
+
+</body>
+</html>

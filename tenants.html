@@ -1,0 +1,560 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title></title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="/css/style.css" />
+
+    <style type="text/tailwindcss">
+      @theme {
+        --font-*: initial;
+        --font-sans: Inter, ui-sans-serif, system-ui, sans-serif;
+
+        --color-primary-25:  #EDF5FF;
+        --color-primary-50:  #d0d6f7;
+        --color-primary-100: #b3bff0;
+        --color-primary-200: #8fa3e6;
+        --color-primary-300: #6b85d9;
+        --color-primary-400: #4969d0;
+        --color-primary-500: #1E40AF; /* main color */
+        --color-primary-600: #193592;
+        --color-primary-700: #152a77;
+        --color-primary-800: #111f5c;
+        --color-primary-900: #0c1440;
+        --color-primary-950: #080a24;
+      }
+    </style>
+
+    <!-- Your main JS -->
+    <script defer type="module" src="/js/main.js"></script>
+
+  </head>
+
+  <body
+    x-data="{ 
+      page: 'tenants', 
+      loaded: true, 
+      stickyMenu: false, 
+      sidebarToggle: false, 
+      scrollTop: false,
+      selected: 'Tenants',
+      selectedTenant: null
+    }"
+  >
+    <div
+      id="preloader"
+      class="fixed inset-0 z-[999999] flex items-center justify-center bg-white transition-opacity duration-500"
+    >
+      <div class="h-16 w-16 animate-spin rounded-full border-4 border-solid border-brand-500 border-t-transparent"></div>
+    </div>
+
+    <!-- ===== Page Wrapper ===== -->
+    <div class="flex h-screen overflow-hidden">
+      <!-- ===== Sidebar ===== -->
+      <div data-include="/partials/sidebar.html"></div>
+
+      <!-- ===== Content Area ===== -->
+      <div class="relative flex flex-col flex-1 overflow-x-hidden overflow-y-auto">
+        <!-- ===== Header ===== -->
+        <div data-include="/partials/header.html"></div>
+
+        <!-- ===== Main Content ===== -->
+        <main>
+          <div class="p-4 mx-auto max-w-screen-2xl md:p-6 p-4 space-y-4">
+            
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+          <div>
+            <h2 class="text-xl font-semibold text-slate-900">Tenant Management</h2>
+            <p class="text-sm text-slate-500">Manage your tenants and their leases</p>
+          </div>
+          <div class="flex gap-3 mt-3 md:mt-0">
+
+            <button class="flex items-center gap-2 bg-slate-100 text-slate-700 px-4 py-2 text-sm rounded-lg hover:bg-slate-200">
+              <i data-lucide="download" class="w-5 h-5"></i>
+              <span>Export</span>
+            </button>
+
+            <div x-data="{
+                showAddTenant: false,
+                uploadedDocs: [],
+                selectedFile: null,
+                tags: [],
+                selectedProperty: '',
+                selectedUnit: '',
+                selectedStatus: ''
+            }">
+                <!-- Add Tenant Button -->
+                <button class="flex items-center gap-2 text-white px-4 py-2 text-sm rounded-lg bg-primary-600 hover:bg-primary-800 transition-colors"
+                    @click="showAddTenant = true">
+                    <i data-lucide="plus" class="w-5 h-5"></i>
+                    <span>Add Tenant</span>
+                </button>
+
+                <!-- Right-side Offcanvas -->
+                <div class="fixed inset-0 bg-black/60 z-[999] flex justify-end transition-opacity"
+                    :class="showAddTenant ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'"
+                    @click.self="showAddTenant = false">
+                    <div x-show="showAddTenant"
+                        x-transition:enter="transform transition ease-in-out duration-300"
+                        x-transition:enter-start="translate-x-full opacity-0"
+                        x-transition:enter-end="translate-x-0 opacity-100"
+                        x-transition:leave="transform transition ease-in-out duration-200"
+                        x-transition:leave-start="translate-x-0 opacity-100"
+                        x-transition:leave-end="translate-x-full opacity-0"
+                        class="bg-white w-full max-w-2xl h-full overflow-y-auto flex flex-col">
+
+                        <!-- Header -->
+                        <div class="flex justify-between items-center border-b px-6 py-3 sticky top-0 bg-white z-10">
+                            <div class="flex items-center gap-3">
+                                <button @click="showAddTenant = false" class="text-slate-600 hover:text-primary-600">
+                                    <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                                </button>
+                                <div>
+                                    <h2 class="text-lg font-bold">Add Tenant</h2>
+                                    <p class="text-sm text-slate-500">Manage your tenants</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Content -->
+                        <div class="p-6 space-y-4 flex-1 overflow-y-auto">
+
+                            <!-- Full Name -->
+                            <div>
+                                <label class="block font-medium text-xs mb-1">Full Name *</label>
+                                <input type="text" placeholder="Enter full name" class="w-full p-2 border border-primary-100 rounded-lg" />
+                            </div>
+
+                            <!-- Email -->
+                            <div>
+                                <label class="block font-medium text-xs mb-1">Email Address *</label>
+                                <input type="email" placeholder="Enter email" class="w-full p-2 border border-primary-100 rounded-lg" />
+                            </div>
+
+                            <!-- Phone -->
+                            <div>
+                                <label class="block font-medium text-xs mb-1">Phone Number *</label>
+                                <input type="tel" placeholder="Enter phone number" class="w-full p-2 border border-primary-100 rounded-lg" />
+                            </div>
+
+                            <!-- Occupation -->
+                            <div>
+                                <label class="block font-medium text-xs mb-1">Occupation</label>
+                                <input type="text" placeholder="Enter occupation" class="w-full p-2 border border-primary-100 rounded-lg" />
+                            </div>
+
+                            <!-- Property & Unit -->
+                            <div class="flex gap-2">
+                                <div class="flex-1">
+                                    <label class="block font-medium text-xs mb-1">Property *</label>
+                                    <select x-model="selectedProperty" class="w-full p-2 border border-primary-100 rounded-lg">
+                                        <option value="">Select property</option>
+                                        <option>Maple Heights</option>
+                                        <option>Oak Plaza</option>
+                                        <option>Pine Court</option>
+                                    </select>
+                                </div>
+                                <div class="flex-1">
+                                    <label class="block font-medium text-xs mb-1">Unit *</label>
+                                    <select x-model="selectedUnit" class="w-full p-2 border border-primary-100 rounded-lg">
+                                        <option value="">Choose unit</option>
+                                        <option>Unit 1A</option>
+                                        <option>Unit 2B</option>
+                                        <option>Unit 3C</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Rent & Deposit -->
+                            <div class="flex gap-2">
+                                <div class="flex-1">
+                                    <label class="block font-medium text-xs mb-1">Monthly Rent *</label>
+                                    <input type="number" placeholder="Enter monthly rent" class="w-full p-2 border border-primary-100 rounded-lg" />
+                                </div>
+                                <div class="flex-1">
+                                    <label class="block font-medium text-xs mb-1">Security Deposit *</label>
+                                    <input type="number" placeholder="Enter security deposit" class="w-full p-2 border border-primary-100 rounded-lg" />
+                                </div>
+                            </div>
+
+                            <!-- Tenant Status -->
+                            <div>
+                                <label class="block font-medium text-xs mb-1">Tenant Status</label>
+                                <select x-model="selectedStatus" class="w-full p-2 border border-primary-100 rounded-lg">
+                                    <option value="">Select status</option>
+                                    <option>Active</option>
+                                    <option>Pending</option>
+                                    <option>Inactive</option>
+                                </select>
+                            </div>
+
+                            <!-- Lease Dates -->
+                            <div class="flex gap-2">
+                                <div class="flex-1">
+                                    <label class="block font-medium text-xs mb-1">Lease Start Date</label>
+                                    <input type="date" class="w-full p-2 border border-primary-100 rounded-lg" />
+                                </div>
+                                <div class="flex-1">
+                                    <label class="block font-medium text-xs mb-1">Lease End Date</label>
+                                    <input type="date" class="w-full p-2 border border-primary-100 rounded-lg" />
+                                </div>
+                            </div>
+
+                            <!-- Emergency Contact -->
+                            <div>
+                                <label class="block font-medium text-xs mb-1">Emergency Contact Name</label>
+                                <input type="text" placeholder="Enter name" class="w-full p-2 border border-primary-100 rounded-lg" />
+                            </div>
+                            <div>
+                                <label class="block font-medium text-xs mb-1">Emergency Contact Number</label>
+                                <input type="tel" placeholder="Enter contact number" class="w-full p-2 border border-primary-100 rounded-lg" />
+                            </div>
+                            <div>
+                                <label class="block font-medium text-xs mb-1">Emergency Contact Email</label>
+                                <input type="email" placeholder="Enter email" class="w-full p-2 border border-primary-100 rounded-lg" />
+                            </div>
+
+                            <!-- Upload Documents with Tags -->
+                            <div>
+                                <label class="block font-medium text-xs mb-1">Upload Documents *</label>
+                                <input type="file" @change="
+                                    selectedFile = $event.target.files[0];
+                                    if(selectedFile) uploadedDocs.push({name: selectedFile.name, tags: [...tags]});
+                                    tags = [];
+                                    selectedFile = null;
+                                " class="w-full mb-2" />
+                                <input type="text" placeholder="Add tag, press comma or space"
+                                    x-model="tagsInput"
+                                    @keyup.enter.prevent="
+                                        if(tagsInput) { tags.push(tagsInput.trim()); tagsInput=''; }"
+                                    @keyup.space.prevent="
+                                        if(tagsInput) { tags.push(tagsInput.trim()); tagsInput=''; }"
+                                    @keyup.comma.prevent="
+                                        if(tagsInput) { tags.push(tagsInput.trim()); tagsInput=''; }"
+                                    class="w-full p-2 border border-primary-100 rounded-lg mb-2" />
+
+                                <!-- Tags Display -->
+                                <div class="flex flex-wrap gap-2">
+                                    <template x-for="(tag,index) in tags" :key="index">
+                                        <span class="px-2 py-1 bg-blue-100 rounded-full text-sm flex items-center gap-1">
+                                            <span x-text="tag"></span>
+                                            <button type="button" @click="tags.splice(index,1)">✕</button>
+                                        </span>
+                                    </template>
+                                </div>
+
+                                <!-- Uploaded Docs Display -->
+                                <div class="flex flex-wrap gap-2 mt-2">
+                                    <template x-for="(doc,index) in uploadedDocs" :key="index">
+                                        <span class="px-3 py-1 bg-green-100 rounded-full text-sm flex items-center gap-1">
+                                            <span x-text="doc.name"></span>
+                                            <button type="button" @click="uploadedDocs.splice(index,1)">✕</button>
+                                        </span>
+                                    </template>
+                                </div>
+                            </div>
+
+                            <!-- Additional Notes -->
+                            <div>
+                                <label class="block font-medium text-xs mb-1">Additional Notes</label>
+                                <textarea placeholder="Add notes..." class="w-full p-2 border border-primary-100 rounded-lg"></textarea>
+                            </div>
+
+                            <!-- Footer Buttons -->
+                            <div class="flex gap-2 mt-4">
+                                <button @click="showAddTenant=false" class="flex-1 border border-blue-600 text-blue-600 rounded py-2 font-semibold">
+                                    Cancel
+                                </button>
+                                <button @click="alert('Tenant Added!'); showAddTenant=false"
+                                    class="flex-1 bg-blue-600 text-white rounded py-2 font-semibold">
+                                    Add Tenant
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+
+            <!-- Total Tenants -->
+            <div class="relative bg-white rounded-xl border border-slate-100 shadow-sm backdrop-blur-sm backdrop-saturate-150 px-4 py-3 overflow-hidden group hover:shadow-md transition">
+                <div class="absolute -bottom-6 -right-6 w-24 h-24 bg-primary-600/20 rounded-full blur-xl"></div>
+                <div class="flex justify-between items-center relative z-10">
+                    <div>
+                        <p class="text-sm text-slate-500">Total Tenants</p>
+                        <h3 class="text-xl font-bold text-slate-800">4</h3>
+                    </div>
+                    <div class="p-2 bg-primary-100 text-primary-600 rounded-full group-hover:scale-110 transition">
+                        <i data-lucide="users" class="w-5 h-5"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active -->
+            <div class="relative bg-white rounded-xl border border-slate-100 shadow-sm backdrop-blur-sm backdrop-saturate-150 px-4 py-3 overflow-hidden group hover:shadow-md transition">
+                <div class="absolute -bottom-6 -right-6 w-24 h-24 bg-primary-600/20 rounded-full blur-xl"></div>
+                <div class="flex justify-between items-center relative z-10">
+                    <div>
+                        <p class="text-sm text-slate-500">Active</p>
+                        <h3 class="text-xl font-bold text-slate-800">3</h3>
+                    </div>
+                    <div class="p-2 bg-primary-100 text-primary-600 rounded-full group-hover:scale-110 transition">
+                        <i data-lucide="check-circle" class="w-5 h-5"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pending -->
+            <div class="relative bg-white rounded-xl border border-slate-100 shadow-sm backdrop-blur-sm backdrop-saturate-150 px-4 py-3 overflow-hidden group hover:shadow-md transition">
+                <div class="absolute -bottom-6 -right-6 w-24 h-24 bg-primary-600/20 rounded-full blur-xl"></div>
+                <div class="flex justify-between items-center relative z-10">
+                    <div>
+                        <p class="text-sm text-slate-500">Pending</p>
+                        <h3 class="text-xl font-bold text-slate-800">1</h3>
+                    </div>
+                    <div class="p-2 bg-primary-100 text-primary-600 rounded-full group-hover:scale-110 transition">
+                        <i data-lucide="clock" class="w-5 h-5"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Overdue -->
+            <div class="relative bg-white rounded-xl border border-slate-100 shadow-sm backdrop-blur-sm backdrop-saturate-150 px-4 py-3 overflow-hidden group hover:shadow-md transition">
+                <div class="absolute -bottom-6 -right-6 w-24 h-24 bg-primary-600/20 rounded-full blur-xl"></div>
+                <div class="flex justify-between items-center relative z-10">
+                    <div>
+                        <p class="text-sm text-slate-500">Overdue</p>
+                        <h3 class="text-xl font-bold text-slate-800">1</h3>
+                    </div>
+                    <div class="p-2 bg-primary-100 text-primary-600 rounded-full group-hover:scale-110 transition">
+                        <i data-lucide="alert-circle" class="w-5 h-5"></i>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Table -->
+        <div class="bg-white shadow-sm rounded-lg overflow-hidden">
+
+            <!-- Table Header / Search & Filters -->
+            <div class="bg-white px-4 py-3 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0 rounded-t-lg shadow-sm">
+                <h3 class="text-lg font-semibold text-slate-900">Tenant (4)</h3>
+
+                <!-- Search + Filters -->
+                <div class="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-3 w-full sm:w-auto">
+                  <!-- Search Input -->
+                  <div class="relative w-full sm:w-auto">
+                      <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400"></i>
+                      <input type="text" placeholder="Search tenants..." 
+                      class="pl-10 pr-3 py-2 w-full sm:w-auto rounded-lg border border-slate-200 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent transition" />
+                  </div>
+
+                  <div data-include="/partials/tenants-filter.html"></div>
+
+                </div>
+            </div>
+
+            <!-- Table / Cards -->
+            <div>
+                <table class="hidden sm:table w-full text-sm">
+                <thead class="bg-slate-100 text-slate-500 uppercase text-xs tracking-wide">
+                    <tr>
+                    <th class="p-3 text-left">Tenant</th>
+                    <th class="p-3 text-left">Property</th>
+                    <th class="p-3 text-left">Rent</th>
+                    <th class="p-3 text-left">Status</th>
+                    <th class="p-3 text-left">Lease</th>
+                    <th class="p-3 text-left">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="tenant-table-body" class="bg-white divide-y divide-slate-200">
+                    <!-- Rows injected via JS -->
+                </tbody>
+                </table>
+
+                <div data-include="/partials/view-tenant.html"></div>
+
+                <!-- Mobile Card View -->
+                <div class="sm:hidden flex flex-col gap-4" id="tenant-cards-container">
+                <!-- Cards injected via JS -->
+                </div>
+            </div>
+        </div>
+
+          </div>
+        </main>
+      </div>
+    </div>
+    
+
+    <script>
+    const tenants = [
+        {
+          initials: 'SJ',
+          name: 'Sarah Johnson',
+          email: 'sarah.johnson@email.com',
+          phone: '+1 9876543210',
+          property: 'Maple Heights Apartments',
+          unit: 'Unit 3A',
+          rent: 1200,
+          rentStatus: 'current',
+          status: 'active',
+          leaseStart: '01/01/2024',
+          leaseEnd: '31/12/2024',
+          securityDeposit: 1000,
+          address: 'Maple Heights, 12th Street, Austin, TX 78701',
+          documents: [
+            { name: 'Lease Agreement.pdf' },
+            { name: 'Background Check.pdf' },
+            { name: 'Payment Receipts.pdf' }
+          ]
+        },
+        {
+          initials: 'MC',
+          name: 'Mike Chen',
+          email: 'mike.chen@email.com',
+          phone: '+1 9876543211',
+          property: 'Oak Plaza Complex',
+          unit: 'Unit 2B',
+          rent: 1400,
+          rentStatus: 'current',
+          status: 'active',
+          leaseStart: '01/03/2024',
+          leaseEnd: '28/02/2025',
+          securityDeposit: 2000,
+          address: 'Oak Plaza, 45th Street, Austin, TX 78758',
+          documents: [
+            { name: 'Lease Agreement.pdf' },
+            { name: 'Background Check.pdf' },
+            { name: 'Payment Receipts.pdf' }
+          ]
+        },
+        {
+          initials: 'ED',
+          name: 'Emily Davis',
+          email: 'emily.davis@email.com',
+          phone: '+1 9876543212',
+          property: 'Pine Court Townhomes',
+          unit: 'Unit 1C',
+          rent: 1100,
+          rentStatus: 'late',
+          status: 'active',
+          leaseStart: '01/06/2024',
+          leaseEnd: '31/05/2025',
+          securityDeposit: 1500,
+          address: 'Pine Court, 45th Street, Austin, TX 78758',
+          documents: [
+            { name: 'Lease Agreement.pdf' },
+            { name: 'Background Check.pdf' },
+            { name: 'Payment Receipts.pdf' }
+          ]
+        },
+        {
+          initials: 'JS',
+          name: 'John Smith',
+          email: 'john.smith@email.com',
+          phone: '+1 9876543213',
+          property: 'Maple Heights Apartments',
+          unit: 'Unit 4A',
+          rent: 1200,
+          rentStatus: 'overdue',
+          status: 'pending',
+          leaseStart: '01/09/2024',
+          leaseEnd: '31/08/2025',
+          securityDeposit: 1200,
+          address: 'Maple Heights, 15th Street, Austin, TX 78701',
+          documents: [
+            { name: 'Lease Agreement.pdf' },
+            { name: 'Background Check.pdf' },
+            { name: 'Payment Receipts.pdf' }
+          ]
+        }
+    ];
+
+    const rentColors = { current: 'text-green-600', late: 'text-orange-600', overdue: 'text-red-600' };
+    const statusColors = { active: 'bg-green-100 text-green-600', pending: 'bg-yellow-100 text-yellow-600', inactive: 'bg-slate-100 text-slate-600' };
+
+    const tbody = document.getElementById('tenant-table-body');
+    const cardContainer = document.getElementById('tenant-cards-container');
+
+    tenants.forEach(t => {
+        // Table row
+        const tr = document.createElement('tr');
+        tr.className = 'bg-white hover:bg-slate-50 transition-colors border-b border-slate-200';
+        tr.innerHTML = `
+        <td class="p-3 flex items-center gap-3">
+            <div class="bg-primary-600 text-white w-10 h-10 flex items-center justify-center rounded-full shadow-inner">${t.initials}</div>
+            <div>
+                <p class="font-medium text-slate-800">${t.name}</p>
+                <p class="text-slate-400 text-xs">${t.email}</p>
+            </div>
+        </td>
+        <td class="p-3 text-slate-700">${t.property}<span class="block text-xs text-slate-400">${t.unit}</span></td>
+        <td class="p-3 font-medium text-slate-800">$${t.rent.toLocaleString()} <span class="text-xs ${rentColors[t.rentStatus]}">${t.rentStatus}</span></td>
+        <td class="p-3"><span class="px-2 py-1 text-xs ${statusColors[t.status]} rounded-full">${t.status.charAt(0).toUpperCase()+t.status.slice(1)}</span></td>
+        <td class="p-3 text-slate-700">${t.leaseStart} - ${t.leaseEnd}</td>
+        <td class="p-3 flex gap-2">
+            <button class="w-9 h-9 flex items-center justify-center bg-slate/80 hover:bg-primary-100 text-slate-600 hover:text-primary-600 rounded-full shadow-sm transition transform hover:scale-105" @click="selectedTenant = tenants[0]"><i data-lucide="eye" class="w-4 h-4"></i></button>
+            <button class="w-9 h-9 flex items-center justify-center bg-slate/80 hover:bg-primary-100 text-slate-600 hover:text-primary-600 rounded-full shadow-sm transition transform hover:scale-105"><i data-lucide="pen-line" class="w-4 h-4"></i></button>
+            <button class="w-9 h-9 flex items-center justify-center bg-slate/80 hover:bg-primary-100 text-slate-600 hover:text-primary-600 rounded-full shadow-sm transition transform hover:scale-105"><i data-lucide="mail" class="w-4 h-4"></i></button>
+            <button class="w-9 h-9 flex items-center justify-center bg-primary/80 hover:bg-primary-100 text-slate-600 hover:text-primary-600 rounded-full shadow-sm transition transform hover:scale-105"><i data-lucide="phone" class="w-4 h-4"></i></button>
+            <button class="w-9 h-9 flex items-center justify-center bg-red-50 hover:bg-red-100 text-slate-600 hover:text-red-600 rounded-full shadow-sm transition transform hover:scale-105"><i data-lucide="trash" class="w-4 h-4"></i></button>
+        </td>`;
+        tbody.appendChild(tr);
+
+        // Mobile card
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded-xl shadow-sm p-4 flex flex-col gap-2';
+        card.innerHTML = `
+            <div class="flex items-center gap-3">
+                <div class="bg-primary-600 text-white w-10 h-10 flex items-center justify-center rounded-full">${t.initials}</div>
+                <div class="flex flex-col">
+                    <p class="font-semibold text-slate-900">${t.name}</p>
+                    <p class="text-slate-400 text-xs">${t.email}</p>
+                </div>
+            </div>
+            <p class="text-slate-700 text-sm"><span class="font-medium">Property:</span> ${t.property}, ${t.unit}</p>
+            <p class="text-slate-700 text-sm"><span class="font-medium">Rent:</span> $${t.rent.toLocaleString()} <span class="${rentColors[t.rentStatus]}">${t.rentStatus}</span></p>
+            <p class="text-slate-700 text-sm"><span class="font-medium">Lease:</span> ${t.leaseStart} - ${t.leaseEnd}</p>
+            <p><span class="px-2 py-1 text-xs ${statusColors[t.status]} rounded-full">${t.status.charAt(0).toUpperCase()+t.status.slice(1)}</span></p>
+            <div class="flex gap-2 mt-2">
+                <button class="flex-1 flex items-center justify-center bg-white/50 hover:bg-primary-100 text-slate-600 hover:text-primary-600 rounded-full shadow-sm py-2 transition"><i data-lucide="eye" class="w-4 h-4 mr-1"></i>View</button>
+                <button class="flex-1 flex items-center justify-center bg-white/50 hover:bg-primary-100 text-slate-600 hover:text-primary-600 rounded-full shadow-sm py-2 transition"><i data-lucide="pen-line" class="w-4 h-4 mr-1"></i>Edit</button>
+            </div>
+        `;
+        cardContainer.appendChild(card);
+    });
+
+    </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+
+      const containers = document.querySelectorAll('.dlab-scroll');
+      
+      containers.forEach(container => {
+        new PerfectScrollbar(container, {
+          wheelSpeed: 1,
+          wheelPropagation: true,
+          minScrollbarLength: 20
+        });
+      });
+    });
+  </script>
+
+
+  </body>
+</html>

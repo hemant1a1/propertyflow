@@ -1,0 +1,80 @@
+<div x-data="{ showUnitMenu: false }" class="relative">
+
+  <!-- More Button -->
+  <button @click="showUnitMenu = !showUnitMenu" class="p-1 rounded-full bg-slate-100 hover:bg-slate-200">
+    <i data-lucide="more-horizontal" class="w-5 h-5 text-slate-600"></i>
+  </button>
+
+  <!-- Desktop Dropdown -->
+  <div 
+    x-show="showUnitMenu" 
+    @click.away="showUnitMenu = false" 
+    class="hidden sm:block absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-20"
+  >
+    <ul class="divide-y divide-gray-100">
+      <li>
+        <a href="#" @click="showUnitMenu = false" class="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-100">
+          <i data-lucide="home" class="w-4 h-4"></i> Unit Details
+        </a>
+      </li>
+      <li>
+        <a href="#" @click="showUnitMenu = false" class="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-100">
+          <i data-lucide="bars3-bottom-left" class="w-4 h-4"></i> Unit Appliance List
+        </a>
+      </li>
+      <li>
+        <a href="#" @click="showUnitMenu = false" class="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-100">
+          <i data-lucide="pencil-square" class="w-4 h-4"></i> Update Property Unit
+        </a>
+      </li>
+      <li>
+        <a href="#" @click="showUnitMenu = false" class="flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+          <i data-lucide="trash" class="w-4 h-4 text-red-600"></i> Delete Property Unit Record
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Mobile Bottom Sheet -->
+  <div 
+    x-show="showUnitMenu" 
+    class="fixed inset-0 z-50 flex items-end sm:hidden bg-black/50"
+    x-transition.opacity
+  >
+    <div 
+      @click.away="showUnitMenu = false" 
+      class="bg-white w-full rounded-t-xl p-4 max-h-[70vh] overflow-y-auto shadow-lg transform transition-all duration-300 ease-in-out"
+      x-transition:enter="transform transition ease-in-out duration-300"
+      x-transition:enter-start="translate-y-full opacity-0"
+      x-transition:enter-end="translate-y-0 opacity-100"
+      x-transition:leave="transform transition ease-in-out duration-200"
+      x-transition:leave-start="translate-y-0 opacity-100"
+      x-transition:leave-end="translate-y-full opacity-0"
+    >
+      <div class="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-4"></div>
+      <ul class="space-y-2">
+        <li>
+          <a href="#" @click="showUnitMenu = false" class="flex items-center gap-2 px-4 py-3 rounded-lg hover:bg-gray-100">
+            <i data-lucide="home" class="w-5 h-5"></i> Unit Details
+          </a>
+        </li>
+        <li>
+          <a href="#" @click="showUnitMenu = false" class="flex items-center gap-2 px-4 py-3 rounded-lg hover:bg-gray-100">
+            <i data-lucide="bars3-bottom-left" class="w-5 h-5"></i> Unit Appliance List
+          </a>
+        </li>
+        <li>
+          <a href="#" @click="showUnitMenu = false" class="flex items-center gap-2 px-4 py-3 rounded-lg hover:bg-gray-100">
+            <i data-lucide="pencil-square" class="w-5 h-5"></i> Update Property Unit
+          </a>
+        </li>
+        <li>
+          <a href="#" @click="showUnitMenu = false" class="flex items-center gap-2 px-4 py-3 rounded-lg text-red-600 hover:bg-red-50">
+            <i data-lucide="trash" class="w-5 h-5 text-red-600"></i> Delete Property Unit Record
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+</div>

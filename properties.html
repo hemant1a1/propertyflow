@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title></title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="/css/style.css" />
+  <style type="text/tailwindcss"> @theme {
+      --font-*: initial;
+      --font-sans: Poppins, ui-sans-serif, system-ui, sans-serif;
+
+      --color-primary-25:  #EDF5FF;
+      --color-primary-50:  #d0d6f7;
+      --color-primary-100: #b3bff0;
+      --color-primary-200: #8fa3e6;
+      --color-primary-300: #6b85d9;
+      --color-primary-400: #4969d0;
+      --color-primary-500: #1E40AF; /* main color */
+      --color-primary-600: #193592;
+      --color-primary-700: #152a77;
+      --color-primary-800: #111f5c;
+      --color-primary-900: #0c1440;
+      --color-primary-950: #080a24;
+    }
+  </style>
+  <!-- Your main JS -->
+  <script defer type="module" src="/js/main.js"></script>
+</head>
+<body x-data="{ 
+    page: 'properties', 
+    loaded: true, 
+    stickyMenu: false, 
+    sidebarToggle: false, 
+    scrollTop: false,
+    selected: 'Properties'
+  }"
+>
+    <!-- ✅ Preloader (inline for instant load) -->
+    <div
+      id="preloader"
+      class="fixed inset-0 z-[999999] flex items-center justify-center bg-white transition-opacity duration-500"
+    >
+      <div class="h-16 w-16 animate-spin rounded-full border-4 border-solid border-brand-500 border-t-transparent"></div>
+    </div>
+
+    <!-- ===== Page Wrapper ===== -->
+    <div class="flex h-screen overflow-hidden">
+      <!-- ===== Sidebar ===== -->
+      <div data-include="/partials/sidebar.html"></div>
+      <!-- ===== Content Area ===== -->
+      <div class="relative flex flex-col flex-1 overflow-x-hidden overflow-y-auto">
+        <!-- ===== Header ===== -->
+        <div data-include="/partials/header.html"></div>
+        <!-- ===== Main Content ===== -->
+        <main>
+          <div class="p-4 mx-auto max-w-screen-2xl md:p-6 p-4 space-y-4">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+              <h2 class="text-xl font-semibold text-slate-900">Property Management </h1>
+                <div class="flex gap-3">
+                  
+                  <div data-include="/partials/property-filter.html"></div>
+
+                  <!-- Add Property Modal -->
+                  <div data-include="/partials/add-property.html"></div>
+
+                </div>
+            </div>
+            <!-- Summary Cards -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+              <!-- Total Properties -->
+              <div class="relative bg-white rounded-xl border border-slate-100 shadow-sm backdrop-blur-sm backdrop-saturate-150 backdrop-shadow px-4 py-3 overflow-hidden group hover:shadow-md transition">
+                <div class="absolute -bottom-6 -right-6 w-24 h-24 bg-primary-600/20 rounded-full blur-xl"></div>
+                <div class="flex justify-between items-center relative z-10">
+                  <div>
+                    <p class="text-sm text-slate-500">Total Properties</p>
+                    <h3 class="text-xl font-bold text-slate-800">3</h3>
+                  </div>
+                  <div class="p-2 bg-primary-100 text-primary-600 rounded-full group-hover:scale-110 transition">
+                    <i data-lucide="building-2" class="w-5 h-5"></i>
+                  </div>
+                </div>
+              </div>
+              <!-- Total Units -->
+              <div class="relative bg-white rounded-xl border border-slate-100 shadow-sm backdrop-blur-sm backdrop-saturate-150 backdrop-shadow px-4 py-3 overflow-hidden group hover:shadow-md transition">
+                <div class="absolute -bottom-6 -right-6 w-24 h-24 bg-primary-600/20 rounded-full blur-xl"></div>
+                <div class="flex justify-between items-center relative z-10">
+                  <div>
+                    <p class="text-sm text-slate-500">Total Units</p>
+                    <h3 class="text-xl font-bold text-slate-800">26</h3>
+                  </div>
+                  <div class="p-2 bg-primary-100 text-primary-600 rounded-full group-hover:scale-110 transition">
+                    <i data-lucide="layout-grid" class="w-5 h-5"></i>
+                  </div>
+                </div>
+              </div>
+              <!-- Occupancy Rate -->
+              <div class="relative bg-white rounded-xl border border-slate-100 shadow-sm backdrop-blur-sm backdrop-saturate-150 backdrop-shadow px-4 py-3 overflow-hidden group hover:shadow-md transition">
+                <div class="absolute -bottom-6 -right-6 w-24 h-24 bg-primary-600/20 rounded-full blur-xl"></div>
+                <div class="flex justify-between items-center relative z-10">
+                  <div>
+                    <p class="text-sm text-slate-500">Occupancy Rate</p>
+                    <h3 class="text-xl font-bold text-slate-800">88%</h3>
+                  </div>
+                  <div class="p-2 bg-primary-100 text-primary-600 rounded-full group-hover:scale-110 transition">
+                    <i data-lucide="activity" class="w-5 h-5"></i>
+                  </div>
+                </div>
+              </div>
+              <!-- Monthly Revenue -->
+              <div class="relative bg-white rounded-xl border border-slate-100 shadow-sm backdrop-blur-sm backdrop-saturate-150 backdrop-shadow px-4 py-3 overflow-hidden group hover:shadow-md transition">
+                <div class="absolute -bottom-6 -right-6 w-24 h-24 bg-primary-600/20 rounded-full blur-xl"></div>
+                <div class="flex justify-between items-center relative z-10">
+                  <div>
+                    <p class="text-sm text-slate-500">Monthly Revenue</p>
+                    <h3 class="text-xl font-bold text-slate-800">$34,800</h3>
+                  </div>
+                  <div class="p-2 bg-primary-100 text-primary-600 rounded-full group-hover:scale-110 transition">
+                    <i data-lucide="dollar-sign" class="w-5 h-5"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div x-data="{
+          properties: [
+            {
+              id: 1,
+              name: 'Pine Court Townhomes',
+              address: '789 Pine Road, Uptown',
+              image: './images/3.jpg',
+              status: 'Active',
+              units: '6 Units',
+              occupied: '5/6 Occupied',
+              rent: { collected: 7000, total: 8400 },
+              monthly: '$8,400',
+              rate: '$1,200/mo',
+              lastUpdated: '2 days ago',
+              note: 'This property is in good condition and tenants are satisfied.',
+              unitDetails: [
+                {
+                  id: 1,
+                  name: 'Unit A1',
+                  collected: 1000,
+                  total: 1200,
+                  percentage: 83,
+                  avatars: ['/avatar1.jpg','/avatar2.jpg','/avatar3.jpg']
+                },
+                {
+                  id: 2,
+                  name: 'Unit B2',
+                  collected: 1200,
+                  total: 1200,
+                  percentage: 100,
+                  avatars: ['./images/avatar3.jpg','./images/avatar1.jpg']
+                }
+              ]
+            },
+            {
+              id: 2,
+              name: 'Maple Heights',
+              address: '456 Maple Street, Midtown',
+              image: './images/2.jpg',
+              status: 'Inactive',
+              units: '10 Units',
+              occupied: '7/10 Occupied',
+              rent: { collected: 12000, total: 15000 },
+              monthly: '$15,000',
+              rate: '$1,500/mo',
+              lastUpdated: '5 days ago',
+              note: 'Renovation work scheduled next month.',
+              unitDetails: [
+                {
+                  id: 1,
+                  name: 'Unit C1',
+                  collected: 1500,
+                  total: 2000,
+                  percentage: 75,
+                  avatars: ['./images/avatar2.jpg','./images/avatar1.jpg']
+                }
+              ]
+            },
+            {
+              id: 3,
+              name: 'Cedar Villas',
+              address: '123 Cedar Avenue, Downtown',
+              image: './images/1.jpg',
+              status: 'Active',
+              units: '8 Units',
+              occupied: '8/8 Occupied',
+              rent: { collected: 10000, total: 10000 },
+              monthly: '$10,000',
+              rate: '$1,250/mo',
+              lastUpdated: '1 day ago',
+              note: 'Fully occupied, high demand area.',
+              unitDetails: [
+                {
+                  id: 1,
+                  name: 'Unit D1',
+                  collected: 1250,
+                  total: 1250,
+                  percentage: 100,
+                  avatars: ['./images/avatar7.png']
+                }
+              ]
+            }
+          ],
+          selectedProperty: null,
+          selectedUnit: null,
+          selectedAddUnit: null,
+        }">
+              <!-- Properties Grid -->
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <template x-for="property in properties" :key="property.id">
+                  <div class="relative bg-white rounded-lg shadow-md overflow-hidden">
+                    <!-- Image & Status -->
+                    <div class="relative">
+                      <img :src="property.image" :alt="property.name" class="w-full h-36 object-cover" />
+                      <span class="absolute top-2 left-2 bg-green-100 text-green-700 border border-green-600 text-xs font-bold px-2 py-0.5 rounded-full" x-text="property.status"></span>
+                    </div>
+                    <!-- Content -->
+                    <div class="p-3">
+                      <!-- Title + Actions -->
+                      <div class="flex items-center justify-between">
+                        <div>
+                          <h3 class="text-base font-semibold text-slate-900" x-text="property.name"></h3>
+                          <p class="flex items-center gap-1 text-xs text-slate-500">
+                            <i data-lucide="map-pin" class="w-3 h-3"></i>
+                            <span x-text="property.address"></span>
+                          </p>
+                        </div>
+                        <!-- Menu -->
+                        <div x-data="{ open: false }" class="relative">
+                          <button @click="open = !open" class="p-1 rounded-full bg-white shadow hover:bg-slate-100">
+                            <i data-lucide="more-vertical" class="w-4 h-4 text-slate-600"></i>
+                          </button>
+                          <div x-show="open" @click.outside="open = false" class="absolute right-0 mt-2 w-36 bg-white border border-slate-200 rounded-lg shadow-lg z-50">
+                            <ul class="text-sm text-slate-700">
+                              <li>
+                                <a href="#" class="flex items-center gap-2 px-3 py-2 hover:bg-slate-50">
+                                  <i data-lucide="eye" class="w-4 h-4 text-indigo-500"></i> View </a>
+                              </li>
+                              <li>
+                                <a href="#" class="flex items-center gap-2 px-3 py-2 hover:bg-slate-50">
+                                  <i data-lucide="pencil" class="w-4 h-4 text-slate-600"></i> Edit </a>
+                              </li>
+                              <li>
+                                <a href="#" class="flex items-center gap-2 px-3 py-2 hover:bg-slate-50">
+                                  <i data-lucide="trending-up" class="w-4 h-4 text-green-600"></i> Analytics </a>
+                              </li>
+                              <li>
+                                <a href="#" class="flex items-center gap-2 px-3 py-2 hover:bg-slate-50">
+                                  <i data-lucide="trash-2" class="w-4 h-4 text-red-600"></i> Delete </a>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Stats -->
+                      <div class="grid grid-cols-2 gap-2 mt-3">
+                        <div class="flex flex-col items-center justify-center bg-slate-50 rounded-md py-2">
+                          <i data-lucide="layout-grid" class="w-4 h-4 text-indigo-500"></i>
+                          <p class="text-xs font-medium text-slate-700 mt-0.5" x-text="property.units"></p>
+                          <span class="text-[10px] text-slate-500" x-text="property.occupied"></span>
+                        </div>
+                        <div class="flex flex-col items-center justify-center bg-slate-50 rounded-md py-2">
+                          <i data-lucide="dollar-sign" class="w-4 h-4 text-green-600"></i>
+                          <p class="text-xs font-medium text-green-700 mt-0.5" x-text="property.monthly"></p>
+                          <span class="text-[10px] text-slate-500">Monthly</span>
+                        </div>
+                      </div>
+                      <!-- Progress Bar -->
+                      <div class="mt-3">
+                        <p class="text-[11px] text-slate-600 mb-0.5">Rent</p>
+                        <div class="w-full bg-slate-200 h-1.5 rounded-full">
+                          <div class="bg-primary-600 h-1.5 rounded-full" :style="width: ${(property.rent.collected / property.rent.total) * 100}%"></div>
+                        </div>
+                        <p class="text-[11px] text-slate-500 mt-1" x-text="property.rent.collected + ' / ' + property.rent.total"></p>
+                      </div>
+                    </div>
+                    <!-- Footer -->
+                    <div class="px-3 py-2 border-t bg-slate-50 flex items-center justify-between">
+                      <!-- View button (full width left side) -->
+                      <button @click="selectedProperty = property" class="flex-1 flex items-center justify-center gap-1 bg-primary-600 hover:bg-primary-700 text-white text-sm py-1.5 rounded-md transition">
+                        <i data-lucide="eye" class="w-4 h-4"></i> View </button>
+                      <!-- Small chat button on right -->
+                      <button class="ml-2 p-1 border border-primary-400 rounded-md bg-white text-white transition">
+                        <svg width="18" height="19" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M1.875 10.9707C1.875 12.3041 2.81083 13.4657 4.13083 13.6599C5.02083 13.7907 5.92083 13.8924 6.82917 13.9632C7.2175 13.9941 7.57333 14.1974 7.79 14.5224L10 17.8374L12.21 14.5224C12.4267 14.1974 12.7825 13.9941 13.1708 13.9641C14.0792 13.8924 14.9792 13.7907 15.8692 13.6599C17.1892 13.4657 18.125 12.3049 18.125 10.9699V5.9549C18.125 4.6199 17.1892 3.45907 15.8692 3.2649C13.9258 2.97967 11.9642 2.83679 10 2.8374C8.00667 2.8374 6.04667 2.98324 4.13083 3.2649C2.81083 3.45907 1.875 4.62074 1.875 5.9549V10.9699V10.9707Z" stroke="#1E40AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </template>
+              </div>
+              <!-- Modal -->
+              <div data-include="/partials/view-property.html"></div>
+
+              <!-- Unit Detail Popup -->
+              <div data-include="/partials/unit-detail.html"></div>
+
+              <!-- Add Unit Slide-over -->
+              <div data-include="/partials/add-unit.html"></div>
+
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>
