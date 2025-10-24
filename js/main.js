@@ -1,6 +1,6 @@
-import { createIcons, icons } from 'https://unpkg.com/lucide@0.263.0/dist/esm/lucide.js';
-import * as Alpine from 'https://unpkg.com/alpinejs@3.x.x/dist/module.esm.js';
-import * as persist from 'https://unpkg.com/@alpinejs/persist@3.x.x/dist/module.esm.js';
+import { createIcons, icons } from 'https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/esm/lucide.js';
+import * as Alpine from 'https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/module.esm.js';
+import * as persist from 'https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/module.esm.js';
 
 // Initialize Alpine.js with persist plugin
 Alpine.default.plugin(persist.default);
