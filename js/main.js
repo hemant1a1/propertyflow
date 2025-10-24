@@ -1,4 +1,4 @@
-import { createIcons, icons } from 'https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/esm/lucide.js';
+import { createIcons, icons } from 'https://unpkg.com/lucide@0.263.0/dist/esm/lucide.js';
 import * as Alpine from 'https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/module.esm.js';
 import * as persist from 'https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/module.esm.js';
 
