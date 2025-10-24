@@ -1,8 +1,7 @@
 <div x-data="{ showUnitDetails: false, showDocuments: false }" class="relative">
     <div
-    class="fixed inset-0 bg-black/60 z-[999] flex justify-end"
+    class="fixed inset-0 z-[999] flex justify-end bg-black/50 backdrop-blur-sm"
     :class="selectedProperty ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'"
-    @click.self="selectedProperty = null"
     >
     <div
         x-show="selectedProperty"
@@ -106,7 +105,7 @@
                     <span class="font-semibold text-sm">Occupied</span>
                     <span class="text-primary font-semibold text-xs">10 / 12</span>
                     </div>
-                    <div class="p-2.5 bg-blue-50 rounded-full flex items-center justify-center">
+                    <div class="p-2.5 bg-primary-50 rounded-full flex items-center justify-center">
                         <img src="/images/svg/users.svg" />
                     </div>
                 </div>
@@ -117,7 +116,7 @@
                     <span class="font-semibold text-sm">Property Doc.</span>
                     <span class="text-primary font-semibold text-xs">View</span>
                     </div>
-                    <div class="p-2.5 bg-blue-50 rounded-full flex items-center justify-center">
+                    <div class="p-2.5 bg-primary-50 rounded-full flex items-center justify-center">
                         <img src="/images/svg/doc-check.svg" />
                     </div>
                 </div>
@@ -161,22 +160,22 @@
                             <ul class="divide-y divide-gray-100">
                             <li>
                                 <a href="#" @click.prevent="showUnitDetails = true" class="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-200 rounded">
-                                    <i data-lucide="home" class="w-4 h-4"></i> Unit Details
+                                    <img src="/images/svg/home.svg" alt="Unit Details"class="w-6 h-6"> Unit Details
                                 </a>
                             </li>
                             <li>
                                 <a href="#" @click="showUnitMenu = false" class="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-100">
-                                <i data-lucide="bars3-bottom-left" class="w-4 h-4"></i> Unit Appliance List
+                                    <img src="/images/svg/unit-appliance-list.svg" alt="Unit Appliance List" class="w-6 h-6"> Unit Appliance List
                                 </a>
                             </li>
                             <li>
                                 <a href="#" @click="showUnitMenu = false" class="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-100">
-                                <i data-lucide="pencil-square" class="w-4 h-4"></i> Update Property Unit
+                                    <img src="/images/svg/edit.svg" alt="Update Property Unit" class="w-6 h-6"> Update Property Unit
                                 </a>
                             </li>
                             <li>
                                 <a href="#" @click="showUnitMenu = false" class="flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50">
-                                <i data-lucide="trash" class="w-4 h-4 text-red-600"></i> Delete Property Unit Record
+                                    <img src="/images/svg/delete.svg" alt="Delete Property Unit Record" class="w-6 h-6"> Delete Property Unit Record
                                 </a>
                             </li>
                             </ul>
@@ -509,7 +508,7 @@
                     </div>
                     <!-- Rent Progress Bar -->
                     <div class="w-full h-2 bg-gray-200 rounded mt-1">
-                        <div class="h-2 bg-blue-700 rounded" style="width:85%"></div>
+                        <div class="h-2 bg-primary-700 rounded" style="width:85%"></div>
                     </div>
                     <p class="text-gray-600 text-sm mt-2">
                         Experience contemporary living in a modern house, apartment complex designed with comfort and elegance.
@@ -521,17 +520,17 @@
                     <div class="flex justify-between items-center mb-2">
                         <h4 class="font-bold">Unit Documents</h4>
                         <button 
-                            class="text-blue-600 hover:underline text-sm"
+                            class="text-primary-600 hover:underline text-sm"
                             @click="showDocuments = true"
                         >
                             View All
                         </button>
                     </div>
-                    <div class="h-32 overflow-y-auto space-y-2 scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-gray-200">
+                    <div class="h-32 overflow-y-auto space-y-2 scrollbar-thin scrollbar-thumb-primary-500 scrollbar-track-gray-200">
                         <template x-for="doc in ['Lease Agreement.pdf','Unit.pdf','Occupancy Certificate.pdf','Property Tax Receipt.pdf','Building Approval Certificate.pdf','Background Check.pdf']" :key="doc">
                             <div class="flex justify-between items-center p-2 bg-white rounded shadow-sm">
                                 <div class="flex items-center gap-2">
-                                    <i data-lucide="file-text" class="w-4 h-4 text-blue-600"></i>
+                                    <i data-lucide="file-text" class="w-4 h-4 text-primary-600"></i>
                                     <span x-text="doc"></span>
                                 </div>
                                 <div class="flex gap-2">
@@ -553,8 +552,8 @@
                 <!-- SEARCH + FILTER -->
                 <div class="flex gap-2">
                     <input type="text" placeholder="Search properties, tenants..." class="flex-1 p-2 border rounded" />
-                    <button class="bg-blue-800 text-white p-2 rounded">
-                        <i data-lucide="funnel" class="w-5 h-5"></i>
+                    <button class="bg-primary-800 text-white p-2 rounded">
+                        <img src="/images/svg/filter.svg" class="w-4 h-4" />
                     </button>
                 </div>
 
@@ -566,13 +565,13 @@
                     </div>
                     <!-- TENANT CARD -->
                     <template x-for="tenant in [
-                        {name:'Sarah Johnson', status:'Active', address:'Maple Heights Apartments – Unit 3A', rent:'$1,500', image:'https://via.placeholder.com/40'},
-                        {name:'Mike Chen', status:'Active', address:'Oak Plaza Complex – Unit 2B', rent:'$1,400', image:'https://via.placeholder.com/40'},
-                        {name:'Emily Davis', status:'Pending', address:'Pine Court Townhomes – Unit 1C', rent:'$1,150', image:'https://via.placeholder.com/40'}
+                        {name:'Sarah Johnson', status:'Active', address:'Maple Heights Apartments – Unit 3A', rent:'$1,500', image:'/images/avatar1.jpg'},
+                        {name:'Mike Chen', status:'Active', address:'Oak Plaza Complex – Unit 2B', rent:'$1,400', image:'/images/avatar2.jpg'},
+                        {name:'Emily Davis', status:'Pending', address:'Pine Court Townhomes – Unit 1C', rent:'$1,150', image:'/images/avatar3.jpg'}
                     ]" :key="tenant.name">
                         <div class="flex justify-between items-center p-3 mb-2 bg-white rounded-lg shadow-md">
                             <!-- Left: Avatar -->
-                            <img :src="tenant.image" class="w-11 h-11 rounded-full" alt="tenant"/>
+                            <img :src="tenant.image" class="w-11 h-11 rounded-full object-cover" alt="tenant"/>
 
                             <!-- Middle: Name + Status + Address -->
                             <div class="flex-1 ml-3">
@@ -587,13 +586,13 @@
                             <div class="flex flex-col items-end gap-1">
                                 <span class="font-semibold text-sm" x-text="tenant.rent"></span>
                                 <div class="flex items-center gap-2">
-                                    <button class="text-blue-600 hover:text-blue-800">
+                                    <button class="text-primary-600 hover:text-primary-800">
                                         <i data-lucide="phone" class="w-4 h-4"></i>
                                     </button>
-                                    <button class="text-blue-600 hover:text-blue-800">
+                                    <button class="text-primary-600 hover:text-primary-800">
                                         <i data-lucide="message-circle" class="w-4 h-4"></i>
                                     </button>
-                                    <button class="text-blue-600 hover:text-blue-800">
+                                    <button class="text-primary-600 hover:text-primary-800">
                                         <i data-lucide="eye" class="w-4 h-4"></i>
                                     </button>
                                 </div>
@@ -640,7 +639,7 @@
               ]" :key="doc">
                   <div class="flex justify-between items-center p-3 bg-gray-50 rounded shadow-sm">
                       <div class="flex items-center gap-2">
-                          <i data-lucide="file-text" class="w-4 h-4 text-blue-600"></i>
+                          <i data-lucide="file-text" class="w-4 h-4 text-primary-600"></i>
                           <span x-text="doc"></span>
                       </div>
                       <div class="flex gap-2">
@@ -662,12 +661,12 @@
           <div class="p-4 flex gap-2">
               <button 
                   @click="showDocuments = false" 
-                  class="flex-1 bg-blue-800 text-white py-2 rounded font-semibold"
+                  class="flex-1 bg-primary-800 text-white py-2 rounded font-semibold"
               >
                   Close
               </button>
               <button 
-                  class="flex-1 border border-blue-600 py-2 rounded font-semibold text-blue-600"
+                  class="flex-1 border border-primary-600 py-2 rounded font-semibold text-primary-600"
                   @click="alert('More options clicked')" 
               >
                   More
